@@ -32,6 +32,7 @@
 		C00000000000000000000023 /* TimerDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000023 /* TimerDemoView.swift */; };
 		C00000000000000000000024 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000024 /* Assets.xcassets */; };
 		C00000000000000000000025 /* CustomCircularGaugeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000026 /* CustomCircularGaugeView.swift */; };
+		C00000000000000000000026 /* DirectionalPushDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000027 /* DirectionalPushDemoView.swift */; };
 		EC2010A7192E239DB4F6754A /* Pods_JobsSwiftUIBaseConfigDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63AFEB86D97A6B53B47EE103 /* Pods_JobsSwiftUIBaseConfigDemo.framework */; };
 /* End PBXBuildFile section */
 
@@ -65,6 +66,7 @@
 		B00000000000000000000024 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B00000000000000000000025 /* JobsSwiftUIBaseConfigDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JobsSwiftUIBaseConfigDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B00000000000000000000026 /* CustomCircularGaugeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCircularGaugeView.swift; sourceTree = "<group>"; };
+		B00000000000000000000027 /* DirectionalPushDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionalPushDemoView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +137,7 @@
 				B00000000000000000000026 /* CustomCircularGaugeView.swift */,
 				B00000000000000000000014 /* ListFormDemoView.swift */,
 				B00000000000000000000015 /* NavigationDemoView.swift */,
+				B00000000000000000000027 /* DirectionalPushDemoView.swift */,
 				B00000000000000000000016 /* AlertDialogDemoView.swift */,
 				B00000000000000000000017 /* PresentationDemoView.swift */,
 				B00000000000000000000018 /* LayoutDemoView.swift */,
@@ -266,6 +269,7 @@
 				C00000000000000000000013 /* ProgressGaugeDemoView.swift in Sources */,
 				C00000000000000000000014 /* ListFormDemoView.swift in Sources */,
 				C00000000000000000000015 /* NavigationDemoView.swift in Sources */,
+				C00000000000000000000026 /* DirectionalPushDemoView.swift in Sources */,
 				C00000000000000000000016 /* AlertDialogDemoView.swift in Sources */,
 				C00000000000000000000017 /* PresentationDemoView.swift in Sources */,
 				C00000000000000000000018 /* LayoutDemoView.swift in Sources */,

@@ -20,6 +20,7 @@
 
 | 项目 | 说明 |
 | --- | --- |
+| 工作区文件 | `./JobsSwiftUIBaseConfigDemo.xcworkspace` |
 | 工程文件 | `./JobsSwiftUIBaseConfigDemo.xcodeproj` |
 | App 入口 | `./JobsSwiftUIBaseConfigDemo/JobsSwiftUIBaseConfigDemoApp.swift` |
 | 主 Tab 容器 | `./JobsSwiftUIBaseConfigDemo/MainTabView.swift` |
@@ -48,6 +49,7 @@
 │   ├── JobsSwiftUICodeGraphHook
 │   ├── codegraph_init.command
 │   └── codegraph_export_md.command
+├── JobsSwiftUIBaseConfigDemo.xcworkspace
 ├── JobsSwiftUIBaseConfigDemo.xcodeproj
 └── JobsSwiftUIBaseConfigDemo
     ├── Assets.xcassets
@@ -68,6 +70,7 @@
         ├── CustomCircularGaugeView.swift
         ├── ListFormDemoView.swift
         ├── NavigationDemoView.swift
+        ├── DirectionalPushDemoView.swift
         ├── AlertDialogDemoView.swift
         ├── PresentationDemoView.swift
         ├── LayoutDemoView.swift
@@ -114,6 +117,7 @@ flowchart TD
 | `ProgressView / Gauge` | 进度条、加载指示器、线性 Gauge 和自定义圆形 Gauge | `./JobsSwiftUIBaseConfigDemo/Demos/ProgressGaugeDemoView.swift` |
 | `List / Form / Section` | 列表、表单、分组和只读信息行 | `./JobsSwiftUIBaseConfigDemo/Demos/ListFormDemoView.swift` |
 | `NavigationStack / Toolbar` | 导航推出、工具栏按钮和层级页面 | `./JobsSwiftUIBaseConfigDemo/Demos/NavigationDemoView.swift` |
+| `Directional Push VC` | 从上、下、左、右四个方向按百分比 Push 页面 | `./JobsSwiftUIBaseConfigDemo/Demos/DirectionalPushDemoView.swift` |
 | `Alert / ConfirmationDialog` | 系统弹窗、确认弹窗和破坏性操作 | `./JobsSwiftUIBaseConfigDemo/Demos/AlertDialogDemoView.swift` |
 | `Sheet / Popover / FullScreenCover` | 模态页面、浮层和全屏展示 | `./JobsSwiftUIBaseConfigDemo/Demos/PresentationDemoView.swift` |
 | `ScrollView / LazyVGrid / Grid` | 滚动容器、自适应网格和新式 `Grid` | `./JobsSwiftUIBaseConfigDemo/Demos/LayoutDemoView.swift` |
@@ -153,6 +157,8 @@ NavigationLink {
 }
 ```
 
+首页列表支持长按 cell 后拖拽排序，排序结果通过 `AppStorage` 写入 `UserDefaults`。再次进入 `DemoListView` 时，会优先读取已保存顺序；新增 Demo 未出现在旧顺序里时会自动追加到列表末尾。
+
 ### 5.3、自定义双色圆形 Gauge
 
 `CustomCircularGaugeView` 用 `Circle().trim(...)` 分别绘制两段弧线：
@@ -170,6 +176,10 @@ NavigationLink {
 ```swift
 private let ticker = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 ```
+
+### 5.5、四向 Push 预览
+
+`DirectionalPushDemoView` 使用分段选择控制 Push 方向，使用 `Slider` 控制 Push 百分比，并在预览区域模拟从上、下、左、右四个方向进入目标 VC 页面。
 
 ## 六、Podfile 边界 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
@@ -212,10 +222,10 @@ flowchart TD
 
 ### 7.1、使用 Xcode 运行
 
-1. 使用 [**Xcode**](https://developer.apple.com/xcode) 打开工程：
+1. 使用 [**Xcode**](https://developer.apple.com/xcode) 打开工作区：
 
    ```shell
-   open ./JobsSwiftUIBaseConfigDemo.xcodeproj
+   open ./JobsSwiftUIBaseConfigDemo.xcworkspace
    ```
 
 2. 选择 `JobsSwiftUIBaseConfigDemo` Scheme。
@@ -228,7 +238,7 @@ flowchart TD
 
 ```shell
 xcodebuild \
-  -project ./JobsSwiftUIBaseConfigDemo.xcodeproj \
+  -workspace ./JobsSwiftUIBaseConfigDemo.xcworkspace \
   -scheme JobsSwiftUIBaseConfigDemo \
   -configuration Debug \
   -destination 'generic/platform=iOS Simulator' \
@@ -282,8 +292,9 @@ pod install
 
 | 现象 | 处理方式 |
 | --- | --- |
-| Xcode 打不开工程 | 确认打开的是 `./JobsSwiftUIBaseConfigDemo.xcodeproj` |
+| Xcode 打不开工程 | 优先打开 `./JobsSwiftUIBaseConfigDemo.xcworkspace`；未执行过 `pod install` 时再打开 `./JobsSwiftUIBaseConfigDemo.xcodeproj` |
 | 找不到新增 Demo 页面 | 确认新文件已加入 target，并已在 `DemoFeature.destination` 注册 |
+| Demo 列表排序不符合预期 | 删除 App 后重装，或清空 `JobsSwiftUIBaseConfigDemo.demoFeatureOrder` 对应的 `UserDefaults` 值 |
 | 命令行编译提示签名问题 | 模拟器构建命令加上 `CODE_SIGNING_ALLOWED=NO` |
 | `pod install` 后没有 `.codegraph` | 查看系统临时目录中的 `codegraph_init.async.log` |
 | 只想验证 Podfile，不想启动 CodeGraph | 执行 `JOBS_SKIP_CODEGRAPH=1 pod install --no-repo-update` |
