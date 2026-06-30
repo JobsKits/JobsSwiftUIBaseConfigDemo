@@ -1,0 +1,480 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C00000000000000000000001 /* JobsSwiftUIBaseConfigDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000001 /* JobsSwiftUIBaseConfigDemoApp.swift */; };
+		C00000000000000000000002 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000002 /* MainTabView.swift */; };
+		C00000000000000000000003 /* DemoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000003 /* DemoListView.swift */; };
+		C00000000000000000000004 /* DemoFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000004 /* DemoFeature.swift */; };
+		C00000000000000000000005 /* DemoFeatureRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000005 /* DemoFeatureRow.swift */; };
+		C00000000000000000000006 /* GalleryTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000006 /* GalleryTabView.swift */; };
+		C00000000000000000000007 /* AboutTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000007 /* AboutTabView.swift */; };
+		C00000000000000000000008 /* TextImageDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000008 /* TextImageDemoView.swift */; };
+		C00000000000000000000009 /* ButtonMenuDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000009 /* ButtonMenuDemoView.swift */; };
+		C00000000000000000000010 /* InputFieldsDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000010 /* InputFieldsDemoView.swift */; };
+		C00000000000000000000011 /* ControlValuesDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000011 /* ControlValuesDemoView.swift */; };
+		C00000000000000000000012 /* PickersDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000012 /* PickersDemoView.swift */; };
+		C00000000000000000000013 /* ProgressGaugeDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000013 /* ProgressGaugeDemoView.swift */; };
+		C00000000000000000000014 /* ListFormDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000014 /* ListFormDemoView.swift */; };
+		C00000000000000000000015 /* NavigationDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000015 /* NavigationDemoView.swift */; };
+		C00000000000000000000016 /* AlertDialogDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000016 /* AlertDialogDemoView.swift */; };
+		C00000000000000000000017 /* PresentationDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000017 /* PresentationDemoView.swift */; };
+		C00000000000000000000018 /* LayoutDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000018 /* LayoutDemoView.swift */; };
+		C00000000000000000000019 /* TabPageDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000019 /* TabPageDemoView.swift */; };
+		C00000000000000000000020 /* DisclosureOutlineDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000020 /* DisclosureOutlineDemoView.swift */; };
+		C00000000000000000000021 /* AsyncLinkShareDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000021 /* AsyncLinkShareDemoView.swift */; };
+		C00000000000000000000022 /* AnimationDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000022 /* AnimationDemoView.swift */; };
+		C00000000000000000000023 /* TimerDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000023 /* TimerDemoView.swift */; };
+		C00000000000000000000024 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000024 /* Assets.xcassets */; };
+		C00000000000000000000025 /* CustomCircularGaugeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000026 /* CustomCircularGaugeView.swift */; };
+		EC2010A7192E239DB4F6754A /* Pods_JobsSwiftUIBaseConfigDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63AFEB86D97A6B53B47EE103 /* Pods_JobsSwiftUIBaseConfigDemo.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1925762410BC9B6EC0220117 /* Pods-JobsSwiftUIBaseConfigDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JobsSwiftUIBaseConfigDemo.release.xcconfig"; path = "Target Support Files/Pods-JobsSwiftUIBaseConfigDemo/Pods-JobsSwiftUIBaseConfigDemo.release.xcconfig"; sourceTree = "<group>"; };
+		63AFEB86D97A6B53B47EE103 /* Pods_JobsSwiftUIBaseConfigDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JobsSwiftUIBaseConfigDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B2A75635CACF2FFC239629B /* Pods-JobsSwiftUIBaseConfigDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JobsSwiftUIBaseConfigDemo.debug.xcconfig"; path = "Target Support Files/Pods-JobsSwiftUIBaseConfigDemo/Pods-JobsSwiftUIBaseConfigDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		B00000000000000000000001 /* JobsSwiftUIBaseConfigDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobsSwiftUIBaseConfigDemoApp.swift; sourceTree = "<group>"; };
+		B00000000000000000000002 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		B00000000000000000000003 /* DemoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoListView.swift; sourceTree = "<group>"; };
+		B00000000000000000000004 /* DemoFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoFeature.swift; sourceTree = "<group>"; };
+		B00000000000000000000005 /* DemoFeatureRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoFeatureRow.swift; sourceTree = "<group>"; };
+		B00000000000000000000006 /* GalleryTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryTabView.swift; sourceTree = "<group>"; };
+		B00000000000000000000007 /* AboutTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutTabView.swift; sourceTree = "<group>"; };
+		B00000000000000000000008 /* TextImageDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextImageDemoView.swift; sourceTree = "<group>"; };
+		B00000000000000000000009 /* ButtonMenuDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonMenuDemoView.swift; sourceTree = "<group>"; };
+		B00000000000000000000010 /* InputFieldsDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputFieldsDemoView.swift; sourceTree = "<group>"; };
+		B00000000000000000000011 /* ControlValuesDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlValuesDemoView.swift; sourceTree = "<group>"; };
+		B00000000000000000000012 /* PickersDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickersDemoView.swift; sourceTree = "<group>"; };
+		B00000000000000000000013 /* ProgressGaugeDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressGaugeDemoView.swift; sourceTree = "<group>"; };
+		B00000000000000000000014 /* ListFormDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListFormDemoView.swift; sourceTree = "<group>"; };
+		B00000000000000000000015 /* NavigationDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationDemoView.swift; sourceTree = "<group>"; };
+		B00000000000000000000016 /* AlertDialogDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertDialogDemoView.swift; sourceTree = "<group>"; };
+		B00000000000000000000017 /* PresentationDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationDemoView.swift; sourceTree = "<group>"; };
+		B00000000000000000000018 /* LayoutDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutDemoView.swift; sourceTree = "<group>"; };
+		B00000000000000000000019 /* TabPageDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabPageDemoView.swift; sourceTree = "<group>"; };
+		B00000000000000000000020 /* DisclosureOutlineDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureOutlineDemoView.swift; sourceTree = "<group>"; };
+		B00000000000000000000021 /* AsyncLinkShareDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncLinkShareDemoView.swift; sourceTree = "<group>"; };
+		B00000000000000000000022 /* AnimationDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationDemoView.swift; sourceTree = "<group>"; };
+		B00000000000000000000023 /* TimerDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerDemoView.swift; sourceTree = "<group>"; };
+		B00000000000000000000024 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B00000000000000000000025 /* JobsSwiftUIBaseConfigDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JobsSwiftUIBaseConfigDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B00000000000000000000026 /* CustomCircularGaugeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCircularGaugeView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A00000000000000000000008 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EC2010A7192E239DB4F6754A /* Pods_JobsSwiftUIBaseConfigDemo.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		36CB7FA05A2549F74521276E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7B2A75635CACF2FFC239629B /* Pods-JobsSwiftUIBaseConfigDemo.debug.xcconfig */,
+				1925762410BC9B6EC0220117 /* Pods-JobsSwiftUIBaseConfigDemo.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		A00000000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000004 /* JobsSwiftUIBaseConfigDemo */,
+				A00000000000000000000005 /* Products */,
+				36CB7FA05A2549F74521276E /* Pods */,
+				BC434D52E8A60503D7DC796E /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		A00000000000000000000004 /* JobsSwiftUIBaseConfigDemo */ = {
+			isa = PBXGroup;
+			children = (
+				B00000000000000000000001 /* JobsSwiftUIBaseConfigDemoApp.swift */,
+				B00000000000000000000002 /* MainTabView.swift */,
+				B00000000000000000000003 /* DemoListView.swift */,
+				B00000000000000000000004 /* DemoFeature.swift */,
+				B00000000000000000000005 /* DemoFeatureRow.swift */,
+				B00000000000000000000006 /* GalleryTabView.swift */,
+				B00000000000000000000007 /* AboutTabView.swift */,
+				A00000000000000000000006 /* Demos */,
+				B00000000000000000000024 /* Assets.xcassets */,
+			);
+			path = JobsSwiftUIBaseConfigDemo;
+			sourceTree = "<group>";
+		};
+		A00000000000000000000005 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B00000000000000000000025 /* JobsSwiftUIBaseConfigDemo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A00000000000000000000006 /* Demos */ = {
+			isa = PBXGroup;
+			children = (
+				B00000000000000000000008 /* TextImageDemoView.swift */,
+				B00000000000000000000009 /* ButtonMenuDemoView.swift */,
+				B00000000000000000000010 /* InputFieldsDemoView.swift */,
+				B00000000000000000000011 /* ControlValuesDemoView.swift */,
+				B00000000000000000000012 /* PickersDemoView.swift */,
+				B00000000000000000000013 /* ProgressGaugeDemoView.swift */,
+				B00000000000000000000026 /* CustomCircularGaugeView.swift */,
+				B00000000000000000000014 /* ListFormDemoView.swift */,
+				B00000000000000000000015 /* NavigationDemoView.swift */,
+				B00000000000000000000016 /* AlertDialogDemoView.swift */,
+				B00000000000000000000017 /* PresentationDemoView.swift */,
+				B00000000000000000000018 /* LayoutDemoView.swift */,
+				B00000000000000000000019 /* TabPageDemoView.swift */,
+				B00000000000000000000020 /* DisclosureOutlineDemoView.swift */,
+				B00000000000000000000021 /* AsyncLinkShareDemoView.swift */,
+				B00000000000000000000022 /* AnimationDemoView.swift */,
+				B00000000000000000000023 /* TimerDemoView.swift */,
+			);
+			path = Demos;
+			sourceTree = "<group>";
+		};
+		BC434D52E8A60503D7DC796E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				63AFEB86D97A6B53B47EE103 /* Pods_JobsSwiftUIBaseConfigDemo.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A00000000000000000000003 /* JobsSwiftUIBaseConfigDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D00000000000000000000003 /* Build configuration list for PBXNativeTarget "JobsSwiftUIBaseConfigDemo" */;
+			buildPhases = (
+				161EC2D3640D2FD5CD40BAD6 /* [CP] Check Pods Manifest.lock */,
+				A00000000000000000000007 /* Sources */,
+				A00000000000000000000008 /* Frameworks */,
+				A00000000000000000000009 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JobsSwiftUIBaseConfigDemo;
+			productName = JobsSwiftUIBaseConfigDemo;
+			productReference = B00000000000000000000025 /* JobsSwiftUIBaseConfigDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A00000000000000000000002 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2660;
+				LastUpgradeCheck = 2660;
+				TargetAttributes = {
+					A00000000000000000000003 = {
+						CreatedOnToolsVersion = 26.6;
+					};
+				};
+			};
+			buildConfigurationList = D00000000000000000000002 /* Build configuration list for PBXProject "JobsSwiftUIBaseConfigDemo" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				"zh-Hans",
+			);
+			mainGroup = A00000000000000000000001;
+			productRefGroup = A00000000000000000000005 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A00000000000000000000003 /* JobsSwiftUIBaseConfigDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A00000000000000000000009 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C00000000000000000000024 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		161EC2D3640D2FD5CD40BAD6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-JobsSwiftUIBaseConfigDemo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A00000000000000000000007 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C00000000000000000000001 /* JobsSwiftUIBaseConfigDemoApp.swift in Sources */,
+				C00000000000000000000002 /* MainTabView.swift in Sources */,
+				C00000000000000000000003 /* DemoListView.swift in Sources */,
+				C00000000000000000000004 /* DemoFeature.swift in Sources */,
+				C00000000000000000000005 /* DemoFeatureRow.swift in Sources */,
+				C00000000000000000000006 /* GalleryTabView.swift in Sources */,
+				C00000000000000000000007 /* AboutTabView.swift in Sources */,
+				C00000000000000000000008 /* TextImageDemoView.swift in Sources */,
+				C00000000000000000000009 /* ButtonMenuDemoView.swift in Sources */,
+				C00000000000000000000010 /* InputFieldsDemoView.swift in Sources */,
+				C00000000000000000000011 /* ControlValuesDemoView.swift in Sources */,
+				C00000000000000000000012 /* PickersDemoView.swift in Sources */,
+				C00000000000000000000013 /* ProgressGaugeDemoView.swift in Sources */,
+				C00000000000000000000014 /* ListFormDemoView.swift in Sources */,
+				C00000000000000000000015 /* NavigationDemoView.swift in Sources */,
+				C00000000000000000000016 /* AlertDialogDemoView.swift in Sources */,
+				C00000000000000000000017 /* PresentationDemoView.swift in Sources */,
+				C00000000000000000000018 /* LayoutDemoView.swift in Sources */,
+				C00000000000000000000019 /* TabPageDemoView.swift in Sources */,
+				C00000000000000000000020 /* DisclosureOutlineDemoView.swift in Sources */,
+				C00000000000000000000021 /* AsyncLinkShareDemoView.swift in Sources */,
+				C00000000000000000000022 /* AnimationDemoView.swift in Sources */,
+				C00000000000000000000023 /* TimerDemoView.swift in Sources */,
+				C00000000000000000000025 /* CustomCircularGaugeView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		D00000000000000000000004 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		D00000000000000000000005 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D00000000000000000000006 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7B2A75635CACF2FFC239629B /* Pods-JobsSwiftUIBaseConfigDemo.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = JobsSwiftUIBaseConfigDemo;
+				INFOPLIST_KEY_LSRequiresIPhoneOS = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jobs.jobsswiftuibaseconfigdemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D00000000000000000000007 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1925762410BC9B6EC0220117 /* Pods-JobsSwiftUIBaseConfigDemo.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = JobsSwiftUIBaseConfigDemo;
+				INFOPLIST_KEY_LSRequiresIPhoneOS = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jobs.jobsswiftuibaseconfigdemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D00000000000000000000002 /* Build configuration list for PBXProject "JobsSwiftUIBaseConfigDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D00000000000000000000004 /* Debug */,
+				D00000000000000000000005 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D00000000000000000000003 /* Build configuration list for PBXNativeTarget "JobsSwiftUIBaseConfigDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D00000000000000000000006 /* Debug */,
+				D00000000000000000000007 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A00000000000000000000002 /* Project object */;
+}

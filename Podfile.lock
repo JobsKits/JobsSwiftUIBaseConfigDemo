@@ -1,0 +1,16 @@
+PODS:
+  - JobsSwiftUICodeGraphHook (1.0.0)
+
+DEPENDENCIES:
+  - JobsSwiftUICodeGraphHook (from `ScriptsByPods/JobsSwiftUICodeGraphHook`)
+
+EXTERNAL SOURCES:
+  JobsSwiftUICodeGraphHook:
+    :path: ScriptsByPods/JobsSwiftUICodeGraphHook
+
+SPEC CHECKSUMS:
+  JobsSwiftUICodeGraphHook: 7b2982a2425c818c922a5f326c06f95d7e27f7fb
+
+PODFILE CHECKSUM: 68ac7ce69ad3484268aa0f8598531de21a55a9b4
+
+COCOAPODS: 1.16.2

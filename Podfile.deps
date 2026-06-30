@@ -1,0 +1,16 @@
+# pod install --repo-update
+# 外部脚本统一放在 Podfile 中安全调用；Podfile.deps 只维护 pod 依赖，不直接执行脚本。
+
+# SwiftUI 系统 UI 全演示工程不声明任何业务 Pod 依赖。
+def jobsSwiftUIBaseConfigDemoPods
+  # CocoaPods 需要至少一个依赖才能完整走 install 生命周期；该本地 Pod 只作为脚本锚点，不在 App 业务代码中 import。
+  pod 'JobsSwiftUICodeGraphHook', :path => 'ScriptsByPods/JobsSwiftUICodeGraphHook'
+end
+
+# 目标工程。
+target 'JobsSwiftUIBaseConfigDemo' do
+  inhibit_all_warnings!
+  use_frameworks! :linkage => :static
+
+  jobsSwiftUIBaseConfigDemoPods
+end
