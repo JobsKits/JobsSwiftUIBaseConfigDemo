@@ -59,7 +59,7 @@ struct DemoListView: View {
     var body: some View {
         NavigationStack {
             List {
-                Section("系统 UI Demo") {
+                Section {
                     ForEach(filteredFeatures) { feature in
                         NavigationLink {
                             feature.destination
@@ -67,23 +67,41 @@ struct DemoListView: View {
                                 .navigationBarTitleDisplayMode(.inline)
                         } label: {
                             DemoFeatureRow(feature: feature)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .contentShape(Rectangle())
+                                .onDrop(
+                                    of: [UTType.text],
+                                    delegate: DemoFeatureDropDelegate(
+                                        feature: feature,
+                                        insertionIndex: nil,
+                                        features: $orderedFeatures,
+                                        draggingFeature: $draggingFeature,
+                                        isEnabled: !isSearching,
+                                        persist: persistFeatureOrder
+                                    )
+                                )
                         }
                         .opacity(draggingFeature == feature ? 0.72 : 1)
                         .onDrag {
                             draggingFeature = feature
                             return NSItemProvider(object: feature.rawValue as NSString)
                         }
+                    }
+                } header: {
+                    Text("系统 UI Demo")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .contentShape(Rectangle())
                         .onDrop(
                             of: [UTType.text],
                             delegate: DemoFeatureDropDelegate(
-                                feature: feature,
+                                feature: nil,
+                                insertionIndex: 0,
                                 features: $orderedFeatures,
                                 draggingFeature: $draggingFeature,
                                 isEnabled: !isSearching,
                                 persist: persistFeatureOrder
                             )
                         )
-                    }
                 }
             }
             .listStyle(.insetGrouped)
@@ -96,7 +114,8 @@ struct DemoListView: View {
 
 private struct DemoFeatureDropDelegate: DropDelegate {
     
-    let feature: DemoFeature
+    let feature: DemoFeature?
+    let insertionIndex: Int?
     @Binding var features: [DemoFeature]
     @Binding var draggingFeature: DemoFeature?
     let isEnabled: Bool
@@ -113,16 +132,25 @@ private struct DemoFeatureDropDelegate: DropDelegate {
     func dropEntered(info: DropInfo) {
         guard isEnabled,
               let draggingFeature,
-              draggingFeature != feature,
               let fromIndex = features.firstIndex(of: draggingFeature),
-              let toIndex = features.firstIndex(of: feature) else {
+              let toOffset = toOffset(fromIndex: fromIndex) else {
+            return
+        }
+        
+        if let feature,
+           draggingFeature == feature {
+            return
+        }
+        
+        guard fromIndex != toOffset,
+              fromIndex + 1 != toOffset else {
             return
         }
         
         withAnimation(.snappy) {
             features.move(
                 fromOffsets: IndexSet(integer: fromIndex),
-                toOffset: toIndex > fromIndex ? toIndex + 1 : toIndex
+                toOffset: min(max(toOffset, 0), features.count)
             )
         }
     }
@@ -135,5 +163,16 @@ private struct DemoFeatureDropDelegate: DropDelegate {
         
         persist(features)
         return true
+    }
+    
+    private func toOffset(fromIndex: Int) -> Int? {
+        if let insertionIndex {
+            return insertionIndex
+        }
+        
+        guard let feature,
+              let toIndex = features.firstIndex(of: feature) else {
+            return nil
+        };return toIndex > fromIndex ? toIndex + 1 : toIndex
     }
 }
