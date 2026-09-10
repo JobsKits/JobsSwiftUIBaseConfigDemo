@@ -7,8 +7,9 @@
 
 import SwiftUI
 
+/// 对比 Form、Section 和普通数据集合的组合方式。
 struct ListFormDemoView: View {
-    
+
     @State private var notificationsEnabled = true
     @State private var accountType = "个人"
     
@@ -21,6 +22,7 @@ struct ListFormDemoView: View {
     ]
     
     var body: some View {
+        /// Form 会根据平台自动采用表单样式，并为 Toggle、Picker 等控件提供合适布局。
         Form {
             Section("表单") {
                 Toggle("允许通知", isOn: $notificationsEnabled)
@@ -33,6 +35,7 @@ struct ListFormDemoView: View {
             }
             
             Section("列表") {
+                /// String 遵守 Hashable，因此静态且不重复的数据可用自身作为 id。
                 ForEach(items, id: \.self) { item in
                     Label(item, systemImage: "checkmark.circle")
                 }

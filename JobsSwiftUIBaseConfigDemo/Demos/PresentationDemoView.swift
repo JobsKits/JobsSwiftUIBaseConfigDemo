@@ -7,8 +7,9 @@
 
 import SwiftUI
 
+/// 用三个独立状态演示半屏、浮层和全屏三种系统展示方式。
 struct PresentationDemoView: View {
-    
+
     @State private var showSheet = false
     @State private var showPopover = false
     @State private var showFullScreenCover = false
@@ -27,14 +28,17 @@ struct PresentationDemoView: View {
                 }
             }
         }
+        /// sheet 依附于当前 View；presentationDetents 定义用户可以停留的高度档位。
         .sheet(isPresented: $showSheet) {
             PresentationContentView(title: "Sheet", symbol: "rectangle.bottomthird.inset.filled")
                 .presentationDetents([.medium, .large])
         }
+        /// iPad 通常显示为浮层；在紧凑尺寸设备上系统可能自适应为 Sheet。
         .popover(isPresented: $showPopover) {
             PresentationContentView(title: "Popover", symbol: "bubble.left.and.bubble.right")
                 .frame(width: 320, height: 240)
         }
+        /// fullScreenCover 覆盖整个界面，因此内部自建 NavigationStack 来承载关闭按钮。
         .fullScreenCover(isPresented: $showFullScreenCover) {
             NavigationStack {
                 PresentationContentView(title: "FullScreenCover", symbol: "rectangle.fill")
@@ -50,6 +54,7 @@ struct PresentationDemoView: View {
     }
 }
 
+/// 三种展示方式复用同一个内容 View，仅通过初始化参数改变文字和图标。
 private struct PresentationContentView: View {
     
     let title: String

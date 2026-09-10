@@ -7,8 +7,9 @@
 
 import SwiftUI
 
+/// SwiftUI 动画的核心是“状态改变 → 新旧视图值之间插值”，而不是直接操作图层帧。
 struct AnimationDemoView: View {
-    
+
     @State private var isExpanded = false
     @State private var isRotated = false
     
@@ -22,6 +23,7 @@ struct AnimationDemoView: View {
                         .font(.headline)
                         .foregroundStyle(.white)
                 }
+                /// value 指定动画只响应 isExpanded 的变化，避免其它状态变化被意外动画化。
                 .animation(.spring(response: 0.45, dampingFraction: 0.72), value: isExpanded)
             
             Image(systemName: "sparkles")
@@ -32,12 +34,14 @@ struct AnimationDemoView: View {
                 .animation(.easeInOut(duration: 0.35), value: isRotated)
             
             if isExpanded {
+                /// transition 只在 View 插入或移出视图树时生效，单纯改变属性不会触发它。
                 Text("这是由状态驱动的转场内容。")
                     .font(.headline)
                     .transition(.move(edge: .bottom).combined(with: .opacity))
             }
             
             Button {
+                /// withAnimation 把闭包内的状态变化放进同一个动画事务，覆盖条件 View 的插入/移除。
                 withAnimation {
                     isExpanded.toggle()
                     isRotated.toggle()

@@ -7,11 +7,13 @@
 
 import SwiftUI
 
+/// 演示 Button 的 action/label 双闭包，以及 Menu、Picker、ControlGroup 的组合方式。
 struct ButtonMenuDemoView: View {
-    
+
+    /// View 是值类型，但 `@State` 的存储由 SwiftUI 托管，因此重建 View 时状态不会随临时值一起丢失。
     @State private var tapCount = 0
     @State private var favoriteAction = "收藏"
-    
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
@@ -19,6 +21,7 @@ struct ButtonMenuDemoView: View {
                     .font(.title2.bold())
                 
                 Button {
+                    /// 修改 State 后无需手动刷新 Label，SwiftUI 会重新计算依赖 tapCount 的 body。
                     tapCount += 1
                 } label: {
                     Label("普通按钮：\(tapCount)", systemImage: "hand.tap")
@@ -26,6 +29,7 @@ struct ButtonMenuDemoView: View {
                 .buttonStyle(.borderedProminent)
                 
                 HStack {
+                    /// destructive 是语义角色，系统可据此提供颜色、确认或无障碍提示。
                     Button(role: .destructive) {
                         tapCount = 0
                     } label: {
@@ -45,6 +49,7 @@ struct ButtonMenuDemoView: View {
                 Divider()
                 
                 Menu {
+                    /// Menu 的内容也由 ViewBuilder 组合，可混放按钮、分隔线和选择器。
                     Button("复制", systemImage: "doc.on.doc") {
                         favoriteAction = "复制"
                     }
@@ -53,6 +58,7 @@ struct ButtonMenuDemoView: View {
                     }
                     Divider()
                     Picker("动作", selection: $favoriteAction) {
+                        /// 每个 tag 的类型必须与 selection 的值类型一致，这里都是 String。
                         Text("收藏").tag("收藏")
                         Text("稍后看").tag("稍后看")
                         Text("已归档").tag("已归档")
@@ -63,6 +69,7 @@ struct ButtonMenuDemoView: View {
                 .buttonStyle(.borderedProminent)
                 
                 ControlGroup {
+                    /// ControlGroup 表达“一组相关操作”，最终外观由当前平台和容器决定。
                     Button("播放", systemImage: "play.fill") {}
                     Button("暂停", systemImage: "pause.fill") {}
                     Button("停止", systemImage: "stop.fill") {}

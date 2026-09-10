@@ -7,8 +7,10 @@
 
 import SwiftUI
 
+/// 演示 SwiftUI 的提议尺寸布局、懒加载网格和二维 Grid。
 struct LayoutDemoView: View {
-    
+
+    /// 自适应列会尽量放入更多单元格，同时保证每格至少 82 点宽。
     private let columns = [
         GridItem(.adaptive(minimum: 82), spacing: 12)
     ]
@@ -18,6 +20,7 @@ struct LayoutDemoView: View {
             VStack(alignment: .leading, spacing: 24) {
                 Text("ViewThatFits")
                     .font(.title2.bold())
+                /// ViewThatFits 按声明顺序尝试子视图，选择第一个能放进当前水平空间的方案。
                 ViewThatFits(in: .horizontal) {
                     HStack {
                         DemoLayoutBadge(title: "宽屏横排", color: .blue)
@@ -33,6 +36,7 @@ struct LayoutDemoView: View {
                 
                 Text("LazyVGrid")
                     .font(.title2.bold())
+                /// LazyVGrid 适合滚动长列表，屏幕外单元格会延后创建。
                 LazyVGrid(columns: columns, spacing: 12) {
                     ForEach(1...12, id: \.self) { index in
                         RoundedRectangle(cornerRadius: 8)
@@ -48,6 +52,7 @@ struct LayoutDemoView: View {
                 
                 Text("Grid")
                     .font(.title2.bold())
+                /// Grid 按 GridRow 对齐二维单元格，适合规模较小且需要行列对齐的内容。
                 Grid(horizontalSpacing: 12, verticalSpacing: 12) {
                     GridRow {
                         DemoGridCell(title: "A1", color: .purple)
@@ -65,6 +70,7 @@ struct LayoutDemoView: View {
     }
 }
 
+/// 拆分小 View 可以降低父 body 的阅读成本，也能独立复用和预览。
 private struct DemoLayoutBadge: View {
     
     let title: String
@@ -80,6 +86,7 @@ private struct DemoLayoutBadge: View {
     }
 }
 
+/// Grid 单元格只接收展示数据，本身不拥有业务状态。
 private struct DemoGridCell: View {
     
     let title: String
