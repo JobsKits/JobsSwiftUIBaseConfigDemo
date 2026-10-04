@@ -132,7 +132,7 @@ flowchart TD
 
 ## 五、重点实现 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### 5.1、TabBar 结构
+### 5.1、TabBar 结构 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 `MainTabView` 使用 SwiftUI 的 `TabView` 实现主 TabBar：
 
@@ -146,7 +146,7 @@ TabView(selection: $selectedTab) {
 }
 ```
 
-### 5.2、列表推出 Demo 页面
+### 5.2、列表推出 Demo 页面 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 `DemoListView` 通过 `NavigationStack` 包住 `List`，每个功能项都是一个 `NavigationLink`：
 
@@ -162,7 +162,7 @@ NavigationLink {
 
 首页列表支持长按 cell 后拖拽排序，排序结果通过 `AppStorage` 写入 `UserDefaults`。再次进入 `DemoListView` 时，会优先读取已保存顺序；新增 Demo 未出现在旧顺序里时会自动追加到列表末尾。
 
-### 5.3、自定义双色圆形 Gauge
+### 5.3、自定义双色圆形 Gauge <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 `CustomCircularGaugeView` 用 `Circle().trim(...)` 分别绘制两段弧线：
 
@@ -172,7 +172,7 @@ NavigationLink {
 
 这个写法用于解决系统 `Gauge` 圆形样式不方便细分“走过 / 未走过”颜色的问题。
 
-### 5.4、Timer 定时器
+### 5.4、Timer 定时器 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 `TimerDemoView` 使用 `Timer.publish(every:on:in:)` 创建发布器，并通过 `onReceive` 每秒更新页面状态：
 
@@ -180,13 +180,13 @@ NavigationLink {
 private let ticker = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 ```
 
-### 5.5、四向 Push 预览
+### 5.5、四向 Push 预览 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 `DirectionalPushDemoView` 使用分段选择控制 Push 方向，使用 `Slider` 控制 Push 百分比，并在预览区域模拟从上、下、左、右四个方向进入目标 VC 页面。
 
 ## 六、Podfile 边界 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### 6.1、当前定位
+### 6.1、当前定位 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 `Podfile` 存在是为了和兄弟工程保持一致的工程维护入口：
 
@@ -196,7 +196,7 @@ private let ticker = Timer.publish(every: 1, on: .main, in: .common).autoconnect
 - `ScriptsByPods/codegraph_init.command` 在 `pod install` 完成后后台生成 `.codegraph/codegraph.db`。
 - `ScriptsByPods/codegraph_export_md.command` 从数据库导出 `.codegraph/codegraph.md/`。
 
-### 6.2、执行流程
+### 6.2、执行流程 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```mermaid
 flowchart TD
@@ -212,7 +212,7 @@ flowchart TD
     I --> K[".codegraph/codegraph.md"]
 ```
 
-### 6.3、脚本日志
+### 6.3、脚本日志 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | 日志 | 说明 |
 | --- | --- |
@@ -223,7 +223,7 @@ flowchart TD
 
 ## 七、运行方式 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### 7.1、使用 Xcode 运行
+### 7.1、使用 Xcode 运行 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 1. 使用 [**Xcode**](https://developer.apple.com/xcode) 打开工作区：
 
@@ -237,7 +237,7 @@ flowchart TD
 
 4. 点击 Run。
 
-### 7.2、使用命令行编译
+### 7.2、使用命令行编译 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ```shell
 xcodebuild \
@@ -249,7 +249,7 @@ xcodebuild \
 build
 ```
 
-### 7.3、生成 CodeGraph
+### 7.3、生成 CodeGraph <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 首次需要 CocoaPods 工作区或需要刷新 `.codegraph` 时，在工程根目录执行：
 
@@ -266,7 +266,7 @@ pod install
 
 `Pods/` 是 CocoaPods 生成物，不是业务依赖来源；当前 `Podfile.deps` 只声明 `JobsSwiftUICodeGraphHook` 这个本地脚本锚点 Pod。
 
-### 7.4、自动输出构建产物
+### 7.4、自动输出构建产物 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 主 App 最后一个 Build Phase `Save Build IPA` 调用 [save_device_ipa_after_build.sh](./ScriptsByDevTools/save_device_ipa_after_build.sh)，每次 iOS App 构建都会执行，Xcode 内无须手动确认。按设备平台保存以下产物：
 
