@@ -30,7 +30,7 @@ struct GalleryTabView: View {
                                 .navigationBarTitleDisplayMode(.inline)
                         } label: {
                             VStack(alignment: .leading, spacing: 12) {
-                                Image(systemName: feature.symbol)
+                                feature.icon
                                     .font(.title2)
                                     .foregroundStyle(.blue)
                                 Text(feature.title)

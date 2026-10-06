@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		26DE4E7A650C914D3534F986 /* JobsSwiftUIDebugAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 649EC48011FA88407646C3A3 /* JobsSwiftUIDebugAppDelegate.swift */; };
+		8CAE8845FC95BBBD8F008FF8 /* JobsSwiftUIDebugNetworkEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A07463DE7B538984BF11F92 /* JobsSwiftUIDebugNetworkEnvironment.swift */; };
+		9086FB511ECD94508C7BF9A7 /* JobsSwiftUIDebugPanelDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C9C0E8023691ECEE9D0C13 /* JobsSwiftUIDebugPanelDemoView.swift */; };
 		C00000000000000000000001 /* JobsSwiftUIBaseConfigDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000001 /* JobsSwiftUIBaseConfigDemoApp.swift */; };
 		C00000000000000000000002 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000002 /* MainTabView.swift */; };
 		C00000000000000000000003 /* DemoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000003 /* DemoListView.swift */; };
@@ -38,7 +41,9 @@
 
 /* Begin PBXFileReference section */
 		1925762410BC9B6EC0220117 /* Pods-JobsSwiftUIBaseConfigDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JobsSwiftUIBaseConfigDemo.release.xcconfig"; path = "Target Support Files/Pods-JobsSwiftUIBaseConfigDemo/Pods-JobsSwiftUIBaseConfigDemo.release.xcconfig"; sourceTree = "<group>"; };
+		1A07463DE7B538984BF11F92 /* JobsSwiftUIDebugNetworkEnvironment.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = JobsSwiftUIDebugNetworkEnvironment.swift; sourceTree = "<group>"; };
 		63AFEB86D97A6B53B47EE103 /* Pods_JobsSwiftUIBaseConfigDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JobsSwiftUIBaseConfigDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		649EC48011FA88407646C3A3 /* JobsSwiftUIDebugAppDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = JobsSwiftUIDebugAppDelegate.swift; sourceTree = "<group>"; };
 		7B2A75635CACF2FFC239629B /* Pods-JobsSwiftUIBaseConfigDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JobsSwiftUIBaseConfigDemo.debug.xcconfig"; path = "Target Support Files/Pods-JobsSwiftUIBaseConfigDemo/Pods-JobsSwiftUIBaseConfigDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		B00000000000000000000001 /* JobsSwiftUIBaseConfigDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobsSwiftUIBaseConfigDemoApp.swift; sourceTree = "<group>"; };
 		B00000000000000000000002 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
@@ -67,6 +72,7 @@
 		B00000000000000000000025 /* JobsSwiftUIBaseConfigDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JobsSwiftUIBaseConfigDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B00000000000000000000026 /* CustomCircularGaugeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCircularGaugeView.swift; sourceTree = "<group>"; };
 		B00000000000000000000027 /* DirectionalPushDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionalPushDemoView.swift; sourceTree = "<group>"; };
+		F3C9C0E8023691ECEE9D0C13 /* JobsSwiftUIDebugPanelDemoView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = JobsSwiftUIDebugPanelDemoView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +119,8 @@
 				B00000000000000000000007 /* AboutTabView.swift */,
 				A00000000000000000000006 /* Demos */,
 				B00000000000000000000024 /* Assets.xcassets */,
+				649EC48011FA88407646C3A3 /* JobsSwiftUIDebugAppDelegate.swift */,
+				1A07463DE7B538984BF11F92 /* JobsSwiftUIDebugNetworkEnvironment.swift */,
 			);
 			path = JobsSwiftUIBaseConfigDemo;
 			sourceTree = "<group>";
@@ -146,6 +154,7 @@
 				B00000000000000000000021 /* AsyncLinkShareDemoView.swift */,
 				B00000000000000000000022 /* AnimationDemoView.swift */,
 				B00000000000000000000023 /* TimerDemoView.swift */,
+				F3C9C0E8023691ECEE9D0C13 /* JobsSwiftUIDebugPanelDemoView.swift */,
 			);
 			path = Demos;
 			sourceTree = "<group>";
@@ -170,6 +179,7 @@
 				A00000000000000000000008 /* Frameworks */,
 				A00000000000000000000009 /* Resources */,
 				A2D000042026092500000004 /* Save Build IPA */,
+				374068C26B3A8D8A521173CC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -248,6 +258,21 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		374068C26B3A8D8A521173CC /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JobsSwiftUIBaseConfigDemo/Pods-JobsSwiftUIBaseConfigDemo-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		A2D000042026092500000004 /* Save Build IPA */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -302,6 +327,9 @@
 				C00000000000000000000022 /* AnimationDemoView.swift in Sources */,
 				C00000000000000000000023 /* TimerDemoView.swift in Sources */,
 				C00000000000000000000025 /* CustomCircularGaugeView.swift in Sources */,
+				26DE4E7A650C914D3534F986 /* JobsSwiftUIDebugAppDelegate.swift in Sources */,
+				8CAE8845FC95BBBD8F008FF8 /* JobsSwiftUIDebugNetworkEnvironment.swift in Sources */,
+				9086FB511ECD94508C7BF9A7 /* JobsSwiftUIDebugPanelDemoView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

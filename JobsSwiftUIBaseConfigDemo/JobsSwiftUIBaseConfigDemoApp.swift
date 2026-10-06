@@ -6,10 +6,18 @@
 //
 
 import SwiftUI
+#if DEBUG
+import JobsSwiftUIDebugPanel
+#endif
 
 /// SwiftUI App 的程序入口。它取代 UIKit 中由 AppDelegate 创建根窗口和根控制器的常见写法。
 @main
 struct JobsSwiftUIBaseConfigDemoApp: App {
+
+#if DEBUG
+    @UIApplicationDelegateAdaptor(JobsSwiftUIDebugAppDelegate.self) private var debugDelegate
+    @AppStorage("com.jobs.swiftui.debugPanel.demoAppearance") private var debugDemoAppearance = "system"
+#endif
 
     /// `Scene` 描述 App 可以展示的场景。
     /// `some Scene` 是“不透明返回类型”：编译器知道这里返回的是某个确定的 Scene 类型，
@@ -18,7 +26,13 @@ struct JobsSwiftUIBaseConfigDemoApp: App {
     var body: some Scene {
         /// `WindowGroup` 为每个窗口会话创建一棵视图树，闭包中的 View 就是该窗口的根视图。
         WindowGroup {
+#if DEBUG
             MainTabView()
+                .jobsSwiftUIDebugPanel()
+                .preferredColorScheme((JobsSwiftUIDebugDemoAppearance(rawValue: debugDemoAppearance) ?? .system).colorScheme)
+#else
+            MainTabView()
+#endif
         }
     }
 }

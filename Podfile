@@ -144,6 +144,12 @@ def jobs_patch_pods_project!(installer)
         'IPHONEOS_DEPLOYMENT_TARGET'    => JOBS_DEPLOYMENT_TARGET
       }
     )
+    if target.name == 'JobsSwiftUIDebugPanel'
+      target.build_configurations.each do |config|
+        next unless config.name == 'Debug'
+        config.build_settings['SWIFT_ACTIVE_COMPILATION_CONDITIONS'] = '$(inherited) DEBUG'
+      end
+    end
   end
   pods_project.save
 end
@@ -159,7 +165,7 @@ def jobs_show_deps_file_in_pods_group!(installer)
   pods_project.save
 end
 
-# 加载拆分出来的依赖定义；本工程 Podfile.deps 目前只声明空依赖目标。
+# 加载拆分出来的依赖定义；业务依赖和 Debug 配置筛选留在 Podfile.deps。
 deps_candidates = [
   File.join(__dir__, 'Podfile.deps'),
   File.join(__dir__, 'Podfile.deps.rb'),

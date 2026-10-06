@@ -1,16 +1,21 @@
 PODS:
   - JobsSwiftUICodeGraphHook (1.0.0)
+  - JobsSwiftUIDebugPanel (1.0.0)
 
 DEPENDENCIES:
   - JobsSwiftUICodeGraphHook (from `ScriptsByPods/JobsSwiftUICodeGraphHook`)
+  - "JobsSwiftUIDebugPanel (from `JobsByPods/JobsSwiftUIDebugPanel@Pods`)"
 
 EXTERNAL SOURCES:
   JobsSwiftUICodeGraphHook:
     :path: ScriptsByPods/JobsSwiftUICodeGraphHook
+  JobsSwiftUIDebugPanel:
+    :path: "JobsByPods/JobsSwiftUIDebugPanel@Pods"
 
 SPEC CHECKSUMS:
   JobsSwiftUICodeGraphHook: 7b2982a2425c818c922a5f326c06f95d7e27f7fb
+  JobsSwiftUIDebugPanel: 74ed20a2d45f43aca787470cd3be3a39275c3a4b
 
-PODFILE CHECKSUM: 68ac7ce69ad3484268aa0f8598531de21a55a9b4
+PODFILE CHECKSUM: 23073043cc62d2b62cf1f0b2a57e5383452c3ae7
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.17.0

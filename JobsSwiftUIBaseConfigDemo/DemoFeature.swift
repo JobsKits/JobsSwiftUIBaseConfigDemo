@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+#if DEBUG
+import JobsSwiftUIDebugPanel
+#endif
 
 /// Demo 的单一数据源：一个枚举值同时提供标题、说明、图标和目标页面。
 /// `CaseIterable` 会为这种不带关联值的枚举自动生成 `allCases`，用于遍历全部 Demo。
@@ -28,6 +31,9 @@ enum DemoFeature: String, CaseIterable, Identifiable {
     case asyncLinkShare
     case animation
     case timer
+#if DEBUG
+    case debugPanel
+#endif
     
     /// rawValue 对每个 case 唯一且稳定，适合作为视图身份和持久化值。
     var id: String { rawValue }
@@ -69,6 +75,10 @@ enum DemoFeature: String, CaseIterable, Identifiable {
         case .animation: "Animation / Transition"
         /// 计时器 Demo 的列表标题。
         case .timer: "Timer 定时器"
+#if DEBUG
+        /// Debug 专属的独立 SwiftUI 调试框架。
+        case .debugPanel: "SwiftUI Debug 调试面板"
+#endif
         }
     }
 
@@ -108,6 +118,10 @@ enum DemoFeature: String, CaseIterable, Identifiable {
         case .animation: "状态驱动动画、转场和显隐"
         /// 概括 Combine 计时器页面的能力。
         case .timer: "非 UI 控件：Timer 发布器与计时器"
+#if DEBUG
+        /// 环境配置、工具导航与真实网络回退示例。
+        case .debugPanel: "圆形悬浮入口、环境切换、顺序动作与真实 GET /get"
+#endif
         }
     }
 
@@ -147,7 +161,27 @@ enum DemoFeature: String, CaseIterable, Identifiable {
         case .animation: "sparkles"
         /// 计时器页面使用计时器图标。
         case .timer: "timer"
+#if DEBUG
+        /// 此入口实际图标通过 icon 使用已打包圆形背景图。
+        case .debugPanel: ""
+#endif
         }
+    }
+
+    @ViewBuilder
+    var icon: some View {
+#if DEBUG
+        if self == .debugPanel {
+            JobsSwiftUIDebugPanel.buttonImage
+                .resizable()
+                .scaledToFit()
+                .frame(width: 28, height: 28)
+        } else {
+            Image(systemName: symbol)
+        }
+#else
+        Image(systemName: symbol)
+#endif
     }
 
     /// `@ViewBuilder` 允许不同 case 返回不同的具体 View，而对外仍统一表现为 `some View`。
@@ -188,6 +222,10 @@ enum DemoFeature: String, CaseIterable, Identifiable {
         case .animation: AnimationDemoView()
         /// 构建计时器 Demo。
         case .timer: TimerDemoView()
+#if DEBUG
+        /// 构建 SwiftUI Pod 配套网络与交互示例。
+        case .debugPanel: JobsSwiftUIDebugPanelDemoView()
+#endif
         }
     }
 }

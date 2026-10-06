@@ -16,7 +16,7 @@ struct DemoFeatureRow: View {
     var body: some View {
         /// HStack 横向排列图标和文字区域，VStack 再把标题与副标题纵向组合。
         HStack(spacing: 14) {
-            Image(systemName: feature.symbol)
+            feature.icon
                 .font(.title3)
                 .foregroundStyle(.white)
                 .frame(width: 38, height: 38)

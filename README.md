@@ -12,9 +12,9 @@
 
 工程入口模拟 iOS 新工程的基础结构：启动后先进入主 `TabView`，其中 `Demo` Tab 是功能列表，点击列表功能名后通过 `NavigationStack` 推出对应 Demo 页面。
 
-本工程业务代码不依赖任何 Pod，也不引入第三方 UI 库，适合作为 SwiftUI 系统组件学习、Jobs SwiftUI 基座验证和 Demo 页面扩展模板。
+本工程使用原生 SwiftUI 演示系统组件；Debug 额外接入独立的本地 `JobsSwiftUIDebugPanel` Pod，演示圆形浮层、环境切换和自定义动作。Release 不链接调试 Pod，也不显示调试 Demo。
 
-工程仍保留 [**CocoaPods**](https://cocoapods.org/) 入口：`Podfile` 只负责加载解耦后的 `Podfile.deps`，并在 `pod install` 收尾阶段挂载 CodeGraph 脚本生成 `.codegraph`。`Podfile.deps` 只声明一个本地脚本锚点 Pod，不向 App 业务层提供 UI / 网络 / 工具能力。
+工程使用 [**CocoaPods**](https://cocoapods.org/) 入口：`Podfile` 加载解耦后的 `Podfile.deps`，在 `pod install` 收尾阶段挂载 [**CodeGraph**](https://github.com/colbymchenry/codegraph) 脚本生成 `.codegraph`。依赖清单包含本地脚本锚点和仅 Debug 生效的 SwiftUI 调试 Pod；调试 Pod 无其它业务 Pod 依赖。
 
 ## 一、工程信息 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
@@ -31,10 +31,12 @@
 | Pod 依赖清单 | `./Podfile.deps` |
 | Pod 挂载脚本 | `./ScriptsByPods/` |
 | 脚本锚点 Pod | `./ScriptsByPods/JobsSwiftUICodeGraphHook/` |
+| Debug 调试 Pod | [JobsSwiftUIDebugPanel](./JobsByPods/JobsSwiftUIDebugPanel@Pods/README.md) |
+| 框架配置说明 | [SwiftUI 工程项目框架配置方案](./SwiftUIDoc.md/SwiftUI工程项目框架配置方案@Jobs.md/SwiftUI工程项目框架配置方案@Jobs.md) |
 | Bundle ID | `com.jobs.jobsswiftuibaseconfigdemo` |
 | 最低系统 | iOS `17.0` |
 | 支持平台 | `iphoneos` / `iphonesimulator` |
-| 依赖方式 | 无业务 Pod 依赖；仅保留本地脚本锚点 Pod |
+| 依赖方式 | 本地脚本锚点；Debug 专用独立 SwiftUI 调试 Pod |
 
 ## 二、目录结构 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
@@ -44,6 +46,10 @@
 ├── icon.png
 ├── Podfile
 ├── Podfile.deps
+├── JobsByPods
+│   └── JobsSwiftUIDebugPanel@Pods    # Debug 专用原生 SwiftUI 调试框架
+├── SwiftUIDoc.md
+│   └── SwiftUI工程项目框架配置方案@Jobs.md
 ├── ScriptsByDevTools
 │   └── save_device_ipa_after_build.sh
 ├── build                         # 仅保留本次真机.ipa 或模拟器.ipa
@@ -57,6 +63,8 @@
 └── JobsSwiftUIBaseConfigDemo
     ├── Assets.xcassets
     ├── JobsSwiftUIBaseConfigDemoApp.swift
+    ├── JobsSwiftUIDebugAppDelegate.swift
+    ├── JobsSwiftUIDebugNetworkEnvironment.swift
     ├── MainTabView.swift
     ├── DemoListView.swift
     ├── DemoFeature.swift
@@ -81,7 +89,8 @@
         ├── DisclosureOutlineDemoView.swift
         ├── AsyncLinkShareDemoView.swift
         ├── AnimationDemoView.swift
-        └── TimerDemoView.swift
+        ├── TimerDemoView.swift
+        └── JobsSwiftUIDebugPanelDemoView.swift
 ```
 
 ## 三、入口流程 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
@@ -107,6 +116,7 @@ flowchart TD
 - `DemoListView` 使用 `NavigationStack`、`List`、`NavigationLink` 组织功能列表。
 - `DemoFeature` 是 Demo 注册表，集中维护功能名、描述、图标和目标页面。
 - `Demos/` 目录下每个文件对应一个独立演示页面。
+- Debug 的 App 通过 `@UIApplicationDelegateAdaptor` 配置调试 Pod，再用根视图 `.jobsSwiftUIDebugPanel()` 绑定每个业务场景。浮层有独立 `NavigationStack`，完整保留各 Tab 的导航状态。
 
 ## 四、功能清单 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
@@ -129,6 +139,7 @@ flowchart TD
 | `AsyncImage / Link / ShareLink` | 远程图片、外链打开和系统分享 | `./JobsSwiftUIBaseConfigDemo/Demos/AsyncLinkShareDemoView.swift` |
 | `Animation / Transition` | 状态驱动动画、转场和显隐 | `./JobsSwiftUIBaseConfigDemo/Demos/AnimationDemoView.swift` |
 | `Timer 定时器` | 非 UI 控件：`Timer.publish`、`autoconnect` 和 `onReceive` | `./JobsSwiftUIBaseConfigDemo/Demos/TimerDemoView.swift` |
+| `SwiftUI Debug 调试面板` | Debug 圆形悬浮按钮、环境选择、顺序动作、真实 `GET /get` 与失败回退 | `./JobsSwiftUIBaseConfigDemo/Demos/JobsSwiftUIDebugPanelDemoView.swift` |
 
 ## 五、重点实现 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
@@ -184,6 +195,18 @@ private let ticker = Timer.publish(every: 1, on: .main, in: .common).autoconnect
 
 `DirectionalPushDemoView` 使用分段选择控制 Push 方向，使用 `Slider` 控制 Push 百分比，并在预览区域模拟从上、下、左、右四个方向进入目标 VC 页面。
 
+### 5.6、Debug 环境与动作 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+
+圆形 `UIButton` 由 `UIViewRepresentable` 桥接，只显示本地打包背景图，点击推出工具 `List`，首项固定为“App 环境切换”，再按 `byActions` 数组顺序展示“SwiftUI 调试面板使用示例”和“查看当前环境”。入口保留在调试导航栈上方，菜单、环境页和使用示例中再次点击均关闭面板，返回打开前的业务页面；重新打开回到工具列表，保留业务导航状态与所选环境。入口支持单指拖动并钳制在安全区域，旋转后按相对位置重算；拖动不会额外触发点击或长按。长按隐藏当前进程全部按钮，前后台切换保持隐藏，重新启动 App 恢复。
+
+根视图修饰符观察宿主真实 `colorScheme`，浮窗及已打开的工具页、环境页同步使用宿主主题。Debug 使用示例提供“跟随系统／白天／黑夜”选择，App 根视图以 `preferredColorScheme` 消费该演示偏好；跟随系统时保留实时系统变化。调试 Pod 不新增公开主题 API，也不读取宿主偏好键。
+
+`JobsSwiftUIDebugAppDelegate` 使用 `byIdentifier`、`byTitle`、`byBaseURL` 配置“本地 Mock / 公共测试 / 联调测试”三组环境，默认地址依次为 `http://127.0.0.1:18080`、`https://httpbin.org`、`https://postman-echo.com`。选择标识写入 `UserDefaults`，启动时恢复；回调更新 Demo 的网络配置。
+
+Demo 进入或重新请求时真实访问当前环境 `GET /get`，超时 3 秒，先显示本地示例，请求成功后使用服务器 JSON，失败或解析无效继续使用本地示例，重试成功自动恢复真数据。环境变更取消旧任务，避免旧环境响应覆盖新页面。真机使用本地 Mock 时需配置可访问的开发机 IP。
+
+默认弱网项按能力边界省略。设备级弱网使用 Apple [**Network Link Conditioner**](https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/On_Demand_Resources_Guide/TestingPerformance.html) 的开发者设置。资源来源、许可、完整 DSL 与窗口穿透说明见 [调试 Pod README](./JobsByPods/JobsSwiftUIDebugPanel@Pods/README.md)。
+
 ## 六、Podfile 边界 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ### 6.1、当前定位 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
@@ -191,7 +214,8 @@ private let ticker = Timer.publish(every: 1, on: .main, in: .common).autoconnect
 `Podfile` 存在是为了和兄弟工程保持一致的工程维护入口：
 
 - `Podfile` 负责 CocoaPods 基础配置、加载 `Podfile.deps`、挂载 `post_integrate` 脚本。
-- `Podfile.deps` 当前只声明 `JobsSwiftUIBaseConfigDemo` target 和 `JobsSwiftUICodeGraphHook` 本地脚本锚点 Pod。
+- `Podfile.deps` 声明 `JobsSwiftUIBaseConfigDemo` target、`JobsSwiftUICodeGraphHook` 脚本锚点及仅 Debug 生效的 `JobsSwiftUIDebugPanel` 本地 Pod。
+- `JobsSwiftUIDebugPanel` 的菜单、环境页、自定义页面全部使用 SwiftUI，只用原生窗口桥接实现浮层；Release 的 import、AppDelegate、根视图修饰符和 Demo 入口均通过条件编译移除。
 - `JobsSwiftUICodeGraphHook` 只用于让 CocoaPods 完整走 install 生命周期，不在 SwiftUI Demo 业务代码中 `import`。
 - `ScriptsByPods/codegraph_init.command` 在 `pod install` 完成后后台生成 `.codegraph/codegraph.db`。
 - `ScriptsByPods/codegraph_export_md.command` 从数据库导出 `.codegraph/codegraph.md/`。
@@ -203,7 +227,7 @@ flowchart TD
     A["pod install"] --> B["Load Podfile"]
     B --> C["Load Podfile.deps"]
     C --> D["Target: JobsSwiftUIBaseConfigDemo"]
-    D --> E["No business Pods"]
+    D --> E["Debug: JobsSwiftUIDebugPanel"]
     E --> F["Local Hook Pod"]
     F --> G["post_install: patch build settings"]
     G --> H["post_integrate"]
@@ -264,7 +288,7 @@ pod install
 - `./Podfile.lock`
 - `./.codegraph/`
 
-`Pods/` 是 CocoaPods 生成物，不是业务依赖来源；当前 `Podfile.deps` 只声明 `JobsSwiftUICodeGraphHook` 这个本地脚本锚点 Pod。
+`Pods/` 是 CocoaPods 生成物，不修改其中源码；业务调试源码维护在 `./JobsByPods/JobsSwiftUIDebugPanel@Pods/`，脚本锚点维护在 `./ScriptsByPods/JobsSwiftUICodeGraphHook/`。仅安装和编译验证、不刷新索引时使用 `JOBS_SKIP_CODEGRAPH=1 pod install --no-repo-update`。
 
 ### 7.4、自动输出构建产物 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
@@ -309,11 +333,11 @@ pod install
 
 ## 九、注意事项 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-- SwiftUI Demo 页面不依赖任何业务 Pod；不要为了系统 UI 演示随手往 `Podfile.deps` 增加业务依赖。
-- `pod install` 的主要价值是生成 / 刷新 `.codegraph`，以及保持和兄弟工程一致的 CocoaPods 生命周期入口。
+- 系统 UI Demo 保持原生 SwiftUI 写法；新增调试能力集中在独立本地 `JobsSwiftUIDebugPanel` Pod，不套用 UIKit 版面板或增加无关依赖。
+- `pod install` 维护 Debug 依赖及资源集成，并可生成 / 刷新 `.codegraph`，保持和兄弟工程一致的 CocoaPods 生命周期入口。
 - `AsyncImage` 页面依赖网络图片，网络不可用时会显示失败占位。
 - `Assets.xcassets/AppIcon.appiconset` 保留了 AppIcon 资源槽，正式发布前需要补齐图标素材。
-- 当前工程面向 Demo 演示，不包含登录、网络层、持久化、权限申请和发布签名配置。
+- 当前工程面向 Demo 演示；Debug 环境 Demo 包含短超时网络请求及环境标识持久化，其它页面不扩展为完整业务网络层或登录系统。
 - 命令行编译示例使用 `CODE_SIGNING_ALLOWED=NO`，适合本地模拟器构建；真机运行需要按实际开发者账号配置签名。
 
 ## 十、排查方式 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
@@ -329,5 +353,8 @@ pod install
 | 不想刷新 CodeGraph | 只用 `xcodebuild` 或 Xcode 运行工程，不执行 `pod install` |
 | 远程图片加载失败 | 检查网络，或观察 `AsyncImage` 的失败占位是否正常展示 |
 | 自定义 Gauge 颜色不符合预期 | 修改 `CustomCircularGaugeView` 的 `completedColor` 和 `remainingColor` |
+| Debug 按钮没有出现 | 确认使用 Debug 构建、AppDelegate 已 `byStart()`，且 WindowGroup 根视图已添加 `.jobsSwiftUIDebugPanel()`；长按关闭后需冷启动恢复 |
+| 本地 Mock 请求回退 | 确认对应地址的服务已启动；Demo 继续显示本地示例，服务恢复后点击重新请求即可显示服务器数据 |
+| Release 出现调试入口 | 检查 Podfile 的 `:configurations => ['Debug']`，且 Release 未定义 `DEBUG` |
 
 <a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>
