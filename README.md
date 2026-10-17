@@ -16,6 +16,13 @@
 
 工程使用 [**CocoaPods**](https://cocoapods.org/) 入口：`Podfile` 加载解耦后的 `Podfile.deps`，在 `pod install` 收尾阶段挂载 [**CodeGraph**](https://github.com/colbymchenry/codegraph) 脚本生成 `.codegraph`。依赖清单包含本地脚本锚点和仅 Debug 生效的 SwiftUI 调试 Pod；调试 Pod 无其它业务 Pod 依赖。
 
+| 安装环节 | 当前行为 |
+| --- | --- |
+| 网络链路 | `pod install` / `pod update` 先同步实测当前链路，必要时验证机器上已配置、已启用的代理，并让后续源码下载继承同一进程环境 |
+| 公共 Specs | 依据官方 CDN 与 Git Specs 的真实请求结果选源，替代固定 `https://github.com/CocoaPods/Specs.git` |
+| 源码归档 | 仅已核验的 `AMPopTip 4.12.0` Git 网络失败可回退官方固定提交归档；本工程目前只有本地 Pod，不会触发该白名单 |
+| 安装后任务 | 保留原有 `post_install` 工程设置及 `post_integrate` 后台 CodeGraph；网络增强异常只告警，依赖安装失败仍由 CocoaPods 正常报告 |
+
 ## 一、工程信息 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 | 项目 | 说明 |
@@ -56,6 +63,8 @@
 ├── ScriptsByPods
 │   ├── README.md
 │   ├── JobsSwiftUICodeGraphHook
+│   ├── 【MacOS】🌐CocoaPods网络适配.command
+│   ├── 【MacOS】🌐CocoaPods源自动选择.command
 │   ├── codegraph_init.command
 │   └── codegraph_export_md.command
 ├── JobsSwiftUIBaseConfigDemo.xcworkspace
@@ -207,25 +216,41 @@ Demo 进入或重新请求时真实访问当前环境 `GET /get`，超时 3 秒�
 
 默认弱网项按能力边界省略。设备级弱网使用 Apple [**Network Link Conditioner**](https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/On_Demand_Resources_Guide/TestingPerformance.html) 的开发者设置。资源来源、许可、完整 DSL 与窗口穿透说明见 [调试 Pod README](./JobsByPods/JobsSwiftUIDebugPanel@Pods/README.md)。
 
-## 六、Podfile 边界 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## 六、项目配置支持 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 ### 6.1、当前定位 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
 `Podfile` 存在是为了和兄弟工程保持一致的工程维护入口：
 
-- `Podfile` 负责 CocoaPods 基础配置、加载 `Podfile.deps`、挂载 `post_integrate` 脚本。
+- `Podfile` 负责安装前网络适配和公共源选择、CocoaPods 基础配置、加载 `Podfile.deps`、挂载 `post_integrate` 脚本。
 - `Podfile.deps` 声明 `JobsSwiftUIBaseConfigDemo` target、`JobsSwiftUICodeGraphHook` 脚本锚点及仅 Debug 生效的 `JobsSwiftUIDebugPanel` 本地 Pod。
 - `JobsSwiftUIDebugPanel` 的菜单、环境页、自定义页面全部使用 SwiftUI，只用原生窗口桥接实现浮层；Release 的 import、AppDelegate、根视图修饰符和 Demo 入口均通过条件编译移除。
 - `JobsSwiftUICodeGraphHook` 只用于让 CocoaPods 完整走 install 生命周期，不在 SwiftUI Demo 业务代码中 `import`。
 - `ScriptsByPods/codegraph_init.command` 在 `pod install` 完成后后台生成 `.codegraph/codegraph.db`。
 - `ScriptsByPods/codegraph_export_md.command` 从数据库导出 `.codegraph/codegraph.md/`。
 
-### 6.2、执行流程 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### 6.2、安装与构建自动挂载脚本 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+
+| 入口 | 挂载与行为 | 产物、依赖与失败边界 |
+| --- | --- | --- |
+| [网络适配包](<./ScriptsByPods/【MacOS】🌐CocoaPods网络适配.command/README.md>) | Podfile 顶部、选源前同步执行；仅真实 `pod install` / `pod update` 查询 Git tag，优先验证显式代理或复用原链路，必要时并发测试系统已启用的 HTTPS / HTTP / SOCKS 代理 | 复用 Ruby、Git 与 `scutil`；只修改当前进程环境及子进程继承值，退出时恢复，不写全局代理、Git 配置或 shell profile；摘要在安装终端，所有链路失败时告警并继续原流程 |
+| 同包 `jobs_cocoapods_download_fallback.rb` | 仅安装 / 更新时注册；原 Git 下载因网络失败时，对已核验 `AMPopTip 4.12.0` 尝试同一固定提交的官方归档 | 不变更 Pod 声明、版本、校验和或锁对象；其它版本 / 仓库、分支、认证错误不回退；兼容基线 CocoaPods `1.17.0` / downloader `2.1`，未知 API 告警跳过；本工程当前不依赖 AMPopTip |
+| [公共源选择包](<./ScriptsByPods/【MacOS】🌐CocoaPods源自动选择.command/README.md>) | Podfile 在 `source` 声明前同步测试官方 CDN 与 Git Specs；优先使用锁文件里的公开 Pod 样本，无样本时用内置公开规格 | 复用 zsh、curl、Git；保留私有源与锁定版本，不主动重写磁盘锁文件；双源失败时尝试原有效 Git 缓存或回用 CDN，交回 CocoaPods；脚本缺失 / 异常告警回用 CDN |
+| `./ScriptsByPods/codegraph_init.command/codegraph_init.command` | `post_integrate` 后台启动；已有后台 PID 时跳过重复启动 | 生成 / 刷新 `.codegraph/codegraph.db` 并调度 Markdown 导出；`JOBS_SKIP_CODEGRAPH=1` 跳过，启动失败只告警，主安装流程无须等待 |
+
+上述网络逻辑放在 Podfile 中，终端以及将来调用该 Podfile 的手动安装入口都会生效，无须为每个入口另配代理。查询命令不发送网络探测；Specs 可达不代表所有源码地址可达。缺少可用代理且 Git / 官方归档均受限时，安装仍可能失败。`--no-repo-update` 不关闭前置探测，也不保证完全离线；`--deployment` 保留原有严格锁文件校验。
+
+日常命令保持 `pod install`。`JOBS_POD_NETWORK_ADAPT=0` 关闭代理适配，`JOBS_POD_GITHUB_ARCHIVE_FALLBACK=0` 关闭白名单归档回退；`JOBS_SPECS_SOURCE=auto` 默认实测，也可设为 `cdn` / `git` 固定来源并继续报告测试结果。Git 单轮默认超时 `6` 秒，Specs 每条候选默认 `8` 秒，具体配置见两个包的 README。
+
+迁移工程需同时保留本工程 Podfile、两个完整脚本包及锁文件；不引用兄弟工程绝对路径，不需要迁移临时日志。独立 `.command` 只读诊断入口先展示自述并等待回车，不触发安装。当前接入通过隔离网络、真实下载器夹具和完整 Podfile 只读解析验证，未执行真实 `pod install` 或构建。
 
 ```mermaid
 flowchart TD
     A["pod install"] --> B["Load Podfile"]
-    B --> C["Load Podfile.deps"]
+    B --> N["同步验证已有网络与代理"]
+    N --> R["注册已核验依赖归档回退"]
+    R --> S["同步测试并选择公共 Specs 源"]
+    S --> C["Load Podfile.deps"]
     C --> D["Target: JobsSwiftUIBaseConfigDemo"]
     D --> E["Debug: JobsSwiftUIDebugPanel"]
     E --> F["Local Hook Pod"]
@@ -240,6 +265,9 @@ flowchart TD
 
 | 日志 | 说明 |
 | --- | --- |
+| 安装终端中的 `[PodNetwork]` 摘要 | 本次链路验证与已核验归档回退结果；不打印代理凭据 |
+| 系统临时目录中的 `jobs-cocoapods-source-<工程路径摘要>.log` | Podfile 自动选源测试日志，按工程路径隔离，运行时显示具体位置 |
+| 系统临时目录中的 `jobs-cocoapods-network.log` | 独立网络诊断入口确认后覆盖的摘要日志 |
 | 系统临时目录中的 `codegraph_init.async.log` | `pod install` 启动的 CodeGraph 后台流程日志 |
 | 系统临时目录中的 `codegraph_init.log` | CodeGraph 初始化 / 同步日志 |
 | 系统临时目录中的 `codegraph_export_md.log` | Markdown 导出日志 |
