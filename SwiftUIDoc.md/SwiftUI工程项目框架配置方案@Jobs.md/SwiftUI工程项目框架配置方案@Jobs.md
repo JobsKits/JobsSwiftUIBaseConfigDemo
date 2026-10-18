@@ -2,15 +2,30 @@
 
 ![Jobs出品，必属精品](https://picsum.photos/1500/400)
 
-[toc]
+<!-- jobs-toc:start -->
+<!-- jobs-toc:source {"v":2,"token":"[toc]"} -->
+<details>
+<summary>📚 目录（点击展开 / 收起）</summary>
+
+- [🔥 前言](#jobs-toc-heading-1)
+- [一、工程入口与依赖](#jobs-toc-heading-2)
+- [二、AppDelegate 初始化](#jobs-toc-heading-3)
+- [三、SwiftUI 场景绑定与导航](#jobs-toc-heading-4)
+- [四、顺序、隐藏与持久化](#jobs-toc-heading-5)
+- [五、网络 Demo 与图片](#jobs-toc-heading-6)
+- [六、Debug 与 Release 验证](#jobs-toc-heading-7)
+- [七、弱网能力边界](#jobs-toc-heading-8)
+
+</details>
+<!-- jobs-toc:end -->
 
 ---
 
-## 🔥 <font id=前言>前言</font>
+## <span id="jobs-toc-heading-1" data-jobs-toc="v2">🔥 <font id=前言>前言</font></span><!-- jobs-toc:heading-end -->
 
 本说明记录 `JobsSwiftUIBaseConfigDemo` 的入口、原生 [**SwiftUI**](https://developer.apple.com/xcode/swiftui/) Debug 工具 Pod、环境配置与验证方式。系统组件 Demo 使用 [**Swift**](https://www.swift.org/) / SwiftUI；调试模块独立下沉到本地 Pod，Release 不链接该模块。
 
-## 一、工程入口与依赖 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-2" data-jobs-toc="v2">一、工程入口与依赖 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 | 文件 | 用途 |
 | --- | --- |
@@ -23,7 +38,7 @@
 
 最低系统为 iOS 17。[**CocoaPods**](https://cocoapods.org/) 只引入本地脚本锚点和 `JobsSwiftUIDebugPanel`；调试 Pod 没有其它业务 Pod 依赖。原生 UIKit 负责透明窗口、可拖动圆形 `UIButton` 入口和 SwiftUI 承载，面板页面仍使用 `List`、`NavigationStack`。
 
-## 二、AppDelegate 初始化 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-3" data-jobs-toc="v2">二、AppDelegate 初始化 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 Debug 的 App 用 `@UIApplicationDelegateAdaptor(JobsSwiftUIDebugAppDelegate.self)` 注册 delegate，在 `didFinishLaunchingWithOptions` 内调用：
 
@@ -65,7 +80,7 @@ JobsSwiftUIDebugPanel.shared
 
 `byIdentifier` 是持久化标识，应长期稳定；`byTitle` 是给开发者看的备注；`byBaseURL` 必须是有效的 HTTP / HTTPS 地址。模型及管理器的配置方法返回当前对象，可继续链式调用。
 
-## 三、SwiftUI 场景绑定与导航 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-4" data-jobs-toc="v2">三、SwiftUI 场景绑定与导航 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 在 App 的 `WindowGroup` 内，仅对 Debug 分支添加根视图修饰符：
 
@@ -88,7 +103,7 @@ WindowGroup {
 
 业务 Tab 的导航栈保持自己的状态。子页面通过 `@Environment(\.jobsSwiftUIDebugOpenPanel)` 获取打开行为。自定义 `byDestination` 返回任意 SwiftUI View，并获得同一环境值；`byAction` 直接执行行为，两种配置互斥，以最后配置者为准。
 
-## 四、顺序、隐藏与持久化 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-5" data-jobs-toc="v2">四、顺序、隐藏与持久化 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 工具列表首项固定为“App 环境切换”，自定义动作按 `byActions` 数组顺序展示；可选图片通过 `byImage(Image?)` 配置，不配置时只显示标题。点击环境项继续推出“选择网络环境”二级列表。
 
@@ -96,7 +111,7 @@ WindowGroup {
 
 长按按钮 0.8 秒后，全场景按钮在本次进程内隐藏，前后台切换和重复启动管理器都不会重新出现；冷启动重新显示。隐藏状态不持久化，环境选择则独立持久化，两者不互相影响。
 
-## 五、网络 Demo 与图片 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-6" data-jobs-toc="v2">五、网络 Demo 与图片 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 Debug Demo 列表与速览页新增“SwiftUI Debug 调试面板”。页面进入、环境改变或点击重新请求时，使用当前 Base URL 请求 `GET /get`，超时 3 秒。先显示本地示例，服务器成功返回 JSON 后覆盖；请求失败、超时或解析失败继续显示本地示例与重试入口，后续成功请求自动恢复真数据。环境改变取消旧任务并检查 URL 快照，避免旧响应覆盖新环境。
 
@@ -104,7 +119,7 @@ Debug Demo 列表与速览页新增“SwiftUI Debug 调试面板”。页面进�
 
 圆形按钮是随 Pod 打包的本地 PNG。素材先检索 [**iconfont**](https://www.iconfont.cn/)，未取得可核实作者许可后使用官方 [**Ant Design Icons**](https://github.com/ant-design/ant-design-icons/blob/master/packages/icons-svg/svg/filled/bug.svg) bug 矢量，保留 MIT 许可并组合圆底；许可随资源 bundle 打包，详见 [SOURCE.txt](../../JobsByPods/JobsSwiftUIDebugPanel@Pods/Resource/SOURCE.txt)。
 
-## 六、Debug 与 Release 验证 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-7" data-jobs-toc="v2">六、Debug 与 Release 验证 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 Pod 声明使用 `:configurations => ['Debug']`，Pod 和 App 的 Debug 编译条件包含 `DEBUG`，Release 不添加。App 的 import、delegate 属性、根视图 Hook、注册表分支与 Demo 源码均受 `#if DEBUG` 保护。
 
@@ -122,7 +137,7 @@ xcodebuild -workspace JobsSwiftUIBaseConfigDemo.xcworkspace \
 
 Debug 检查圆形按钮、列表顺序、二级环境选择、重启恢复、直接行为、目标页面、真实请求与长按隐藏；Release 检查不链接调试 Pod、不复制资源 bundle、不出现调试 Demo。
 
-## 七、弱网能力边界 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-8" data-jobs-toc="v2">七、弱网能力边界 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 本次按“不可行就不写”省略全 App 弱网模拟。普通 App 无法用公开 API 承诺控制所有网络栈的真实带宽、丢包和设备流量，这是本框架的实现边界。Apple 说明自定义 [**URLProtocol**](https://developer.apple.com/documentation/foundation/urlsessionconfiguration/protocolclasses) 不适用于后台 URLSession，不能把请求延迟包装称为设备级弱网。
 

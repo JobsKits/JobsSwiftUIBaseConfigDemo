@@ -2,11 +2,159 @@
 
 ![Jobs出品，必属精品](https://picsum.photos/1500/400)
 
-[toc]
+<!-- jobs-toc:start -->
+<!-- jobs-toc:source {"v":2,"token":"[toc]"} -->
+<details>
+<summary>📚 目录（点击展开 / 收起）</summary>
+
+- [🔥 前言](#jobs-toc-heading-1)
+- [一、使用与运行边界](#jobs-toc-heading-2)
+  - [1、Swift、SwiftUI 与 UIKit 的关系](#jobs-toc-heading-3)
+  - [2、本文版本基线](#jobs-toc-heading-4)
+  - [3、示例使用步骤](#jobs-toc-heading-5)
+- [二、从操作控件转向描述状态](#jobs-toc-heading-6)
+  - [1、从“操作控件”变成“描述状态对应的界面”](#jobs-toc-heading-7)
+  - [2、UIKit 概念迁移速查](#jobs-toc-heading-8)
+  - [3、视图描述、身份与资源](#jobs-toc-heading-9)
+- [三、基本语法与首个页面](#jobs-toc-heading-10)
+  - [1、D01：计数器](#jobs-toc-heading-11)
+  - [2、D02：App、Scene、View 三层](#jobs-toc-heading-12)
+  - [3、some View、any View 与 AnyView](#jobs-toc-heading-13)
+  - [4、D03：@ViewBuilder 组合分支](#jobs-toc-heading-14)
+  - [5、D04：尾随闭包、绑定投影与 KeyPath](#jobs-toc-heading-15)
+- [四、Modifier：组合外观与行为](#jobs-toc-heading-16)
+  - [1、D05：顺序不同，背景范围不同](#jobs-toc-heading-17)
+  - [2、D06：使用 ViewModifier 复用样式](#jobs-toc-heading-18)
+- [五、布局：按容器组织尺寸与位置](#jobs-toc-heading-19)
+  - [1、SwiftUI 布局的基本过程](#jobs-toc-heading-20)
+  - [2、D07：HStack / VStack / Spacer](#jobs-toc-heading-21)
+  - [3、D08：frame、overlay、offset](#jobs-toc-heading-22)
+  - [4、D09：底部操作栏与安全区](#jobs-toc-heading-23)
+  - [5、D10：GeometryReader 的尺寸读取边界](#jobs-toc-heading-24)
+- [六、状态管理第一层：State、Binding 和回调](#jobs-toc-heading-25)
+  - [1、状态只有一个权威来源](#jobs-toc-heading-26)
+  - [2、D11：父拥有 State，子拿 Binding](#jobs-toc-heading-27)
+  - [3、D12：用闭包上报事件](#jobs-toc-heading-28)
+  - [4、D13：自定义 Binding 与 \_name](#jobs-toc-heading-29)
+- [七、状态管理第二层：iOS 17+ 的 Observation](#jobs-toc-heading-30)
+  - [1、D14：自己拥有模型用 State，编辑模型属性用 Bindable](#jobs-toc-heading-31)
+  - [2、D15：只展示或调用模型方法时，不一定需要 Bindable](#jobs-toc-heading-32)
+  - [3、新方式和旧方式最大的机制差别](#jobs-toc-heading-33)
+  - [4、选择边界](#jobs-toc-heading-34)
+- [八、ObservableObject：旧式模型观察](#jobs-toc-heading-35)
+  - [1、D16：StateObject 管生命周期，ObservedObject 接外部模型](#jobs-toc-heading-36)
+  - [2、模型持有与观察边界](#jobs-toc-heading-37)
+  - [3、D17：旧式环境注入](#jobs-toc-heading-38)
+  - [4、新旧写法对照表](#jobs-toc-heading-39)
+- [九、Environment、AppStorage、SceneStorage](#jobs-toc-heading-40)
+  - [1、D18：Environment 注入子树依赖](#jobs-toc-heading-41)
+  - [2、D19：用户偏好和窗口恢复不是一回事](#jobs-toc-heading-42)
+  - [3、其他框架标记的职责](#jobs-toc-heading-43)
+- [十、List、ForEach 与稳定身份](#jobs-toc-heading-44)
+  - [1、D20：List 的可编辑数据](#jobs-toc-heading-45)
+  - [2、D21：LazyVStack 与 Lazy Grid 选型](#jobs-toc-heading-46)
+  - [3、ID 要“同一项稳定，不同项唯一”](#jobs-toc-heading-47)
+  - [4、D22：有意重置身份，而不是滥用 id 刷新](#jobs-toc-heading-48)
+- [十一、导航、弹窗、Tab：把跳转也看成状态](#jobs-toc-heading-49)
+  - [1、D23：NavigationStack 路径里放数据，不放 VC](#jobs-toc-heading-50)
+  - [2、D24：sheet(item:) 与 dismiss](#jobs-toc-heading-51)
+  - [3、D25：Alert / confirmationDialog](#jobs-toc-heading-52)
+  - [4、D26：每个 Tab 独立导航](#jobs-toc-heading-53)
+- [十二、生命周期与事件回调](#jobs-toc-heading-54)
+  - [1、D27：观察出现、消失、状态变化与 Scene](#jobs-toc-heading-55)
+  - [2、限定加载次数与生命周期](#jobs-toc-heading-56)
+- [十三、异步加载：任务归属与旧结果保护](#jobs-toc-heading-57)
+  - [1、D28：搜索、防抖、取消和旧结果保护](#jobs-toc-heading-58)
+  - [2、D29：下拉刷新要等待真正的工作](#jobs-toc-heading-59)
+  - [3、D30：网络服务与页面边界](#jobs-toc-heading-60)
+  - [4、MainActor、Task、async 的正确边界](#jobs-toc-heading-61)
+- [十四、表单、焦点和“编辑后取消”](#jobs-toc-heading-62)
+  - [1、D31：FocusState 代替到处找 firstResponder](#jobs-toc-heading-63)
+  - [2、D32：保存时提交，取消不污染正式数据](#jobs-toc-heading-64)
+- [十五、动画与手势：动画描述变化，状态仍然是真值](#jobs-toc-heading-65)
+  - [1、D33：withAnimation 与 transition](#jobs-toc-heading-66)
+  - [2、D34：animation(value:) 与 GestureState](#jobs-toc-heading-67)
+- [十六、组件和架构：SwiftUI 不强制 MVVM](#jobs-toc-heading-68)
+  - [1、D35：泛型容器和 ViewBuilder](#jobs-toc-heading-69)
+  - [2、业务层职责划分](#jobs-toc-heading-70)
+  - [3、避免 Bool 状态爆炸](#jobs-toc-heading-71)
+- [十七、UIKit 与 SwiftUI 互操作](#jobs-toc-heading-72)
+  - [1、嵌入方向与系统版本分开处理](#jobs-toc-heading-73)
+  - [2、D36：现有导航栈 push 一个 SwiftUI 页面](#jobs-toc-heading-74)
+  - [3、D37：UIKit Cell 用 SwiftUI 描述内容](#jobs-toc-heading-75)
+  - [4、D38：SwiftUI 包一个 UIKit 开关，完整打通双向同步](#jobs-toc-heading-76)
+  - [5、D39：包装现有控制器](#jobs-toc-heading-77)
+  - [6、D40：向 Objective-C 暴露控制器入口](#jobs-toc-heading-78)
+  - [7、渐进迁移与验收范围](#jobs-toc-heading-79)
+- [十八、性能、调试、无障碍与常见报错](#jobs-toc-heading-80)
+  - [1、先定位工作量，再谈“刷新太多”](#jobs-toc-heading-81)
+  - [2、常见问题速查](#jobs-toc-heading-82)
+  - [3、D41：无障碍与大字号](#jobs-toc-heading-83)
+  - [4、预览与测试的验证范围](#jobs-toc-heading-84)
+- [十九、综合示例：待办清单](#jobs-toc-heading-85)
+  - [1、D42：模型拥有业务规则，View 负责绑定](#jobs-toc-heading-86)
+  - [2、示例中的数据流与约束](#jobs-toc-heading-87)
+  - [3、手动验收清单与生产边界](#jobs-toc-heading-88)
+- [二十、日常开发选型](#jobs-toc-heading-89)
+  - [1、状态与通信选型](#jobs-toc-heading-90)
+  - [2、UI 与任务选型](#jobs-toc-heading-91)
+- [二十一、练习、迁移索引与验证](#jobs-toc-heading-92)
+  - [1、练习顺序](#jobs-toc-heading-93)
+  - [2、迁移内容索引](#jobs-toc-heading-94)
+  - [3、本地参考文档](#jobs-toc-heading-95)
+  - [4、验证范围](#jobs-toc-heading-96)
+- [二十二、FAQ：面试问答](#jobs-toc-heading-97)
+  - [1、SwiftUI 和 UIKit 最大的区别是什么？](#jobs-toc-heading-98)
+  - [2、为什么 SwiftUI View 通常用 struct？](#jobs-toc-heading-99)
+  - [3、body 是什么，能在里面请求网络吗？](#jobs-toc-heading-100)
+  - [4、some View 到底是什么意思？](#jobs-toc-heading-101)
+  - [5、ViewBuilder 是什么？](#jobs-toc-heading-102)
+  - [6、some View、any View、AnyView 的区别？](#jobs-toc-heading-103)
+  - [7、Modifier 是在修改原来的 View 吗？](#jobs-toc-heading-104)
+  - [8、State 为什么不会随 View struct 重建就清零？](#jobs-toc-heading-105)
+  - [9、State 和 Binding 怎么选？](#jobs-toc-heading-106)
+  - [10、$name、\_name、name 有什么区别？](#jobs-toc-heading-107)
+  - [11、Observable 宏解决什么，不解决什么？](#jobs-toc-heading-108)
+  - [12、Bindable 和 Binding 的区别？](#jobs-toc-heading-109)
+  - [13、StateObject 与 ObservedObject 怎么选？](#jobs-toc-heading-110)
+  - [14、为什么不能把 ObservableObject 简单放进 State？](#jobs-toc-heading-111)
+  - [15、EnvironmentObject 和 Environment 是全局单例吗？](#jobs-toc-heading-112)
+  - [16、闭包和 Binding 什么时候各用一个？](#jobs-toc-heading-113)
+  - [17、AppStorage 和 SceneStorage 有什么区别？](#jobs-toc-heading-114)
+  - [18、SwiftUI 布局和 Auto Layout 有什么不同？](#jobs-toc-heading-115)
+  - [19、offset、padding、frame 有什么区别？](#jobs-toc-heading-116)
+  - [20、GeometryReader 为什么经常把布局撑满？](#jobs-toc-heading-117)
+  - [21、List 和 ForEach 有什么区别？](#jobs-toc-heading-118)
+  - [22、为什么列表不能随便用数组下标当 ID？](#jobs-toc-heading-119)
+  - [23、结构身份和显式身份是什么？](#jobs-toc-heading-120)
+  - [24、LazyVStack 一定比 VStack 快吗？](#jobs-toc-heading-121)
+  - [25、NavigationStack 路径应该存什么？](#jobs-toc-heading-122)
+  - [26、sheet(item:) 为什么经常更合适？](#jobs-toc-heading-123)
+  - [27、onAppear 等于 viewDidLoad 吗？](#jobs-toc-heading-124)
+  - [28、task 和 task(id:) 区别是什么？](#jobs-toc-heading-125)
+  - [29、取消请求后为什么旧结果还会回来？](#jobs-toc-heading-126)
+  - [30、async / Task 就代表后台执行吗？](#jobs-toc-heading-127)
+  - [31、Observable 是否自带线程安全？](#jobs-toc-heading-128)
+  - [32、为什么 refreshable 里面要 await？](#jobs-toc-heading-129)
+  - [33、FocusState 怎么管理多个输入框？](#jobs-toc-heading-130)
+  - [34、withAnimation 和 transition 的区别？](#jobs-toc-heading-131)
+  - [35、GestureState 与 State 的区别？](#jobs-toc-heading-132)
+  - [36、SwiftUI 是否必须 MVVM？](#jobs-toc-heading-133)
+  - [37、UIHostingController 和 UIViewRepresentable 区别？](#jobs-toc-heading-134)
+  - [38、Representable 为什么需要 Coordinator？](#jobs-toc-heading-135)
+  - [39、makeUIView 与 updateUIView 怎么分工？](#jobs-toc-heading-136)
+  - [40、旧项目如何低风险接入 SwiftUI？](#jobs-toc-heading-137)
+  - [41、State 变化是不是只刷新一个 Text？](#jobs-toc-heading-138)
+  - [42、所有状态都放一个 AppStore 可以吗？](#jobs-toc-heading-139)
+  - [43、如何验证一个 SwiftUI 页面？](#jobs-toc-heading-140)
+  - [44、如果没有实际 SwiftUI 项目经验，面试怎么回答？](#jobs-toc-heading-141)
+
+</details>
+<!-- jobs-toc:end -->
 
 ---
 
-## 🔥 <font id="前言">前言</font>
+## <span id="jobs-toc-heading-1" data-jobs-toc="v2">🔥 <font id="前言">前言</font></span><!-- jobs-toc:heading-end -->
 
 > 面向已有 [**UIKit**](https://developer.apple.com/documentation/uikit) 基础的 SwiftUI 开发笔记。按状态归属、视图身份、布局、任务生命周期和框架互操作组织正文；面试问答集中在文章末尾。
 
@@ -16,9 +164,9 @@
 - 面试部分：<a href="#faq" style="color:red;font-weight:bold;">末尾 FAQ</a>统一使用**问题 → 期望回答 → 追问与答案**。所有追问都附答案。
 - 快速查阅：<a href="#decision" style="color:red;font-weight:bold;">第二十章选型表</a>；第一次练习：<a href="#first-demo" style="color:red;font-weight:bold;">第三章计数器</a>；综合练习：<a href="#todo-demo" style="color:red;font-weight:bold;">第十九章待办清单</a>。
 
-## 一、<font id="ui-section-1">使用与运行边界</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-2" data-jobs-toc="v2">一、<font id="ui-section-1">使用与运行边界</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### 1、<font id="ui-1-1">Swift、SwiftUI 与 UIKit 的关系</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-3" data-jobs-toc="v2">1、<font id="ui-1-1">Swift、SwiftUI 与 UIKit 的关系</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 [**Swift**](https://www.swift.org/) 是语言；SwiftUI 和 UIKit 是 UI 框架。[**Objective-C**](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/Introduction/Introduction.html) 也是语言，不是另一套 UI 框架。
 
@@ -26,7 +174,7 @@
 
 SwiftUI 的泛型 View 不能直接当作 OC 类使用。OC 工程接入时，通常由 Swift 层创建 Hosting Controller，再通过 OC 可见的控制器接口交回旧工程，使用 <a href="#ui-17-6" style="color:red;font-weight:bold;">控制器桥接入口</a>。
 
-### 2、<font id="ui-1-2">本文版本基线</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-4" data-jobs-toc="v2">2、<font id="ui-1-2">本文版本基线</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 整理日期：**2026-08-31**。
 
@@ -45,7 +193,7 @@ SwiftUI 的泛型 View 不能直接当作 OC 类使用。OC 工程接入时，�
 
 **版本边界：**本文固定使用 Xcode 26 SDK 中的 State 属性包装器与 ViewBuilder 结果构建器。升级 SDK 后按实际声明核对变化，不将新工具链特性混入当前基线。
 
-### 3、<font id="ui-1-3">示例使用步骤</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-5" data-jobs-toc="v2">3、<font id="ui-1-3">示例使用步骤</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 1、在 [**Xcode**](https://developer.apple.com/xcode) 新建 iOS App，Interface 选 SwiftUI，最低部署版本设为 iOS 17 或以上。
 
@@ -57,9 +205,9 @@ SwiftUI 的泛型 View 不能直接当作 OC 类使用。OC 工程接入时，�
 
 5、标为“片段”的函数需要由宿主调用；定义能通过类型检查，不代表已真实执行网络、导航、动画或设备权限流程。验证范围见第二十一章。
 
-## 二、<font id="ui-section-2">从操作控件转向描述状态</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-6" data-jobs-toc="v2">二、<font id="ui-section-2">从操作控件转向描述状态</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### 1、<font id="ui-2-1">从“操作控件”变成“描述状态对应的界面”</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-7" data-jobs-toc="v2">1、<font id="ui-2-1">从“操作控件”变成“描述状态对应的界面”</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 UIKit 中通常持有 Label，在事件中更新数据，再给 Label 赋值。SwiftUI 中，先声明数据和界面的对应关系，事件只修改状态。
 
@@ -74,7 +222,7 @@ SwiftUI 思路：  点击 → 修改 count → SwiftUI 重新求值相关界面�
 
 <a href="#ui-faq-1" style="color:red;font-weight:bold;">FAQ 1</a>
 
-### 2、<font id="ui-2-2">UIKit 概念迁移速查</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-8" data-jobs-toc="v2">2、<font id="ui-2-2">UIKit 概念迁移速查</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 | UIKit 里熟悉的东西 | SwiftUI 的常见对应 | 不能机械等同的地方 |
 | --- | --- | --- |
@@ -92,7 +240,7 @@ SwiftUI 思路：  点击 → 修改 count → SwiftUI 重新求值相关界面�
 | 手动 `reloadData()` | 更新受观察的数据 | 不是每改一个值就保证只绘制一个像素区域 |
 | KVO / 通知订阅 | Observation 或 ObservableObject | 机制不同，不是 Runtime KVO 的别名 |
 
-### 3、<font id="ui-2-3">视图描述、身份与资源</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-9" data-jobs-toc="v2">3、<font id="ui-2-3">视图描述、身份与资源</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **View 结构体是轻量的界面描述。** 使用值语义组合和重新计算描述；持久状态由框架关联到视图身份。结构体并非必然不可变或一定在栈上，也不保证比类更快。可观察模型仍可使用引用类型。
 
@@ -104,9 +252,9 @@ SwiftUI 思路：  点击 → 修改 count → SwiftUI 重新求值相关界面�
 
 <a href="#ui-faq-2" style="color:red;font-weight:bold;">FAQ 2</a>
 
-## 三、<font id="first-demo">基本语法与首个页面</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-10" data-jobs-toc="v2">三、<font id="first-demo">基本语法与首个页面</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### 1、<font id="ui-3-1">D01：计数器</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-11" data-jobs-toc="v2">1、<font id="ui-3-1">D01：计数器</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -149,7 +297,7 @@ struct CounterDemo: View {
 
 <a href="#ui-faq-3" style="color:red;font-weight:bold;">FAQ 3</a>
 
-### 2、<font id="ui-3-2">D02：App、Scene、View 三层</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-12" data-jobs-toc="v2">2、<font id="ui-3-2">D02：App、Scene、View 三层</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -172,7 +320,7 @@ struct SwiftUIExperienceApp: App {
 
 已有 UIKit App 不需要改入口才能使用 SwiftUI，直接嵌入 Hosting Controller 即可。不要为了新增一页把 AppDelegate、SceneDelegate 全部改掉。
 
-### 3、<font id="ui-3-3"><font color="red"><b><code>some View</code></b></font>、<font color="red"><b><code>any View</code></b></font> 与 `AnyView`</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-13" data-jobs-toc="v2">3、<font id="ui-3-3"><font color="red"><b><code>some View</code></b></font>、<font color="red"><b><code>any View</code></b></font> 与 `AnyView`</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 | 写法 | 解决的问题 | 选择建议 |
 | --- | --- | --- |
@@ -187,7 +335,7 @@ struct SwiftUIExperienceApp: App {
 
 <a href="#ui-faq-4" style="color:red;font-weight:bold;">FAQ 4</a> · <a href="#ui-faq-6" style="color:red;font-weight:bold;">FAQ 6</a>
 
-### 4、<font id="ui-3-4">D03：<font color="red"><b><code>@ViewBuilder</code></b></font> 组合分支</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-14" data-jobs-toc="v2">4、<font id="ui-3-4">D03：<font color="red"><b><code>@ViewBuilder</code></b></font> 组合分支</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -221,7 +369,7 @@ struct BuilderDemo: View {
 
 <a href="#ui-faq-5" style="color:red;font-weight:bold;">FAQ 5</a>
 
-### 5、<font id="ui-3-5">D04：尾随闭包、绑定投影与 KeyPath</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-15" data-jobs-toc="v2">5、<font id="ui-3-5">D04：尾随闭包、绑定投影与 KeyPath</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -253,9 +401,9 @@ struct ClosureDemo: View {
 - `.title2`：编译器已知道目标类型后的简写，不是动态查找字符串。
 - <font color="red"><b><code>@State</code></b></font>、<font color="red"><b><code>@Binding</code></b></font> 是本基线下的属性包装器；<font color="red"><b><code>@Observable</code></b></font> 是宏；<font color="red"><b><code>@MainActor</code></b></font> 是隔离标记。**有 `@` 不代表同一种机制。**
 
-## 四、<font id="ui-section-4">Modifier：组合外观与行为</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-16" data-jobs-toc="v2">四、<font id="ui-section-4">Modifier：组合外观与行为</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### 1、<font id="ui-4-1">D05：顺序不同，背景范围不同</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-17" data-jobs-toc="v2">1、<font id="ui-4-1">D05：顺序不同，背景范围不同</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -281,7 +429,7 @@ struct ModifierOrderDemo: View {
 
 <a href="#ui-faq-7" style="color:red;font-weight:bold;">FAQ 7</a>
 
-### 2、<font id="ui-4-2">D06：使用 ViewModifier 复用样式</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-18" data-jobs-toc="v2">2、<font id="ui-4-2">D06：使用 ViewModifier 复用样式</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -313,15 +461,15 @@ struct CardStyleDemo: View {
 
 **选型边界：**统一外观 / 行为用 modifier；有独立内容结构用子 View；专门统一 Button 的外观和按压反馈用 `ButtonStyle`。按职责拆分，避免基类聚合无关能力。
 
-## 五、<font id="ui-section-5">布局：按容器组织尺寸与位置</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-19" data-jobs-toc="v2">五、<font id="ui-section-5">布局：按容器组织尺寸与位置</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### 1、<font id="ui-5-1">SwiftUI 布局的基本过程</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-20" data-jobs-toc="v2">1、<font id="ui-5-1">SwiftUI 布局的基本过程</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 父视图提出尺寸建议，子视图返回它选择的尺寸，父视图再安排位置。它是布局协商，不是 Auto Layout 约束方程；容器可能进行多次测量，不能假设整棵树永远只计算一遍。[Apple：Laying out a simple view](https://developer.apple.com/documentation/swiftui/laying-out-a-simple-view)。
 
 <a href="#ui-faq-18" style="color:red;font-weight:bold;">FAQ 18</a>
 
-### 2、<font id="ui-5-2">D07：HStack / VStack / Spacer</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-21" data-jobs-toc="v2">2、<font id="ui-5-2">D07：HStack / VStack / Spacer</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -349,7 +497,7 @@ struct ProfileRowDemo: View {
 
 `Spacer` 消耗主轴可用空白；`layoutPriority` 影响父布局分配空间时的优先顺序，不是 Auto Layout 的“1000 必选约束”；<font color="red"><b><code>fixedSize(horizontal: false, vertical: true)</code></b></font> 表示垂直方向尽量保留理想尺寸，仍受外部整体布局环境影响。
 
-### 3、<font id="ui-5-3">D08：frame、overlay、offset</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-22" data-jobs-toc="v2">3、<font id="ui-5-3">D08：frame、overlay、offset</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -387,7 +535,7 @@ struct FrameDemo: View {
 
 <a href="#ui-faq-19" style="color:red;font-weight:bold;">FAQ 19</a>
 
-### 4、<font id="ui-5-4">D09：底部操作栏与安全区</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-23" data-jobs-toc="v2">4、<font id="ui-5-4">D09：底部操作栏与安全区</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -417,7 +565,7 @@ struct SafeAreaDemo: View {
 
 **推荐：**底部工具栏、购买操作区优先评估 `safeAreaInset`。背景需要铺满时才让背景 `.ignoresSafeArea()`，正文和交互区域仍需避开刘海、Home Indicator 与键盘。
 
-### 5、<font id="ui-5-5">D10：GeometryReader 的尺寸读取边界</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-24" data-jobs-toc="v2">5、<font id="ui-5-5">D10：GeometryReader 的尺寸读取边界</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -442,15 +590,15 @@ struct GeometryDemo: View {
 
 <a href="#ui-faq-20" style="color:red;font-weight:bold;">FAQ 20</a>
 
-## 六、<font id="ui-section-6">状态管理第一层：State、Binding 和回调</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-25" data-jobs-toc="v2">六、<font id="ui-section-6">状态管理第一层：State、Binding 和回调</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### 1、<font id="ui-6-1">状态只有一个权威来源</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-26" data-jobs-toc="v2">1、<font id="ui-6-1">状态只有一个权威来源</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 同一个业务值只保留一个权威来源。明确拥有者、只读使用者与修改入口，避免父子视图各存一份再互相同步。
 
 <font color="red"><b><code>@State</code></b></font> 的存储由 SwiftUI 关联到视图身份。View 值重建不等于 State 清零；身份结束、分支移除或有意替换身份时，状态才可能重新建立。它不负责磁盘持久化。[State 官方文档](https://developer.apple.com/documentation/swiftui/state)。
 
-### 2、<font id="ui-6-2">D11：父拥有 State，子拿 Binding</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-27" data-jobs-toc="v2">2、<font id="ui-6-2">D11：父拥有 State，子拿 Binding</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -483,7 +631,7 @@ Binding 是对别处真值的读写通道，不是另开一份存储。<font col
 
 <a href="#ui-faq-8" style="color:red;font-weight:bold;">FAQ 8</a> · <a href="#ui-faq-9" style="color:red;font-weight:bold;">FAQ 9</a>
 
-### 3、<font id="ui-6-3">D12：用闭包上报事件</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-28" data-jobs-toc="v2">3、<font id="ui-6-3">D12：用闭包上报事件</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -523,7 +671,7 @@ struct CallbackDemo: View {
 
 <a href="#ui-faq-16" style="color:red;font-weight:bold;">FAQ 16</a>
 
-### 4、<font id="ui-6-4">D13：自定义 Binding 与 `_name`</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-29" data-jobs-toc="v2">4、<font id="ui-6-4">D13：自定义 Binding 与 `_name`</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -566,9 +714,9 @@ struct InitialDraftDemo: View {
 
 <a href="#ui-faq-10" style="color:red;font-weight:bold;">FAQ 10</a>
 
-## 七、<font id="ui-section-7">状态管理第二层：iOS 17+ 的 Observation</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-30" data-jobs-toc="v2">七、<font id="ui-section-7">状态管理第二层：iOS 17+ 的 Observation</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### 1、<font id="ui-7-1">D14：自己拥有模型用 State，编辑模型属性用 Bindable</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-31" data-jobs-toc="v2">1、<font id="ui-7-1">D14：自己拥有模型用 State，编辑模型属性用 Bindable</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -615,7 +763,7 @@ struct ObservationDemo: View {
 
 <a href="#ui-faq-12" style="color:red;font-weight:bold;">FAQ 12</a>
 
-### 2、<font id="ui-7-2">D15：只展示或调用模型方法时，不一定需要 Bindable</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-32" data-jobs-toc="v2">2、<font id="ui-7-2">D15：只展示或调用模型方法时，不一定需要 Bindable</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -641,7 +789,7 @@ struct ProfileSummary: View {
 
 需要严格的只读接口，可以传纯值快照或只读协议；需要输入框绑定才引入 Bindable。不要把“没有 <font color="red"><b><code>@ObservedObject</code></b></font>”误判为现代模型不会触发更新。
 
-### 3、<font id="ui-7-3">新方式和旧方式最大的机制差别</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-33" data-jobs-toc="v2">3、<font id="ui-7-3">新方式和旧方式最大的机制差别</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 Observation 主要基于 `body` 求值时实际读取的可观察属性建立依赖；不是模型每改一个无关字段，就必然以相同方式通知所有读它的界面。计算属性可以通过内部读取的可观察属性形成依赖。
 
@@ -649,7 +797,7 @@ Observation 主要基于 `body` 求值时实际读取的可观察属性建立依
 
 <a href="#ui-faq-11" style="color:red;font-weight:bold;">FAQ 11</a>
 
-### 4、<font id="ui-7-4">选择边界</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-34" data-jobs-toc="v2">4、<font id="ui-7-4">选择边界</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 最低 iOS 17+ 的新页面：通常优先评估 <font color="red"><b><code>@Observable</code></b></font>。
 - 项目大量依赖 <font color="red"><b>Combine</b></font> Publisher / 操作符：可以保留 ObservableObject，不必只为少几个标记重写数据流。
@@ -659,9 +807,9 @@ Observation 主要基于 `body` 求值时实际读取的可观察属性建立依
 
 <a href="#ui-faq-31" style="color:red;font-weight:bold;">FAQ 31</a>
 
-## 八、<font id="ui-section-8">ObservableObject：旧式模型观察</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-35" data-jobs-toc="v2">八、<font id="ui-section-8">ObservableObject：旧式模型观察</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### 1、<font id="ui-8-1">D16：StateObject 管生命周期，ObservedObject 接外部模型</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-36" data-jobs-toc="v2">1、<font id="ui-8-1">D16：StateObject 管生命周期，ObservedObject 接外部模型</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -700,7 +848,7 @@ struct LegacyCounterDemo: View {
 
 <a href="#ui-faq-13" style="color:red;font-weight:bold;">FAQ 13</a>
 
-### 2、<font id="ui-8-2">模型持有与观察边界</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-37" data-jobs-toc="v2">2、<font id="ui-8-2">模型持有与观察边界</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 当前视图创建并长期拥有旧式模型时使用 <font color="red"><b><code>@StateObject</code></b></font>；外部传入的模型使用 <font color="red"><b><code>@ObservedObject</code></b></font>。
 - <font color="red"><b><code>@ObservedObject</code></b></font> 不是弱引用。外部负责生命周期，不等于包装器采用 <font color="red"><b>weak</b></font>。
@@ -708,7 +856,7 @@ struct LegacyCounterDemo: View {
 
 <a href="#ui-faq-14" style="color:red;font-weight:bold;">FAQ 14</a>
 
-### 3、<font id="ui-8-3">D17：旧式环境注入</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-38" data-jobs-toc="v2">3、<font id="ui-8-3">D17：旧式环境注入</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -738,7 +886,7 @@ struct LegacyEnvironmentDemo: View {
 
 **边界：**缺少 `.environmentObject(model)` 会出运行时错误；预览和测试也必须注入。它不是整个进程的自动单例，注入范围是视图子树。
 
-### 4、<font id="ui-8-4">新旧写法对照表</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-39" data-jobs-toc="v2">4、<font id="ui-8-4">新旧写法对照表</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 | 责任 | ObservableObject 体系 | Observation 体系（iOS 17+） |
 | --- | --- | --- |
@@ -752,9 +900,9 @@ struct LegacyEnvironmentDemo: View {
 
 不要把 <font color="red"><b><code>@Observable</code></b></font> 和 <font color="red"><b><code>@Published</code></b></font> 机械叠加；不要用 <font color="red"><b><code>@StateObject</code></b></font> 包装一个未遵循 ObservableObject 的现代模型。
 
-## 九、<font id="ui-section-9">Environment、AppStorage、SceneStorage</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-40" data-jobs-toc="v2">九、<font id="ui-section-9">Environment、AppStorage、SceneStorage</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### 1、<font id="ui-9-1">D18：Environment 注入子树依赖</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-41" data-jobs-toc="v2">1、<font id="ui-9-1">D18：Environment 注入子树依赖</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -792,7 +940,7 @@ struct ModernEnvironmentDemo: View {
 
 <a href="#ui-faq-15" style="color:red;font-weight:bold;">FAQ 15</a>
 
-### 2、<font id="ui-9-2">D19：用户偏好和窗口恢复不是一回事</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-42" data-jobs-toc="v2">2、<font id="ui-9-2">D19：用户偏好和窗口恢复不是一回事</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -826,7 +974,7 @@ SceneStorage 的保存时机由系统管理，不保证每次修改立刻落盘�
 
 <a href="#ui-faq-17" style="color:red;font-weight:bold;">FAQ 17</a>
 
-### 3、<font id="ui-9-3">其他框架标记的职责</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-43" data-jobs-toc="v2">3、<font id="ui-9-3">其他框架标记的职责</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 | 标记 | 负责什么 | 边界 |
 | --- | --- | --- |
@@ -839,9 +987,9 @@ SceneStorage 的保存时机由系统管理，不保证每次修改立刻落盘�
 
 <font color="red"><b><code>@Published</code></b></font> 与 <font color="red"><b>Combine</b></font> 的发布时机、订阅管理统一放在 [Swift 事件流章节](/Users/jobs/Documents/Github/JobsBaseConfig/JobsBaseConfig@JobsSwiftBaseConfigDemo/SwiftDoc.md/Swift相关经验.md/Swift相关经验.md#Combine)。
 
-## 十、<font id="ui-section-10">List、ForEach 与稳定身份</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-44" data-jobs-toc="v2">十、<font id="ui-section-10">List、ForEach 与稳定身份</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### 1、<font id="ui-10-1">D20：List 的可编辑数据</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-45" data-jobs-toc="v2">1、<font id="ui-10-1">D20：List 的可编辑数据</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -879,7 +1027,7 @@ struct EditableListDemo: View {
 
 <a href="#ui-faq-21" style="color:red;font-weight:bold;">FAQ 21</a>
 
-### 2、<font id="ui-10-2">D21：LazyVStack 与 Lazy Grid 选型</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-46" data-jobs-toc="v2">2、<font id="ui-10-2">D21：LazyVStack 与 Lazy Grid 选型</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -920,7 +1068,7 @@ LazyVGrid 按列排列并配合垂直滚动，LazyHGrid 按行排列并配合水
 
 <a href="#ui-faq-24" style="color:red;font-weight:bold;">FAQ 24</a>
 
-### 3、<font id="ui-10-3">ID 要“同一项稳定，不同项唯一”</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-47" data-jobs-toc="v2">3、<font id="ui-10-3">ID 要“同一项稳定，不同项唯一”</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **推荐：**服务器记录 ID；本地新增实体时生成一次并持久保留的 UUID；确实唯一且不变的值。
 
@@ -932,7 +1080,7 @@ LazyVGrid 按列排列并配合垂直滚动，LazyHGrid 按行排列并配合水
 
 <a href="#ui-faq-22" style="color:red;font-weight:bold;">FAQ 22</a> · <a href="#ui-faq-23" style="color:red;font-weight:bold;">FAQ 23</a>
 
-### 4、<font id="ui-10-4">D22：有意重置身份，而不是滥用 id 刷新</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-48" data-jobs-toc="v2">4、<font id="ui-10-4">D22：有意重置身份，而不是滥用 id 刷新</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -958,9 +1106,9 @@ struct IdentityResetDemo: View {
 
 条件分支移除视图也可能结束其身份。临时隐藏但要保留草稿时，优先把草稿提升到稳定父层；仅 `.opacity(0)` 不会自动禁用点击和无障碍访问，需要另行处理。
 
-## 十一、<font id="ui-section-11">导航、弹窗、Tab：把跳转也看成状态</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-49" data-jobs-toc="v2">十一、<font id="ui-section-11">导航、弹窗、Tab：把跳转也看成状态</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### 1、<font id="ui-11-1">D23：NavigationStack 路径里放数据，不放 VC</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-50" data-jobs-toc="v2">1、<font id="ui-11-1">D23：NavigationStack 路径里放数据，不放 VC</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -1008,7 +1156,7 @@ struct NavigationDemo: View {
 
 <a href="#ui-faq-25" style="color:red;font-weight:bold;">FAQ 25</a>
 
-### 2、<font id="ui-11-2">D24：sheet(item:) 与 dismiss</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-51" data-jobs-toc="v2">2、<font id="ui-11-2">D24：sheet(item:) 与 dismiss</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -1053,7 +1201,7 @@ struct SheetDemo: View {
 
 <a href="#ui-faq-26" style="color:red;font-weight:bold;">FAQ 26</a>
 
-### 3、<font id="ui-11-3">D25：Alert / confirmationDialog</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-52" data-jobs-toc="v2">3、<font id="ui-11-3">D25：Alert / confirmationDialog</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -1083,7 +1231,7 @@ struct AlertDemo: View {
 
 确认重要结果用 Alert；从拍照 / 相册等多个动作中选择可以评估 `confirmationDialog`；复杂表单不要硬塞 Alert。
 
-### 4、<font id="ui-11-4">D26：每个 Tab 独立导航</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-53" data-jobs-toc="v2">4、<font id="ui-11-4">D26：每个 Tab 独立导航</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -1107,9 +1255,9 @@ struct TabsDemo: View {
 
 常见选法是每个 Tab 一条导航栈；需要独立恢复时，把每条 path 放进各自稳定拥有者。不应不加思考地再在外面包一层总 NavigationStack。iPad 多栏信息架构可以使用 `NavigationSplitView`，不是简单把所有设备都做成单列 push。
 
-## 十二、<font id="ui-section-12">生命周期与事件回调</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-54" data-jobs-toc="v2">十二、<font id="ui-section-12">生命周期与事件回调</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### 1、<font id="ui-12-1">D27：观察出现、消失、状态变化与 Scene</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-55" data-jobs-toc="v2">1、<font id="ui-12-1">D27：观察出现、消失、状态变化与 Scene</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -1151,15 +1299,15 @@ struct LifecycleDemo: View {
 
 <a href="#ui-faq-27" style="color:red;font-weight:bold;">FAQ 27</a>
 
-### 2、<font id="ui-12-2">限定加载次数与生命周期</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-56" data-jobs-toc="v2">2、<font id="ui-12-2">限定加载次数与生命周期</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 先规定加载次数的归属：当前视图身份、路由会话、账号、缓存有效期或进程。把去重状态放在对应生命周期的拥有者中。
 
 <font color="red"><b><code>@State private var hasLoaded</code></b></font> 只能表达当前身份范围的门禁，不能承诺整个 App 一次。通常让模型 / 数据服务根据状态、缓存有效期和请求 ID 决定是否加载；失败后能重试、取消后能再进，也应有明确规则。
 
-## 十三、<font id="ui-section-13">异步加载：任务归属与旧结果保护</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-57" data-jobs-toc="v2">十三、<font id="ui-section-13">异步加载：任务归属与旧结果保护</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### 1、<font id="ui-13-1">D28：搜索、防抖、取消和旧结果保护</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-58" data-jobs-toc="v2">1、<font id="ui-13-1">D28：搜索、防抖、取消和旧结果保护</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -1255,7 +1403,7 @@ SwiftUI 可以在视图消失后取消关联任务，ID 变化时取消并重建
 
 <a href="#ui-faq-28" style="color:red;font-weight:bold;">FAQ 28</a> · <a href="#ui-faq-29" style="color:red;font-weight:bold;">FAQ 29</a>
 
-### 2、<font id="ui-13-2">D29：下拉刷新要等待真正的工作</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-59" data-jobs-toc="v2">2、<font id="ui-13-2">D29：下拉刷新要等待真正的工作</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -1286,7 +1434,7 @@ struct RefreshDemo: View {
 
 <a href="#ui-faq-32" style="color:red;font-weight:bold;">FAQ 32</a>
 
-### 3、<font id="ui-13-3">D30：网络服务与页面边界</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-60" data-jobs-toc="v2">3、<font id="ui-13-3">D30：网络服务与页面边界</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import Foundation
@@ -1315,7 +1463,7 @@ actor NotesAPI {
 
 生产还需：认证与脱敏、超时、错误分类、取消转发、缓存、请求去重、幂等性、分页及测试。大数据解码即使不在 Main Actor，也要考虑是否长时间占住并发执行资源。
 
-### 4、<font id="ui-13-4"><font color="red"><b>MainActor</b></font>、<font color="red"><b>Task</b></font>、<font color="red"><b>async</b></font> 的正确边界</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-61" data-jobs-toc="v2">4、<font id="ui-13-4"><font color="red"><b>MainActor</b></font>、<font color="red"><b>Task</b></font>、<font color="red"><b>async</b></font> 的正确边界</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - <font color="red"><b><code>async</code></b></font> 表示可以挂起，不承诺开新线程。
 - <font color="red"><b><code>Task {}</code></b></font> 是任务，不是 GCD 后台队列的别名；会受创建处 <font color="red"><b>actor</b></font> 上下文影响。
@@ -1329,9 +1477,9 @@ actor NotesAPI {
 
 <a href="#ui-faq-30" style="color:red;font-weight:bold;">FAQ 30</a>
 
-## 十四、<font id="ui-section-14">表单、焦点和“编辑后取消”</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-62" data-jobs-toc="v2">十四、<font id="ui-section-14">表单、焦点和“编辑后取消”</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### 1、<font id="ui-14-1">D31：FocusState 代替到处找 firstResponder</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-63" data-jobs-toc="v2">1、<font id="ui-14-1">D31：FocusState 代替到处找 firstResponder</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -1379,7 +1527,7 @@ FocusState 的 `$focusedField` 是焦点专用绑定，不是普通 `Binding<Fie
 
 <a href="#ui-faq-33" style="color:red;font-weight:bold;">FAQ 33</a>
 
-### 2、<font id="ui-14-2">D32：保存时提交，取消不污染正式数据</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-64" data-jobs-toc="v2">2、<font id="ui-14-2">D32：保存时提交，取消不污染正式数据</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -1428,9 +1576,9 @@ struct DraftDemo: View {
 
 **边界：**直接把正式模型的字段 Binding 给输入框，就意味着输入过程中已经修改正式数据，关闭 Sheet 不会自动回滚。取消语义应通过草稿 / 事务明确实现。
 
-## 十五、<font id="ui-section-15">动画与手势：动画描述变化，状态仍然是真值</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-65" data-jobs-toc="v2">十五、<font id="ui-section-15">动画与手势：动画描述变化，状态仍然是真值</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### 1、<font id="ui-15-1">D33：withAnimation 与 transition</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-66" data-jobs-toc="v2">1、<font id="ui-15-1">D33：withAnimation 与 transition</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -1462,7 +1610,7 @@ struct ExpandDemo: View {
 
 <a href="#ui-faq-34" style="color:red;font-weight:bold;">FAQ 34</a>
 
-### 2、<font id="ui-15-2">D34：animation(value:) 与 GestureState</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-67" data-jobs-toc="v2">2、<font id="ui-15-2">D34：animation(value:) 与 GestureState</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -1502,9 +1650,9 @@ struct DragDemo: View {
 
 <a href="#ui-faq-35" style="color:red;font-weight:bold;">FAQ 35</a>
 
-## 十六、<font id="ui-section-16">组件和架构：SwiftUI 不强制 MVVM</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-68" data-jobs-toc="v2">十六、<font id="ui-section-16">组件和架构：SwiftUI 不强制 MVVM</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### 1、<font id="ui-16-1">D35：泛型容器和 ViewBuilder</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-69" data-jobs-toc="v2">1、<font id="ui-16-1">D35：泛型容器和 ViewBuilder</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -1541,7 +1689,7 @@ struct CompositionDemo: View {
 
 `Content: View` 表示内容类型由调用方决定；初始化器立即执行构建闭包并保存结果，所以这里不需要 <font color="red"><b><code>@escaping</code></b></font>。如果改为保存闭包留到以后执行，就要重新考虑逃逸与捕获语义。
 
-### 2、<font id="ui-16-2">业务层职责划分</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-70" data-jobs-toc="v2">2、<font id="ui-16-2">业务层职责划分</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 | 层 | 负责 | 不应该负责 |
 | --- | --- | --- |
@@ -1554,15 +1702,15 @@ struct CompositionDemo: View {
 
 <a href="#ui-faq-36" style="color:red;font-weight:bold;">FAQ 36</a> · <a href="#ui-faq-42" style="color:red;font-weight:bold;">FAQ 42</a>
 
-### 3、<font id="ui-16-3">避免 Bool 状态爆炸</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-71" data-jobs-toc="v2">3、<font id="ui-16-3">避免 Bool 状态爆炸</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 如果同一请求同时用 `isLoading`、`hasError`、`isEmpty`、`isSuccess`，容易出现“加载中又成功又失败”的矛盾组合。互斥阶段用 <font color="red"><b>enum</b></font>；可以同时发生的独立状态，例如“数据已展示”和“正在后台刷新”，则可以分开建模。
 
 也不要反过来把完全无关的弹窗、焦点、网络和登录都塞进一个几十种 <font color="red"><b>case</b></font> 的总枚举。建模边界看业务不变量，不看关键字偏好。
 
-## 十七、<font id="ui-section-17">UIKit 与 SwiftUI 互操作</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-72" data-jobs-toc="v2">十七、<font id="ui-section-17">UIKit 与 SwiftUI 互操作</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### 1、<font id="ui-17-1">嵌入方向与系统版本分开处理</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-73" data-jobs-toc="v2">1、<font id="ui-17-1">嵌入方向与系统版本分开处理</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 | 谁装谁 | API | 用途 |
 | --- | --- | --- |
@@ -1575,7 +1723,7 @@ struct CompositionDemo: View {
 
 <a href="#ui-faq-37" style="color:red;font-weight:bold;">FAQ 37</a>
 
-### 2、<font id="ui-17-2">D36：现有导航栈 push 一个 SwiftUI 页面</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-74" data-jobs-toc="v2">2、<font id="ui-17-2">D36：现有导航栈 push 一个 SwiftUI 页面</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -1595,7 +1743,7 @@ func pushCounter(from navigationController: UINavigationController) {
 
 局部嵌入时还必须完成控制器 containment：`addChild(host)` → 加入 host.view 并布局 → `host.didMove(toParent:)`；移除时对应 <font color="red"><b><code>willMove(toParent: nil)</code></b></font> → 移除 view → `removeFromParent()`。**只把 host.view 加进父视图，而不建立父子控制器关系是不完整的。**外层约束可继续使用既有 [**SnapKit**](https://github.com/SnapKit/SnapKit) 体系，SwiftUI 内部仍使用自己的布局方式。
 
-### 3、<font id="ui-17-3">D37：UIKit Cell 用 SwiftUI 描述内容</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-75" data-jobs-toc="v2">3、<font id="ui-17-3">D37：UIKit Cell 用 SwiftUI 描述内容</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -1616,7 +1764,7 @@ func configureStudyCell(_ cell: UITableViewCell, title: String, subtitle: String
 
 **推荐：**旧列表稳定，只想渐进尝试新内容。行级重要业务状态仍放模型，不能依赖 Cell 内容中的本地 State 恰好长期存活。[UIHostingConfiguration 官方文档](https://developer.apple.com/documentation/swiftui/uihostingconfiguration)。
 
-### 4、<font id="ui-17-4">D38：SwiftUI 包一个 UIKit 开关，完整打通双向同步</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-76" data-jobs-toc="v2">4、<font id="ui-17-4">D38：SwiftUI 包一个 UIKit 开关，完整打通双向同步</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -1695,7 +1843,7 @@ struct UIKitSwitchDemo: View {
 
 <a href="#ui-faq-38" style="color:red;font-weight:bold;">FAQ 38</a> · <a href="#ui-faq-39" style="color:red;font-weight:bold;">FAQ 39</a>
 
-### 5、<font id="ui-17-5">D39：包装现有控制器</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-77" data-jobs-toc="v2">5、<font id="ui-17-5">D39：包装现有控制器</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -1716,7 +1864,7 @@ struct ExistingControllerHost: UIViewControllerRepresentable {
 
 **这是桥接壳片段。**使用时传入构造现有控制器的闭包。控制器创建 / 更新 / 拆卸与代理桥接的分工，和 UIViewRepresentable 一样。若某次输入改变意味着换一个完全不同的控制器，不能指望创建闭包每次更新都重新执行，需要明确身份或改为更新现存控制器。
 
-### 6、<font id="ui-17-6">D40：向 Objective-C 暴露控制器入口</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-78" data-jobs-toc="v2">6、<font id="ui-17-6">D40：向 Objective-C 暴露控制器入口</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -1734,7 +1882,7 @@ Swift 工厂对外返回 `UIViewController`，OC 侧导入当前 target 自动�
 
 **边界：**OC 看不到 <font color="red"><b><code>some View</code></b></font>、Swift <font color="red"><b>struct</b></font> 和这类泛型 SwiftUI 接口；不要尝试给 View <font color="red"><b>struct</b></font> 直接加 <font color="red"><b><code>@objc</code></b></font>。此工厂只隐藏语言桥接细节，不会把 SwiftUI 运行时要求变低。
 
-### 7、<font id="ui-17-7">渐进迁移与验收范围</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-79" data-jobs-toc="v2">7、<font id="ui-17-7">渐进迁移与验收范围</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 先选独立、依赖少的设置页 / 详情页，用 Hosting 接到现有导航；再选一个 Cell 内容试 UIHostingConfiguration；重型编辑器、复杂第三方地图、已有稳定集合布局继续用 UIKit。
 
@@ -1742,9 +1890,9 @@ Swift 工厂对外返回 `UIViewController`，OC 侧导入当前 target 自动�
 
 <a href="#ui-faq-40" style="color:red;font-weight:bold;">FAQ 40</a>
 
-## 十八、<font id="ui-section-18">性能、调试、无障碍与常见报错</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-80" data-jobs-toc="v2">十八、<font id="ui-section-18">性能、调试、无障碍与常见报错</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### 1、<font id="ui-18-1">先定位工作量，再谈“刷新太多”</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-81" data-jobs-toc="v2">1、<font id="ui-18-1">先定位工作量，再谈“刷新太多”</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 `body` 应便宜、可重复求值。大数组筛选排序、图片解码、格式器反复创建、同步磁盘读写、网络副作用，都不适合塞在 body 里。
 
@@ -1754,7 +1902,7 @@ Swift 工厂对外返回 `UIViewController`，OC 侧导入当前 target 自动�
 
 <a href="#ui-faq-41" style="color:red;font-weight:bold;">FAQ 41</a>
 
-### 2、<font id="ui-18-2">常见问题速查</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-82" data-jobs-toc="v2">2、<font id="ui-18-2">常见问题速查</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 | 现象 / 报错 | 先检查 | 不要先做 |
 | --- | --- | --- |
@@ -1771,7 +1919,7 @@ Swift 工厂对外返回 `UIViewController`，OC 侧导入当前 target 自动�
 | 快速滚动卡顿 | 大图解码、body 重活、布局测量、ID、更新频率 | 认为 List 必然比 UIKit 快 |
 | 按钮变透明后仍可点 | opacity 没有关闭命中 | 只把文字颜色设透明 |
 
-### 3、<font id="ui-18-3">D41：无障碍与大字号</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-83" data-jobs-toc="v2">3、<font id="ui-18-3">D41：无障碍与大字号</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -1799,7 +1947,7 @@ struct AccessibilityDemo: View {
 
 语义字体如 `.body` / `.headline` 支持系统字体缩放；不要为了对齐固定高度截掉大字。验证深浅色、大号文字、横屏、窄容器、VoiceOver、减少动态效果，以及不只靠颜色表达状态。某些 Text 已有足够可读语义，不必给所有控件重复添加相同 label。
 
-### 4、<font id="ui-18-4">预览与测试的验证范围</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-84" data-jobs-toc="v2">4、<font id="ui-18-4">预览与测试的验证范围</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 Preview 适合快速检查排版和多种状态；它不是 UI 测试，也不证明导航、权限、输入法或异步取消流程正确。预览需要明确注入模型，网络用可控假数据。
 
@@ -1807,9 +1955,9 @@ Preview 适合快速检查排版和多种状态；它不是 UI 测试，也不�
 
 <a href="#ui-faq-43" style="color:red;font-weight:bold;">FAQ 43</a>
 
-## 十九、<font id="todo-demo">综合示例：待办清单</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-85" data-jobs-toc="v2">十九、<font id="todo-demo">综合示例：待办清单</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### 1、<font id="ui-19-1">D42：模型拥有业务规则，View 负责绑定</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-86" data-jobs-toc="v2">1、<font id="ui-19-1">D42：模型拥有业务规则，View 负责绑定</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```swift
 import SwiftUI
@@ -1896,7 +2044,7 @@ struct TodoDemo: View {
 
 **如何运行：**把 App 根视图换成 `TodoDemo()`。UUID 在实体创建时生成一次，之后 Toggle 修改或删除前一项不会重新生成它。
 
-### 2、<font id="ui-19-2">示例中的数据流与约束</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-87" data-jobs-toc="v2">2、<font id="ui-19-2">示例中的数据流与约束</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 1、`draft` 是当前页面未提交的输入，所以放 State。
 
@@ -1912,7 +2060,7 @@ struct TodoDemo: View {
 
 7、模型直接暴露 items 是教学简化；若每次修改都必须经过审计 / 远程保存，可改成私有写入 + `toggle(id:)`、`delete(id:)` 等意图方法，而不是让所有子视图任意 Binding 写入。
 
-### 3、<font id="ui-19-3">手动验收清单与生产边界</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-88" data-jobs-toc="v2">3、<font id="ui-19-3">手动验收清单与生产边界</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 | 操作 | 期望结果 |
 | --- | --- |
@@ -1926,9 +2074,9 @@ struct TodoDemo: View {
 
 此示例未包含数据库、云同步、撤销、账号隔离与冲突处理。生产接入时逐项补齐，并分别验证持久化和异步错误状态。
 
-## 二十、<font id="decision">日常开发选型</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-89" data-jobs-toc="v2">二十、<font id="decision">日常开发选型</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### 1、<font id="ui-20-1">状态与通信选型</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-90" data-jobs-toc="v2">1、<font id="ui-20-1">状态与通信选型</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 | 我现在要做什么 | 首选 | 为什么 / 何时换方案 |
 | --- | --- | --- |
@@ -1947,7 +2095,7 @@ struct TodoDemo: View {
 | 表单焦点 | <font color="red"><b><code>@FocusState</code></b></font> | 多字段选可选枚举 |
 | 手势中的瞬时值 | <font color="red"><b><code>@GestureState</code></b></font> | 松手自动复位，最终值用 State |
 
-### 2、<font id="ui-20-2">UI 与任务选型</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-91" data-jobs-toc="v2">2、<font id="ui-20-2">UI 与任务选型</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 | 需求 | 首选 | 关键边界 |
 | --- | --- | --- |
@@ -1968,9 +2116,9 @@ struct TodoDemo: View {
 | 老 Cell 新内容 | Hosting Configuration | iOS 16+，状态仍归模型 |
 | SwiftUI 缺成熟控件能力 | Representable | 生命周期、回调和布局要桥接完整 |
 
-## 二十一、<font id="ui-section-21">练习、迁移索引与验证</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-92" data-jobs-toc="v2">二十一、<font id="ui-section-21">练习、迁移索引与验证</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### 1、<font id="ui-21-1">练习顺序</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-93" data-jobs-toc="v2">1、<font id="ui-21-1">练习顺序</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 1、先跑 D01、D04、D05：读懂 View、body、闭包和 modifier 顺序。
 
@@ -1988,7 +2136,7 @@ struct TodoDemo: View {
 
 <a href="#ui-faq-44" style="color:red;font-weight:bold;">FAQ 44</a>
 
-### 2、<font id="ui-21-2">迁移内容索引</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-94" data-jobs-toc="v2">2、<font id="ui-21-2">迁移内容索引</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 | 从 Swift 文档归入的主题 | 本文位置 |
 | --- | --- |
@@ -2002,14 +2150,14 @@ struct TodoDemo: View {
 
 同义内容合并到既有章节，避免重复保留多个简单控件示例；通用泛型、属性包装器和并发语言机制仍在 Swift 文档维护。
 
-### 3、<font id="ui-21-3">本地参考文档</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-95" data-jobs-toc="v2">3、<font id="ui-21-3">本地参考文档</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - [Swift 相关经验](/Users/jobs/Documents/Github/JobsBaseConfig/JobsBaseConfig@JobsSwiftBaseConfigDemo/SwiftDoc.md/Swift相关经验.md/Swift相关经验.md)：参考了属性包装器、<font color="red"><b>some</b></font>、Actor 的场景 / 边界说明，以及桥接片段写法。
 - [OC 相关经验](/Users/jobs/Documents/Github/JobsBaseConfig/JobsBaseConfig@JobsOCBaseConfigDemo/OCDoc.md/OC相关经验.md/OC相关经验.md)：参考了 UIKit 生命周期、列表性能和 FAQ 的实战组织方式。
 
 本页与 Swift 语言文档各自维护所属知识，使用上述链接互相跳转。
 
-### 4、<font id="ui-21-4">验证范围</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-96" data-jobs-toc="v2">4、<font id="ui-21-4">验证范围</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 本文的“效果”描述是示例期望，不代表全部经过真机运行。
 
@@ -2018,11 +2166,11 @@ struct TodoDemo: View {
 - 未执行：完整 App 构建与签名、模拟器 / 真机交互、真实网络请求、旧系统逐版本运行、VoiceOver 与性能实测。
 - 示例统一以 iOS 17+ 为运行基线，不能仅凭单个 API 的最低版本推断整段示例兼容范围。
 
-## 二十二、<font id="faq">FAQ：面试问答</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-97" data-jobs-toc="v2">二十二、<font id="faq">FAQ：面试问答</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 > 使用方式：先练熟每题的“期望回答”，再看追问。回答可以承认工程取舍，不要承诺“永远只刷新一处”“只调用一次”“用了 <font color="red"><b>actor</b></font> 就一定线程安全”。下列回答是可直接口述的参考表达，不是声称自己做过尚未实践的项目。
 
-### 1、<font id="ui-faq-1">SwiftUI 和 UIKit 最大的区别是什么？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-98" data-jobs-toc="v2">1、<font id="ui-faq-1">SwiftUI 和 UIKit 最大的区别是什么？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**UIKit 常以持有 UI 对象并更新其属性为主要组织方式；SwiftUI 主要声明状态和界面的映射，状态变化后由框架协调更新。UIKit 对底层控件、生命周期和成熟复杂场景控制更直接；SwiftUI 在组合界面和状态驱动表达上更简洁。两者可以渐进混用，不需要互相替代到底。
 
@@ -2032,7 +2180,7 @@ struct TodoDemo: View {
 
 <a href="#ui-2-1" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 2、<font id="ui-faq-2">为什么 SwiftUI View 通常用 <font color="red"><b>struct</b></font>？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-99" data-jobs-toc="v2">2、<font id="ui-faq-2">为什么 SwiftUI View 通常用 <font color="red"><b>struct</b></font>？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**View 用于轻量描述界面，值语义适合组合和反复产生新描述；持久状态由框架按身份管理，不要求一个长期存活的 View 对象。选择 <font color="red"><b>struct</b></font> 的理由不是“它永远在栈上且一定更快”。
 
@@ -2042,7 +2190,7 @@ struct TodoDemo: View {
 
 <a href="#ui-2-3" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 3、<font id="ui-faq-3">body 是什么，能在里面请求网络吗？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-100" data-jobs-toc="v2">3、<font id="ui-faq-3">body 是什么，能在里面请求网络吗？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**body 是描述当前界面的计算属性，可以反复求值，应保持便宜且无业务副作用。网络应放到关联任务或模型 / 服务层，由明确生命周期触发。
 
@@ -2052,7 +2200,7 @@ struct TodoDemo: View {
 
 <a href="#ui-3-1" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 4、<font id="ui-faq-4"><font color="red"><b>some</b></font> View 到底是什么意思？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-101" data-jobs-toc="v2">4、<font id="ui-faq-4"><font color="red"><b>some</b></font> View 到底是什么意思？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**它是不透明返回类型：编译器知道一个确定的具体 View 类型，调用方不必知道长的组合类型名。它保留类型身份，不是任意协议对象容器。
 
@@ -2062,7 +2210,7 @@ struct TodoDemo: View {
 
 <a href="#ui-3-3" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 5、<font id="ui-faq-5">ViewBuilder 是什么？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-102" data-jobs-toc="v2">5、<font id="ui-faq-5">ViewBuilder 是什么？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**在本文 Xcode 26 基线下，它是结果构建器，把多条视图表达式和支持的控制流转换成组合结果，让我们用声明式语法写内容层级。它不是运行时把每一行 addSubview 一次的脚本。
 
@@ -2072,7 +2220,7 @@ struct TodoDemo: View {
 
 <a href="#ui-3-4" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 6、<font id="ui-faq-6"><font color="red"><b>some</b></font> View、<font color="red"><b>any</b></font> View、AnyView 的区别？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-103" data-jobs-toc="v2">6、<font id="ui-faq-6"><font color="red"><b>some</b></font> View、<font color="red"><b>any</b></font> View、AnyView 的区别？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**<font color="red"><b>some</b></font> View 隐藏但保留确定类型；<font color="red"><b>any</b></font> View 是语言的协议存在类型；AnyView 是 SwiftUI 的类型擦除包装，本身是一个 View。普通页面优先 <font color="red"><b>some</b></font> 和泛型，确有运行时异构存储需求才考虑 AnyView。
 
@@ -2082,7 +2230,7 @@ struct TodoDemo: View {
 
 <a href="#ui-3-3" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 7、<font id="ui-faq-7">Modifier 是在修改原来的 View 吗？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-104" data-jobs-toc="v2">7、<font id="ui-faq-7">Modifier 是在修改原来的 View 吗？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**通常是在组合新的视图描述或行为，不是像 UIView 一样对同一个实例连续赋属性。因此 modifier 顺序会影响布局、绘制和环境作用范围。
 
@@ -2092,7 +2240,7 @@ struct TodoDemo: View {
 
 <a href="#ui-4-1" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 8、<font id="ui-faq-8">State 为什么不会随 View <font color="red"><b>struct</b></font> 重建就清零？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-105" data-jobs-toc="v2">8、<font id="ui-faq-8">State 为什么不会随 View <font color="red"><b>struct</b></font> 重建就清零？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**State 的有效存储由 SwiftUI 关联到视图身份，不简单等于某次临时 <font color="red"><b>struct</b></font> 的普通字段。保持同一身份时可以保留，身份结束或改变时会重新建立。
 
@@ -2102,7 +2250,7 @@ struct TodoDemo: View {
 
 <a href="#ui-6-2" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 9、<font id="ui-faq-9">State 和 Binding 怎么选？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-106" data-jobs-toc="v2">9、<font id="ui-faq-9">State 和 Binding 怎么选？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**State 表达当前拥有者的 UI 状态；Binding 表达对子树之外某个真值的读写通道。父拥有 State，子通过 Binding 修改同一份数据，避免双份状态同步。
 
@@ -2112,7 +2260,7 @@ struct TodoDemo: View {
 
 <a href="#ui-6-2" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 10、<font id="ui-faq-10">$name、_name、name 有什么区别？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-107" data-jobs-toc="v2">10、<font id="ui-faq-10">$name、_name、name 有什么区别？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**在 State 示例里，name 是包装后的值，$name 是 projectedValue，也就是 Binding；_name 是包装器存储，常在自定义初始化时使用。它们不是地址运算。
 
@@ -2122,7 +2270,7 @@ struct TodoDemo: View {
 
 <a href="#ui-6-4" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 11、<font id="ui-faq-11">Observable 宏解决什么，不解决什么？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-108" data-jobs-toc="v2">11、<font id="ui-faq-11">Observable 宏解决什么，不解决什么？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**它为模型生成变化观察支持，让 SwiftUI 根据读取的可观察属性建立依赖。它不提供数据库、网络、自动线程安全或请求去重；UI 模型的 <font color="red"><b>MainActor</b></font> 隔离和业务规则仍要单独设计。
 
@@ -2132,7 +2280,7 @@ struct TodoDemo: View {
 
 <a href="#ui-7-3" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 12、<font id="ui-faq-12">Bindable 和 Binding 的区别？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-109" data-jobs-toc="v2">12、<font id="ui-faq-12">Bindable 和 Binding 的区别？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**Binding 是某个具体值的双向读写通道；Bindable 用于给现代可观察对象生成其可写属性的绑定，例如 `$model.name`。Bindable 不代替 State 管理自己创建模型的持久存储。
 
@@ -2142,7 +2290,7 @@ struct TodoDemo: View {
 
 <a href="#ui-7-1" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 13、<font id="ui-faq-13">StateObject 与 ObservedObject 怎么选？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-110" data-jobs-toc="v2">13、<font id="ui-faq-13">StateObject 与 ObservedObject 怎么选？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**旧式 ObservableObject 由当前 View 创建并负责生命周期时用 StateObject；外部传入已管理好的实例时用 ObservedObject。核心是所有权和稳定存储，不是“一个刷新、一个不刷新”。
 
@@ -2152,7 +2300,7 @@ struct TodoDemo: View {
 
 <a href="#ui-8-1" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 14、<font id="ui-faq-14">为什么不能把 ObservableObject 简单放进 State？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-111" data-jobs-toc="v2">14、<font id="ui-faq-14">为什么不能把 ObservableObject 简单放进 State？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**本文基线的 State 可以管理引用值，但不会因此自动订阅旧对象内部 Published 的变化。旧对象用对应对象包装器；现代 Observable 则有另一套 SwiftUI Observation 集成。
 
@@ -2162,7 +2310,7 @@ struct TodoDemo: View {
 
 <a href="#ui-8-2" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 15、<font id="ui-faq-15">EnvironmentObject 和 Environment 是全局单例吗？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-112" data-jobs-toc="v2">15、<font id="ui-faq-15">EnvironmentObject 和 Environment 是全局单例吗？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**不是。它们读取视图树作用域里的依赖，生命周期由创建者负责。旧对象通过 EnvironmentObject 注入读取，现代模型可以按类型使用 Environment；系统环境值也通过 Environment 读取。
 
@@ -2172,7 +2320,7 @@ struct TodoDemo: View {
 
 <a href="#ui-9-1" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 16、<font id="ui-faq-16">闭包和 Binding 什么时候各用一个？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-113" data-jobs-toc="v2">16、<font id="ui-faq-16">闭包和 Binding 什么时候各用一个？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**持续编辑一个值用 Binding；保存、删除、重试等业务意图用闭包或模型方法。不能为了传一次点击事件把整个父模型都开放给子组件任意改。
 
@@ -2182,7 +2330,7 @@ struct TodoDemo: View {
 
 <a href="#ui-6-3" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 17、<font id="ui-faq-17">AppStorage 和 SceneStorage 有什么区别？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-114" data-jobs-toc="v2">17、<font id="ui-faq-17">AppStorage 和 SceneStorage 有什么区别？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**AppStorage 连接 UserDefaults，适合应用偏好；SceneStorage 管理每个 Scene 的轻量恢复状态。二者都不是完整业务数据库，也不适合存敏感凭据。
 
@@ -2192,7 +2340,7 @@ struct TodoDemo: View {
 
 <a href="#ui-9-2" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 18、<font id="ui-faq-18">SwiftUI 布局和 Auto Layout 有什么不同？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-115" data-jobs-toc="v2">18、<font id="ui-faq-18">SwiftUI 布局和 Auto Layout 有什么不同？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**SwiftUI 主要通过父层提出尺寸、子层选择尺寸、父层安排位置来协商布局；Auto Layout 主要求解约束关系。不能把每个 frame modifier 当成一条 NSLayoutConstraint。
 
@@ -2202,7 +2350,7 @@ struct TodoDemo: View {
 
 <a href="#ui-5-1" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 19、<font id="ui-faq-19">offset、padding、frame 有什么区别？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-116" data-jobs-toc="v2">19、<font id="ui-faq-19">offset、padding、frame 有什么区别？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**padding 为布局加入边距；frame 包裹并约束布局尺寸；offset 改变呈现位置但不让兄弟按偏移后的结果重新腾出空间。排版优先用布局关系，偏移用于明确的视觉位移。
 
@@ -2212,7 +2360,7 @@ struct TodoDemo: View {
 
 <a href="#ui-5-3" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 20、<font id="ui-faq-20">GeometryReader 为什么经常把布局撑满？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-117" data-jobs-toc="v2">20、<font id="ui-faq-20">GeometryReader 为什么经常把布局撑满？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**它本身是参与布局的容器，倾向使用父层提供的空间，不是没有尺寸影响的测量函数。只有需要几何信息时才用，并在滚动等环境中明确自身尺寸。
 
@@ -2222,7 +2370,7 @@ struct TodoDemo: View {
 
 <a href="#ui-5-5" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 21、<font id="ui-faq-21">List 和 ForEach 有什么区别？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-118" data-jobs-toc="v2">21、<font id="ui-faq-21">List 和 ForEach 有什么区别？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**List 是提供列表布局和平台行为的容器；ForEach 根据数据与身份生成重复内容，可以放进 List、Stack 或 Grid。ForEach 本身不提供滚动。
 
@@ -2232,7 +2380,7 @@ struct TodoDemo: View {
 
 <a href="#ui-10-1" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 22、<font id="ui-faq-22">为什么列表不能随便用数组下标当 ID？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-119" data-jobs-toc="v2">22、<font id="ui-faq-22">为什么列表不能随便用数组下标当 ID？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**插入、删除或重排后，下标指向的业务实体会改变，框架可能把旧行状态关联到新实体。列表需要同一实体稳定、不同实体唯一的 ID。
 
@@ -2242,7 +2390,7 @@ struct TodoDemo: View {
 
 <a href="#ui-10-3" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 23、<font id="ui-faq-23">结构身份和显式身份是什么？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-120" data-jobs-toc="v2">23、<font id="ui-faq-23">结构身份和显式身份是什么？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**结构身份来自视图类型和结构位置；显式身份来自 ForEach 数据 ID 或 id modifier 等。身份影响状态生命周期、转场和增量更新。
 
@@ -2252,7 +2400,7 @@ struct TodoDemo: View {
 
 <a href="#ui-10-3" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 24、<font id="ui-faq-24">LazyVStack 一定比 VStack 快吗？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-121" data-jobs-toc="v2">24、<font id="ui-faq-24">LazyVStack 一定比 VStack 快吗？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**不一定。Lazy 适合大量按需展示内容；少量视图用 VStack 简单直接。实际性能还受测量、身份、图片和数据更新影响。
 
@@ -2262,7 +2410,7 @@ struct TodoDemo: View {
 
 <a href="#ui-10-2" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 25、<font id="ui-faq-25">NavigationStack 路径应该存什么？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-122" data-jobs-toc="v2">25、<font id="ui-faq-25">NavigationStack 路径应该存什么？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**存能描述目的地的 Hashable 路由数据，例如路由枚举和业务 ID。统一类型可用数组，异构路径可用 NavigationPath，不存 UIViewController。
 
@@ -2272,7 +2420,7 @@ struct TodoDemo: View {
 
 <a href="#ui-11-1" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 26、<font id="ui-faq-26">sheet(item:) 为什么经常更合适？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-123" data-jobs-toc="v2">26、<font id="ui-faq-26">sheet(item:) 为什么经常更合适？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**展示某个对象时，可选 item 同时表达是否展示和展示谁，避免 Bool 为 <font color="red"><b>true</b></font> 但选中数据还是 <font color="red"><b>nil</b></font> 的矛盾。只有是否展示的需求仍适合 Bool。
 
@@ -2282,7 +2430,7 @@ struct TodoDemo: View {
 
 <a href="#ui-11-2" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 27、<font id="ui-faq-27">onAppear 等于 viewDidLoad 吗？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-124" data-jobs-toc="v2">27、<font id="ui-faq-27">onAppear 等于 viewDidLoad 吗？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**不等于。它是内容出现时的回调，可能多次执行；View <font color="red"><b>init</b></font>、body、appear、任务和身份生命周期没有 UIKit 回调的一一映射。
 
@@ -2292,7 +2440,7 @@ struct TodoDemo: View {
 
 <a href="#ui-12-1" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 28、<font id="ui-faq-28">task 和 task(id:) 区别是什么？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-125" data-jobs-toc="v2">28、<font id="ui-faq-28">task 和 task(id:) 区别是什么？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**二者都用于关联视图的异步工作；task(id:) 还在 ID 变化时取消旧工作并启动新工作，适合搜索词或详情 ID 变化。两者都需要配合协作式取消。
 
@@ -2302,7 +2450,7 @@ struct TodoDemo: View {
 
 <a href="#ui-13-1" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 29、<font id="ui-faq-29">取消请求后为什么旧结果还会回来？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-126" data-jobs-toc="v2">29、<font id="ui-faq-29">取消请求后为什么旧结果还会回来？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**取消只是协作信号，底层任务可能不支持、未传递，或结果已在路上。提交时还要检查任务取消与请求序号；同词重试不能只比较查询词。
 
@@ -2312,7 +2460,7 @@ struct TodoDemo: View {
 
 <a href="#ui-13-1" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 30、<font id="ui-faq-30"><font color="red"><b>async</b></font> / <font color="red"><b>Task</b></font> 就代表后台执行吗？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-127" data-jobs-toc="v2">30、<font id="ui-faq-30"><font color="red"><b>async</b></font> / <font color="red"><b>Task</b></font> 就代表后台执行吗？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**不代表。<font color="red"><b>async</b></font> 允许挂起，<font color="red"><b>Task</b></font> 是调度与生命周期抽象，并受隔离上下文影响。真正的异步等待可以让出执行机会，但同步重计算仍占用所在执行器。
 
@@ -2322,7 +2470,7 @@ struct TodoDemo: View {
 
 <a href="#ui-13-4" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 31、<font id="ui-faq-31">Observable 是否自带线程安全？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-128" data-jobs-toc="v2">31、<font id="ui-faq-31">Observable 是否自带线程安全？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**观察机制不等于并发隔离。UI 模型可以明确 <font color="red"><b>MainActor</b></font>，跨任务共享服务可以 <font color="red"><b>actor</b></font> 或其它正确同步机制；业务跨 <font color="red"><b>await</b></font> 的不变量仍要自己保护。
 
@@ -2332,7 +2480,7 @@ struct TodoDemo: View {
 
 <a href="#ui-7-4" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 32、<font id="ui-faq-32">为什么 refreshable 里面要 <font color="red"><b>await</b></font>？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-129" data-jobs-toc="v2">32、<font id="ui-faq-32">为什么 refreshable 里面要 <font color="red"><b>await</b></font>？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**刷新任务完成时机应该和实际工作一致。直接 <font color="red"><b>await</b></font> 让系统刷新表现跟随工作；只启动不等待的新 <font color="red"><b>Task</b></font> 后返回，会让两者脱节。
 
@@ -2342,7 +2490,7 @@ struct TodoDemo: View {
 
 <a href="#ui-13-2" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 33、<font id="ui-faq-33">FocusState 怎么管理多个输入框？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-130" data-jobs-toc="v2">33、<font id="ui-faq-33">FocusState 怎么管理多个输入框？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**用可选 Hashable 枚举表达当前焦点，每个字段绑定不同 <font color="red"><b>case</b></font>；修改值切换焦点，设 <font color="red"><b>nil</b></font> 取消焦点。它比多个互相冲突的 Bool 更清楚。
 
@@ -2352,7 +2500,7 @@ struct TodoDemo: View {
 
 <a href="#ui-14-1" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 34、<font id="ui-faq-34">withAnimation 和 transition 的区别？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-131" data-jobs-toc="v2">34、<font id="ui-faq-34">withAnimation 和 transition 的区别？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**withAnimation 建立状态变化的动画上下文；transition 描述视图插入和移除时怎么表现。已有视图的大小变化和视图进入离开是不同问题。
 
@@ -2362,7 +2510,7 @@ struct TodoDemo: View {
 
 <a href="#ui-15-1" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 35、<font id="ui-faq-35">GestureState 与 State 的区别？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-132" data-jobs-toc="v2">35、<font id="ui-faq-35">GestureState 与 State 的区别？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**GestureState 适合手势过程中的临时值，并在手势结束后复位；State 保存需要继续存在的最终位置或业务状态。拖动时临时位移和松手后的最终位置可以分开建模。
 
@@ -2372,7 +2520,7 @@ struct TodoDemo: View {
 
 <a href="#ui-15-2" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 36、<font id="ui-faq-36">SwiftUI 是否必须 MVVM？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-133" data-jobs-toc="v2">36、<font id="ui-faq-36">SwiftUI 是否必须 MVVM？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**不必须。简单组件可以使用本地状态和组合；复杂页面把业务状态和服务编排拆到模型层以提升可测试性。MVVM 是选择，不是遵循 View 协议的前置条件。
 
@@ -2382,7 +2530,7 @@ struct TodoDemo: View {
 
 <a href="#ui-16-2" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 37、<font id="ui-faq-37">UIHostingController 和 UIViewRepresentable 区别？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-134" data-jobs-toc="v2">37、<font id="ui-faq-37">UIHostingController 和 UIViewRepresentable 区别？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**Hosting Controller 把 SwiftUI 放进 UIKit；UIViewRepresentable 把 UIKit UIView 放进 SwiftUI。包装控制器则用 UIViewControllerRepresentable；两者方向相反，都是互操作，不是系统版本兼容的别名。
 
@@ -2392,7 +2540,7 @@ struct TodoDemo: View {
 
 <a href="#ui-17-1" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 38、<font id="ui-faq-38">Representable 为什么需要 Coordinator？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-135" data-jobs-toc="v2">38、<font id="ui-faq-38">Representable 为什么需要 Coordinator？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**它作为稳定引用对象承接 delegate / Target-Action 等回调，把 UIKit 事件反馈到绑定或模型。Representable 自身是会重建的值描述，不适合直接充当长期 NSObject 代理。
 
@@ -2402,7 +2550,7 @@ struct TodoDemo: View {
 
 <a href="#ui-17-4" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 39、<font id="ui-faq-39">makeUIView 与 updateUIView 怎么分工？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-136" data-jobs-toc="v2">39、<font id="ui-faq-39">makeUIView 与 updateUIView 怎么分工？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**make 创建这一生命周期的 UIKit 实例和基础配置；update 将最新输入同步到现存实例；dismantle 清理自有监听和资源。update 要可重复执行、避免反馈循环。
 
@@ -2412,7 +2560,7 @@ struct TodoDemo: View {
 
 <a href="#ui-17-4" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 40、<font id="ui-faq-40">旧项目如何低风险接入 SwiftUI？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-137" data-jobs-toc="v2">40、<font id="ui-faq-40">旧项目如何低风险接入 SwiftUI？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**先用 Hosting 接一个边界清楚的新页面，或用 Hosting Configuration 替换一个 Cell 内容；保留现有导航、成熟 UIKit 控件和服务层。明确状态、任务和导航谁拥有，并测返回、键盘、主题、性能和最低系统版本。
 
@@ -2422,7 +2570,7 @@ struct TodoDemo: View {
 
 <a href="#ui-17-7" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 41、<font id="ui-faq-41">State 变化是不是只刷新一个 Text？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-138" data-jobs-toc="v2">41、<font id="ui-faq-41">State 变化是不是只刷新一个 Text？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**不能这样承诺。依赖变化会使相关描述失效并触发更新，但 body 求值、布局和实际绘制不是同一层。现代观察能表达更细依赖，实际更新范围仍由结构与运行时共同决定。
 
@@ -2432,7 +2580,7 @@ struct TodoDemo: View {
 
 <a href="#ui-18-1" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 42、<font id="ui-faq-42">所有状态都放一个 AppStore 可以吗？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-139" data-jobs-toc="v2">42、<font id="ui-faq-42">所有状态都放一个 AppStore 可以吗？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**可以建立统一架构，但不能不区分作用域地混放。登录会话、路由、页面草稿、行临时状态有不同生命周期和权限；过大共享模型增加耦合和更新影响范围。
 
@@ -2442,7 +2590,7 @@ struct TodoDemo: View {
 
 <a href="#ui-16-2" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 43、<font id="ui-faq-43">如何验证一个 SwiftUI 页面？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-140" data-jobs-toc="v2">43、<font id="ui-faq-43">如何验证一个 SwiftUI 页面？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**模型单测业务规则，服务测试网络和取消，Preview 检查可控状态布局，UI 测试验证操作流程，真机检查键盘、无障碍、滚动和性能。不同验证层不能互相替代。
 
@@ -2452,7 +2600,7 @@ struct TodoDemo: View {
 
 <a href="#ui-18-4" style="color:red;font-weight:bold;">返回知识点</a>
 
-### 44、<font id="ui-faq-44">如果没有实际 SwiftUI 项目经验，面试怎么回答？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+### <span id="jobs-toc-heading-141" data-jobs-toc="v2">44、<font id="ui-faq-44">如果没有实际 SwiftUI 项目经验，面试怎么回答？</font> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 **期望回答：**我的主要生产经验在 UIKit，目前已系统学习 SwiftUI 的状态归属、身份、导航和混用。我会先在独立页面或 Cell 中渐进接入，并用小 Demo 验证行为。对尚未做过的生产规模或问题，我会明确说明，再讲设计和验证方法，不把练习包装成真实上线经历。
 

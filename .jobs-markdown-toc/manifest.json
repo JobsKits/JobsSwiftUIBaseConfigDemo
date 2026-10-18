@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "files": [
+    ".jobs-markdown-toc/README.md",
+    "JobsByPods/JobsSwiftUIDebugPanel@Pods/README.md",
+    "README.md",
+    "ScriptsByPods/README.md",
+    "ScriptsByPods/codegraph_export_md.command/README.md",
+    "ScriptsByPods/codegraph_init.command/README.md",
+    "ScriptsByPods/【MacOS】🌐CocoaPods源自动选择.command/README.md",
+    "ScriptsByPods/【MacOS】🌐CocoaPods网络适配.command/README.md",
+    "SwiftUIDoc.md/SwiftUI工程项目框架配置方案@Jobs.md/SwiftUI工程项目框架配置方案@Jobs.md",
+    "SwiftUI相关经验.md/SwiftUI相关经验.md"
+  ]
+}

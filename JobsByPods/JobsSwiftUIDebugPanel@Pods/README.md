@@ -2,17 +2,32 @@
 
 ![Jobs出品，必属精品](https://picsum.photos/1500/400)
 
-[toc]
+<!-- jobs-toc:start -->
+<!-- jobs-toc:source {"v":2,"token":"[toc]"} -->
+<details>
+<summary>📚 目录（点击展开 / 收起）</summary>
+
+- [🔥 前言](#jobs-toc-heading-1)
+- [一、功能与边界](#jobs-toc-heading-2)
+- [二、目录与职责](#jobs-toc-heading-3)
+- [三、Debug 接入](#jobs-toc-heading-4)
+- [四、场景、动作与网络接入](#jobs-toc-heading-5)
+- [五、Demo 与弱网说明](#jobs-toc-heading-6)
+- [六、图片来源与许可](#jobs-toc-heading-7)
+- [七、验证与维护](#jobs-toc-heading-8)
+
+</details>
+<!-- jobs-toc:end -->
 
 ---
 
-## 🔥 <font id=前言>前言</font>
+## <span id="jobs-toc-heading-1" data-jobs-toc="v2">🔥 <font id=前言>前言</font></span><!-- jobs-toc:heading-end -->
 
 `JobsSwiftUIDebugPanel` 是 iOS 17 起可用的本地 [**Swift**](https://www.swift.org/) / [**SwiftUI**](https://developer.apple.com/xcode/swiftui/) 调试工具 Pod。圆形 `UIButton` 通过 `UIViewRepresentable` 使用一张本地背景图，点击后在 `NavigationStack` 推出 `List`，首项固定为 App 环境切换，其后按配置顺序展示自定义动作。入口始终显示在面板上方，再次点击返回打开前的业务页面。
 
 面板 UI、环境列表和自定义目标页均使用 SwiftUI。原生 [**UIKit**](https://developer.apple.com/documentation/uikit) 仅用于场景窗口绑定、最高浮层、圆形入口的点击／拖动／长按仲裁、触摸穿透和 `UIHostingController` 承载，不依赖 UIKit 版调试面板，也没有其它业务 Pod 依赖。
 
-## 一、功能与边界 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-2" data-jobs-toc="v2">一、功能与边界 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 | 功能 | 行为 |
 | --- | --- |
@@ -28,7 +43,7 @@
 
 长按隐藏后前后台切换不会恢复按钮。环境选择会跨进程保存，恢复顺序为“仍存在的已保存标识 → 默认标识 → 第一项”；已删除的环境配置不会继续作为当前环境。环境列表始终提供空态说明和重新加载入口。
 
-## 二、目录与职责 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-3" data-jobs-toc="v2">二、目录与职责 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```text
 .
@@ -70,7 +85,7 @@
 
 资源只将 PNG 与许可打入 `JobsSwiftUIDebugPanelResources.bundle`；SVG 和来源记录留在源码目录供审计。`Support` 目录没有实际需要，未创建空目录或重复 subspec。
 
-## 三、Debug 接入 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-4" data-jobs-toc="v2">三、Debug 接入 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 在宿主工程 `Podfile.deps` 声明：[**CocoaPods**](https://guides.cocoapods.org/syntax/podfile.html#pod) 的 `:configurations` 限制该 Pod 只参与 Debug 链接和资源拷贝。
 
@@ -132,7 +147,7 @@ JobsSwiftUIDebugPanel.shared
 
 App 使用 `@UIApplicationDelegateAdaptor` 注册该 delegate，并对 `WindowGroup` 根视图应用 `.jobsSwiftUIDebugPanel()`；所有 import、属性及修饰符入口置于 `#if DEBUG`。完整入口见 [JobsSwiftUIBaseConfigDemoApp.swift](../../JobsSwiftUIBaseConfigDemo/JobsSwiftUIBaseConfigDemoApp.swift)。
 
-## 四、场景、动作与网络接入 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-5" data-jobs-toc="v2">四、场景、动作与网络接入 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 窗口适配器绑定业务窗口所在的 `UIWindowScene`。只有已接入且处于前台的场景显示按钮；业务窗口更换时重建对应浮层，场景失活隐藏浮层，断开时释放窗口。圆形 `UIButton` 由 SwiftUI 布局，通过窗口坐标单指拖动；保存场景内的相对位置，尺寸或安全区域改变时重新钳制，整枚按钮距安全边界至少 8 点。位置仅在当前场景的本次运行保留，冷启动回到默认位置。几何测量后的圆形命中范围之外全部穿透到业务窗口。工具页推出后由浮层接收页面交互；按钮放在导航栈外的顶层，菜单、环境页和自定义页都能再次点击关闭并恢复穿透。关闭清除调试页及临时提示，再次打开回到工具列表，不改变业务 Tab、导航位置或所选环境。子页面注入的 `jobsSwiftUIDebugOpenPanel` 保持单向打开，重复调用不会关闭面板。
 
@@ -144,7 +159,7 @@ App 使用 `@UIApplicationDelegateAdaptor` 注册该 delegate，并对 `WindowGr
 
 管理器和 UI 操作在主线程执行；`byEnvironmentChanged` 启动时会收到恢复后的环境，选择时再次调用。网络请求属于宿主，本 Pod 不拦截或改写全 App 请求。Demo 的 [JobsSwiftUIDebugNetworkEnvironment.swift](../../JobsSwiftUIBaseConfigDemo/JobsSwiftUIDebugNetworkEnvironment.swift) 接收 Base URL，正在执行的请求保留发起时 URL 快照，环境变化取消旧任务并发起新请求。
 
-## 五、Demo 与弱网说明 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-6" data-jobs-toc="v2">五、Demo 与弱网说明 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 Debug 的 Demo 列表和速览页新增“SwiftUI Debug 调试面板”。面板自定义项为“SwiftUI 调试面板使用示例”和“查看当前环境”。使用示例提供“跟随系统／白天／黑夜”主题选择；该演示偏好由宿主 App 根视图消费，面板只观察最终外观。使用示例显示当前备注与 Base URL，进入页面或点击重新请求时真实发起 `GET /get`，超时 3 秒。
 
@@ -154,13 +169,13 @@ Debug 的 Demo 列表和速览页新增“SwiftUI Debug 调试面板”。面板
 
 需要设备级弱网时使用 Apple 的 [**Network Link Conditioner**](https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/On_Demand_Resources_Guide/TestingPerformance.html)：在开发设备的 `Settings > Developer` 中启用并选择网络配置。该官方文档直接说明开关、配置及设备流量范围。
 
-## 六、图片来源与许可 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-7" data-jobs-toc="v2">六、图片来源与许可 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 按规则先检索 [**iconfont**](https://www.iconfont.cn/)，未取得可核实具体作者许可的素材后，采用 [**Ant Design Icons**](https://github.com/ant-design/ant-design-icons/blob/master/packages/icons-svg/svg/filled/bug.svg) 官方 bug 矢量。MIT 许可为 Copyright (c) 2018-present Ant UED，完整许可随资源 bundle 打包，来源与处理过程见 [SOURCE.txt](./Resource/SOURCE.txt)。
 
 最终 `JobsDebugPanelButton.png` 是 240×240 的淡金黄圆底与黑色 bug 图案，圆外透明，按钮只显示这张图片，无文字叠加或远程加载。入口的 `UIViewRepresentable.sizeThatFits` 按 SwiftUI 提议尺寸测量为 56×56 点，图片固有尺寸不会扩大按钮或遮挡旁边操作；圆形触摸范围与显示尺寸一致。原图路径未修改，圆底与布局由本项目组合，所有端复用同一图片。
 
-## 七、验证与维护 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+## <span id="jobs-toc-heading-8" data-jobs-toc="v2">七、验证与维护 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 Debug 验证宿主三态主题及已打开页面刷新、系统与宿主强制主题不一致时的文字／背景对比、拖动后点击／长按互斥、安全区域与旋转钳制、按钮在菜单／二级环境页／自定义页打开与关闭、关闭重开回到工具列表、环境二级选择与重启恢复、自定义动作顺序、真实 `GET /get`、长按隐藏及冷启动恢复；Release 验证宿主不链接该 Pod、不复制其资源 bundle，Demo 注册表和 App 入口均没有调试代码。
 
