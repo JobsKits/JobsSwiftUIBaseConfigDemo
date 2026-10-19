@@ -1,5 +1,11 @@
 # `JobsSwiftUIBaseConfigDemo`
 
+> **项目定位：** `JobsSwiftUIBaseConfigDemo`，面向 iOS 开发者的原生 SwiftUI 系统控件、导航与状态交互演示工程，用于学习与验证纯 SwiftUI 页面组织。
+>
+> **状态与维护：** 维护中（本地提交历史见统计章节）；负责人 Jobs，未登记独立维护团队。运行 / 硬件 / 生产功能须按对应证据验收。
+>
+> **统计基线：** 2026-10-19（Asia/Shanghai）；[项目规模、依赖与接手指南](#project-statistics)，页面、源码和提交分别采用明确口径，原有教程与历史记录继续保留。
+
 ![Jobs出品，必属精品](https://picsum.photos/1500/400)
 
 <!-- jobs-toc:start -->
@@ -31,6 +37,16 @@
 - [八、扩展 Demo](#jobs-toc-heading-22)
 - [九、注意事项](#jobs-toc-heading-23)
 - [十、排查方式](#jobs-toc-heading-24)
+- [十一、项目统计与接手指南](#project-statistics)
+  - [11.1、SDK、工具链与锁文件](#statistics-toolchain)
+  - [11.2、Git 历史与统计边界](#statistics-history)
+  - [11.3、页面、子页面与路由](#statistics-pages)
+  - [11.4、后端规模适用边界](#statistics-backend)
+  - [11.5、模块依赖与核心流程](#statistics-flows)
+  - [11.6、功能实现与证据](#statistics-features)
+  - [11.7、业务代码占比与复核命令](#statistics-code-share)
+  - [11.8、直接依赖清单与风险](#statistics-dependencies)
+  - [11.9、运行、构建、测试与常见问题](#statistics-run)
 
 </details>
 <!-- jobs-toc:end -->
@@ -415,5 +431,233 @@ pod install
 | Debug 按钮没有出现 | 确认使用 Debug 构建、AppDelegate 已 `byStart()`，且 WindowGroup 根视图已添加 `.jobsSwiftUIDebugPanel()`；长按关闭后需冷启动恢复 |
 | 本地 Mock 请求回退 | 确认对应地址的服务已启动；Demo 继续显示本地示例，服务恢复后点击重新请求即可显示服务器数据 |
 | Release 出现调试入口 | 检查 Podfile 的 `:configurations => ['Debug']`，且 Release 未定义 `DEBUG` |
+
+## 十一、<span id="project-statistics">项目统计与接手指南</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+
+本节记录当前源码与配置基线。数量随代码变化，应在影响统计的提交中重新计算；超出一个迭代周期应视为待复核。锁文件、页面清单、依赖声明或入口改变时，同时更新表格与流程图。依赖用途依据静态引用，不将“已声明”混同于“已实际执行”。
+
+### 11.1、<span id="statistics-toolchain">SDK、工具链与锁文件</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+
+| 类别 | 名称 | 当前配置 / 依据 | 锁文件入库状态 |
+| --- | --- | --- | --- |
+| 语言 / UI | Swift / SwiftUI | `project.pbxproj` 的 `SWIFT_VERSION=5.0`，表示语言模式；编译器具体版本未固定 | 无 Swift 编译器锁文件 |
+| 构建工具 | [**Xcode**](https://developer.apple.com/xcode) / iOS SDK | `LastUpgradeCheck=2660` 为工程迁移标记，不等于本机实际安装版本；未固定具体 SDK build | 工程配置已入库 |
+| 包管理器 | CocoaPods | `Podfile.lock` 记录 `1.17.0`，没有 Gemfile / Bundler 锁 | `Podfile.lock` 已入库 |
+| 最低系统 | iOS | App Debug / Release 均为 `17.0`，本地两个 podspec 也声明 `17.0` | Podfile / pbxproj 已入库 |
+| 依赖 | 本地 path Pod | 只有 CodeGraph 生命周期锚点和 Debug 调试 Pod，不需要私有远端仓库 | 已入库源码；path 内容不由 Pod 版本号或锁文件校验和完整固定 |
+
+统计 / 核对时间：**2026-10-19**。锁文件“已入库”由 `git ls-files` 精确查询确认，不代表包管理器工具本体已被锁定，也不代表刚完成依赖安装。
+
+### 11.2、<span id="statistics-history">Git 历史与统计边界</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+
+所有数字采集于 **2026-10-19（Asia/Shanghai）**。历史范围为当前本地 `HEAD` 可达提交；贡献者范围为本地所有 refs，按作者身份字符串计数，没有合并同一人的不同邮箱 / 大小写，也没有查询托管平台后台。
+
+| 指标 | 当前值 | 口径与依据 |
+| --- | --- | --- |
+| 托管平台首次建库时间 | 未知 | 本地 Git 不保存服务端建库时间，不能拿首次提交时间代替 |
+| 首次提交 | `2026-06-30T21:15:11+08:00 77ebf3e59f6e98b6b94b3517194a59083fbc6c2d Jobs` | `git log --reverse --format='%aI %H %an' HEAD` 的首条 |
+| 最近提交 | `2026-10-18T23:52:26+08:00 0bdb202016210a834e4402d87e0dca65d97f72fb` | `git log -1 --format='%aI %H'` |
+| 总提交数 | 13 | `git rev-list --count HEAD`，含合并提交 |
+| 作者身份数 | 1 | `git shortlog -sn --all` 的非空行数，不等于自然人数 |
+
+工作区与提交历史是不同口径：以下源码规模按当前工作区中 **Git 已跟踪文件** 计量；Git 表格记录的是提交历史，不包含尚未提交的 README 内容。
+
+### 11.3、<span id="statistics-pages">页面、子页面与路由</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+
+计数时间：**2026-10-19**；单位选用**页面组件**，每个独立完整屏幕的 SwiftUI View 类型算一个，不按实例、参数或每个 `NavigationLink` 重复计页。主 Tab 容器本身、列表行、仪表盘、预览卡、模态内容、Debug 浮层及其工具菜单均排除。没有 H5 / Flutter 等跨端容器。
+
+| 端 / 配置 | 页面数（含子页面） | 子页面数 | 注册路由数 | 计数依据 |
+| --- | ---: | ---: | ---: | --- |
+| iOS Debug | 23 | 2 | 18 | 三个 Tab 根内容 + `DemoFeature` 的 18 个 Demo 目标 + 两个具名详情 View |
+| iOS Release | 22 | 2 | 17 | 同上，排除 `#if DEBUG` 的 debugPanel |
+| Android / Web | 不适用 | 不适用 | 不适用 | 本工程仅 iOS target |
+
+子页是 `NavigationDetailView` 与 `DirectionalPushDetailView`；前者接受 3 个 `NavigationSample` 参数，仍只算一个组件。`PresentationContentView` 复用于 Sheet / Popover / FullScreenCover，按“全部模态内容排除”的口径不计页。`CustomCircularGaugeView` 等局部控件也不计。注册路由只数 `DemoFeature` 枚举的声明项；另有导航示例的 3 个参数目标和四向 Push 的 1 个目标模板，合计 4 个二级导航目标，不并入枚举路由数。
+
+复核：`sed -n '16,38p' JobsSwiftUIBaseConfigDemo/DemoFeature.swift` 对照 `MainTabView.swift` 的三个 Tab，再检查 `Demos/NavigationDemoView.swift`、`Demos/DirectionalPushDemoView.swift` 的详情类型；不要用 `struct .*View` 的全局匹配数代替页面数。
+
+### 11.4、<span id="statistics-backend">后端规模适用边界</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+
+本仓是客户端演示 / 基础工程，未交付独立后端，不能把客户端请求样例或本地 URLProtocol / Mock 算成对外服务接口。以下边界均按 **2026-10-19** 本仓源码与配置核对，不覆盖远端服务部署。
+
+| 后端统计项 | 本仓结论与依据 |
+| --- | --- |
+| HTTP / RPC / MQ 对外接口 | 不适用；未发现本仓维护的后端服务入口及 OpenAPI / RPC 服务注册定义。客户端 HTTP / WebSocket / MQTT 演示不计入 |
+| 服务模块 / 部署单元 | 不适用；客户端 target、Pod 或 Pub 包不等于后端部署单元 |
+| 业务主表 | 不适用；本地数据库示例不等于后端业务表 |
+| 业务状态机 | 未建立后端订单、审批或结算对象；UI 状态与定时器状态不计入 |
+| 外部系统集成 | 仅按功能表报告客户端示例，生产服务合同与数量未知 |
+| 定时任务 / 批处理 / 异步消费者 | 客户端 Timer 与 MQTT 订阅示例不计为已部署后端任务 |
+| 中间件依赖 | 没有本仓后端部署清单；Redis、消息队列、对象存储规模不适用 |
+| QPS / 日增 / 存储量 | 未采集生产监控，未知；不从源码行数或页面数推算 |
+
+因此不计算“页面 : 后端接口”的比例，也不把不适用项填成已核验的线上零规模。
+
+### 11.5、<span id="statistics-flows">模块依赖与核心流程</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+
+```mermaid
+flowchart LR
+    A["JobsSwiftUIBaseConfigDemoApp.swift"] --> B["MainTabView.swift"]
+    B --> C["DemoListView / GalleryTabView / AboutTabView"]
+    C --> D["DemoFeature.swift destination"]
+    D --> E["Demos/*DemoView.swift"]
+    E --> F["Apple SwiftUI / UIKit / Combine"]
+    A --> G["Debug：JobsSwiftUIDebugAppDelegate.swift"]
+    G --> H["JobsByPods/JobsSwiftUIDebugPanel@Pods"]
+    H --> I["JobsSwiftUIDebugNetworkEnvironment.swift"]
+    E --> X[["Debug URLSession /get：外部 HTTP 边界"]]
+    J["ScriptsByPods/JobsSwiftUICodeGraphHook"] -. "只负责安装生命周期" .-> A
+```
+
+```mermaid
+flowchart TD
+    A["App WindowGroup / MainTabView"] --> B["进入 DemoListView"]
+    B --> C["从 DemoFeature.allCases 选择功能"]
+    C --> D["NavigationStack 推出 destination"]
+    D --> E{"选择的演示"}
+    E -->|系统控件| F["本地状态更新并重新绘制"]
+    E -->|导航| G["具名详情页面"]
+    E -->|Debug 网络| H["GET 当前环境 /get；超时 3 秒"]
+    H --> I{"响应与 JSON 可解析"}
+    I -->|是| J["服务端结果替换本地内容"]
+    I -->|否| K["显示本地演示结果；可重新请求"]
+    J --> D
+    K --> D
+```
+
+图按已有 `.codegraph/` 查询与入口 / Demo 源码核实。`JobsSwiftUICodeGraphHook` 是安装锚点，不是业务网络层；Debug 浮层属于诊断工具，Release 不链接该 Pod。
+
+### 11.6、<span id="statistics-features">功能实现与证据</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+
+以下“未核实”表示未完成该项实现 / 配置 / 运行的端到端核查，不表示系统 API 或依赖包本身没有能力。核对日期：**2026-10-19**。
+
+| 类目 | 是否涉及 | 实现方式与证据 / 边界 |
+| --- | --- | --- |
+| 网络 / 加密 / 鉴权 / 证书 | 仅 Debug 网络样例 | `JobsSwiftUIDebugPanelDemoView.swift` 用 URLSession 请求 `/get`，3 秒超时、JSON 解析和本地回退；未实现统一鉴权、接口加密、SSL Pinning 或密钥仓 |
+| 数据持久化 / 数据库 / 缓存 / 迁移 | 轻量本地设置 | DemoListView 的排序存入 UserDefaults，调试 Demo 主题使用 `@AppStorage`；没有业务数据库、持久化迁移或自建缓存方案 |
+| 端能力 | 有系统图片、外链、分享 | `AsyncLinkShareDemoView.swift` 演示 AsyncImage / Link / ShareLink；无蓝牙、远端推送、定位、相机采集、生物识别、扫码、NFC 或支付实现证据，不能以系统框架可用性代替集成 |
+| 国际化 / 埋点 / 崩溃 / 热更新 | 未建立完整工程方案 | 当前界面中文为主；没有应用级多语言资源、生产埋点、远端崩溃上报、远程热更新或已登记 CI workflow |
+| 多环境 / 空态 / 重试 | Debug 已实现 | JobsSwiftUIDebugAppDelegate 配置本地 / httpbin / Postman Echo；本地请求失败保留演示结果并可重新请求。DemoListView 是静态注册列表，不等于服务端动态数据列表 |
+| 后端可靠性 | 不适用 | 不交付幂等、限流、熔断、锁、事务、链路追踪、灰度与对账服务 |
+| 隐私 / 权限 / 数据日志脱敏 | 未形成发布审计 | 无需由本 Demo 申请相机等高权限；工程配置不等于隐私合规验收。真实用户数据、生产日志脱敏与隐私清单完整性待核实 |
+
+### 11.7、<span id="statistics-code-share">业务代码占比与复核命令</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+
+统计时间：**2026-10-19（Asia/Shanghai）**。统计单位为物理文本行：`read_text().splitlines()`，包含空行与注释，末尾没有换行的非空尾行仍计一行；不是去注释后的有效代码行。分母只含业务、测试、配置与脚本三类。第三方和生成物只展示排除规模，未扫描的未跟踪依赖缓存不填入排除规模。
+
+| 类别 | 文件数 | 物理行数 | 分母内占比 |
+| --- | ---: | ---: | ---: |
+| 业务代码（含自有基础模块 / 平台胶水） | 40 | 3,684 | 40.85% |
+| 测试代码与回归脚本 | 5 | 1,217 | 13.49% |
+| 配置与脚本 | 16 | 4,118 | 45.66% |
+| 已跟踪第三方源码 / 配置（排除） | 0 | 0 | 不入分母 |
+| 已跟踪生成 / 缓存 / 构建文本（排除） | 0 | 0 | 不入分母 |
+
+```mermaid
+pie showData
+    title 自维护文本物理行占比（2026-10-19）
+    "业务代码" : 3684
+    "测试代码" : 1217
+    "配置与脚本" : 4118
+```
+
+只读复核时在仓库根运行下列脚本。它只读取 `git ls-files` 返回的文件；路径排除先于测试分类，资源与文档不计入代码，供应商测试不会混进自有测试。`Data.3rd` / `UI.3rd` 下的自维护使用示例属于业务，实际第三方实现按供应商路径与文件头排除。
+
+```shell
+python3 - <<'PY_STATS'
+from pathlib import Path
+from collections import defaultdict
+import re, subprocess
+source = {'.swift','.m','.mm','.h','.c','.cpp','.cc','.hpp','.dart','.kt','.java'}
+config = {'.command','.sh','.rb','.podspec','.py','.bat','.ps1','.yml','.yaml',
+          '.json','.xml','.plist','.pbxproj','.xcconfig','.gradle','.kts',
+          '.properties','.cmake','.entitlements','.mjs','.toml',
+          '.xcworkspacedata','.xcscheme'}
+names = {'Podfile','Podfile.deps','Gemfile','CMakeLists.txt','gradlew','.fvmrc'}
+excluded = {'.git','.dart_tool','build','DerivedData','.build','.ios','.macos',
+            '.fvm','.codegraph','Unity','Flutter','ephemeral','gen','l10n','Generated','generated'}
+totals = defaultdict(lambda: [0, 0])
+for name in subprocess.check_output(['git','ls-files','-z']).decode().split('\0'):
+    if not name:
+        continue
+    path = Path(name)
+    parts, ext = path.parts, path.suffix.lower()
+    if ext not in source | config and path.name not in names:
+        continue
+    if any(x in {'Pods','node_modules'} or x.startswith(('ManualBy','PodsManual')) for x in parts):
+        category = 'thirdparty'
+    elif any(x in excluded for x in parts) or re.search(
+        r'(?:\.generated\.swift|\.g\.dart|\.freezed\.dart|\.gr\.dart|GeneratedPluginRegistrant\.\w+|'
+        r'generated_plugin_registrant\.\w+|generated_plugins\.cmake)$', name):
+        category = 'generated'
+    elif any(x.lower() in {'assets','assets.xcassets','resource','resources','res'}
+             or x.endswith('.xcassets') for x in parts) or any(x.endswith('.md') for x in parts):
+        continue
+    else:
+        try:
+            text = path.read_text()
+        except (UnicodeError, OSError):
+            continue
+        author = re.search(r'Created by ([^\n]+?) on ', text[:2000])
+        if author and not re.search(r'\b[Jj]obs\b|J0bs', author[1]):
+            category = 'thirdparty'
+        elif any(re.search(r'(?i)(?:^test$|^tests$|tests$|^integration_test$)', x)
+                 for x in parts) or '.github/tests/' in name:
+            category = 'tests'
+        else:
+            category = 'business' if ext in source else 'config'
+    try:
+        lines = len(path.read_text().splitlines())
+    except (UnicodeError, OSError):
+        continue
+    totals[category][0] += 1
+    totals[category][1] += lines
+for category, (files, lines) in sorted(totals.items()):
+    print(category, files, lines)
+PY_STATS
+```
+
+### 11.8、<span id="statistics-dependencies">直接依赖清单与风险</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+
+统计时间：**2026-10-19**。`Podfile.deps` 中 2 个未注释的直接本地 path Pod，未声明远程公共 / 私有包。版本取 `Podfile.lock` 与同目录 podspec，许可证为 podspec 声明；系统 SwiftUI / UIKit / Combine 不算第三方包。CodeGraph 锚点只提供安装生命周期，调试面板仅 Debug 使用；两个 podspec 的 example.local homepage 是占位说明，不能用于拉取源码。
+
+| 依赖名 | 锁定版本 / 声明 | 来源 | 地址 / 本地位置 | 许可证 | 关系 | 用途模块 | 使用证据 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| JobsSwiftUICodeGraphHook | 1.0.0 | 本仓自维护 path | `./ScriptsByPods/JobsSwiftUICodeGraphHook` | MIT（podspec 声明） | 直接 | CodeGraph hook anchor for JobsSwiftUIBaseConfigDemo. | 安装生命周期锚点；App 不 import |
+| JobsSwiftUIDebugPanel | 1.0.0 | 本仓自维护 path | `./JobsByPods/JobsSwiftUIDebugPanel@Pods` | MIT（podspec 声明） | 直接 | Debug-only scene-aware SwiftUI tools and URL environments. | import `JobsSwiftUIDebugPanel`（`JobsSwiftUIBaseConfigDemo/DemoFeature.swift`） |
+
+风险与处置：两个 path Pod 的版本都为 1.0.0，实际内容随仓库提交变化，锁文件不会冻结目录内容。调试面板有 MIT LICENSE，锚点只有 podspec 的 MIT 文本声明；发布前仍应核对打包资源的独立许可证，尤其图标资源许可。没有远端依赖不等于完成漏洞审计，维护与安全状态未做联网核验。
+
+### 11.9、<span id="statistics-run">运行、构建、测试与常见问题</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+
+从仓库根准备可用 Xcode、对应 iOS SDK / Simulator 与 CocoaPods，保留已提交锁文件后安装依赖。安装会联网、写 Pods / workspace / 锁文件，并触发现有 post_integrate 任务；这属于实际运行步骤，文档统计没有执行。
+
+```shell
+pod --version
+pod install
+open ./JobsSwiftUIBaseConfigDemo.xcworkspace
+xcodebuild \
+  -workspace ./JobsSwiftUIBaseConfigDemo.xcworkspace \
+  -scheme JobsSwiftUIBaseConfigDemo \
+  -configuration Debug \
+  -sdk iphonesimulator \
+  -destination 'generic/platform=iOS Simulator' \
+  -derivedDataPath ./DerivedData \
+  CODE_SIGNING_ALLOWED=NO \
+  build
+```
+
+当前工程没有注册 XCTest / UI Test target，不能提供一个注定找不到 target 的 `xcodebuild test` 作为已具备的测试方案。可按各 Demo 的可视交互与 ScriptsByPods 已有隔离回归入口验收；独立 Ruby 网络模块测试不是 App 页面测试。
+
+| 环境 / 问题 | 配置位置与处理 |
+| --- | --- |
+| dev / test / prod | `JobsSwiftUIDebugAppDelegate.swift` 仅在 Debug 配置本地 `http://127.0.0.1:18080`、httpbin、Postman Echo；它们是诊断地址，没有正式生产后端。`JobsSwiftUIDebugNetworkEnvironment.swift` 保存本次地址 |
+| 本地 /get 请求失败 | 对照选择的环境、端口和 JSON；默认 3 秒超时后保留本地结果，可点击重新请求。真机 localhost 指真机自身，需要实际可访问的服务地址 |
+| Release 找不到调试符号 | 保留 `#if DEBUG` 与 Podfile 的 `:configurations => ['Debug']` 配对，不把 Debug Pod 加进 Release 来绕过编译 |
+| 安装缺少本地包 | 需要完整保留 `JobsByPods/JobsSwiftUIDebugPanel@Pods` 与 `ScriptsByPods/JobsSwiftUICodeGraphHook`；podspec 的 example.local 是说明占位，不是下载源 |
+| 无网络 / 离线 | 系统控件和本地状态 Demo 可离线演示；AsyncImage / 外链 / 网络调试需要网络。图片加载失败处理见对应 Demo，不代表全项目存在统一动态列表回退层 |
+| 构建输出覆盖 | `Save Build IPA` 会在成功打包后清空 `build/` 并仅保留当前平台 IPA；DerivedData 应放在 `./DerivedData`，不要放进 `build/`。模拟器 IPA 不能用于真机分发 |
+
+本节验证范围：读取已跟踪文件清单、入口源码、依赖声明与锁文件，复算静态数量，保留原有文档正文并检查新增相对路径 / 围栏 / 目录转换。不执行实际依赖安装、构建、测试、业务脚本、提交或推送；本地 Mermaid 发布形态与真实平台渲染是不同验收层，不能把静态语法检查写成真机功能通过。
 
 <a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>
