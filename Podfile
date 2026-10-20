@@ -2,6 +2,8 @@
 # ================================== Podfile ==================================
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 require 'fileutils'
+require 'digest'
+require 'tmpdir'
 
 # 先准备本次安装的链路，让公共源测试和后续源码下载继承相同环境。
 jobs_pod_network_dir = File.join(__dir__, 'ScriptsByPods', '【MacOS】🌐CocoaPods网络适配.command')
@@ -112,35 +114,25 @@ def run_codegraph_init_script
     return
   end
 
-  Pod::UI.puts "[CodeGraph] chmod +x #{script_path}" if defined?(Pod::UI)
-  unless system('/bin/chmod', '+x', script_path)
-    Pod::UI.puts "[CodeGraph] ⚠️ chmod +x 执行失败，已跳过：#{script_path}" if defined?(Pod::UI)
-    return
-  end
+  project_tag = Digest::SHA256.hexdigest(__dir__)[0, 12]
+  async_log = File.join(Dir.tmpdir, "codegraph_init.#{project_tag}.async.log")
+  offline = %w[1 true yes y on].include?(ENV.fetch('JOBS_POD_INSTALL_OFFLINE', '').strip.downcase)
+  check_only = %w[1 true yes y on].include?(ENV.fetch('JOBS_POD_INSTALL_POST_SCRIPTS_CHECK_ONLY', '').strip.downcase)
+  script_env = {
+    'CODEGRAPH_AUTO_INIT' => '1',
+    'CODEGRAPH_ALLOW_INSTALL' => offline || check_only ? '0' : ENV.fetch('CODEGRAPH_ALLOW_INSTALL', '1'),
+    'CODEGRAPH_EXPORT_ASYNC' => '0',
+    'JOBS_CODEGRAPH_PROJECT_ROOT' => __dir__,
+    'JOBS_POD_INSTALL_HOOK' => '1'
+  }
+  script_arguments = ['/bin/zsh', script_path]
+  script_arguments << '--check-only' if check_only
 
-  async_log = '/tmp/codegraph_init.async.log'
-  pid_dir = File.join(__dir__, '.codegraph')
-  pid_path = File.join(pid_dir, 'codegraph_init.pid')
-  existing_pid = Integer(File.read(pid_path).strip, exception: false) if File.file?(pid_path)
-
-  if existing_pid
-    begin
-      Process.kill(0, existing_pid)
-      Pod::UI.puts "[CodeGraph] 后台同步已在运行，PID=#{existing_pid}；pod install 直接结束" if defined?(Pod::UI)
-      return
-    rescue Errno::ESRCH
-      # PID 文件可以留存，进程不存在时直接启动新任务。
-    rescue Errno::EPERM
-      Pod::UI.puts "[CodeGraph] 后台同步已在运行，PID=#{existing_pid}；pod install 直接结束" if defined?(Pod::UI)
-      return
-    end
-  end
-
-  FileUtils.mkdir_p(pid_dir)
-  log_io = File.open(async_log, 'w')
+  # 子脚本校验输出目录并管理工程锁；调度层不提前创建或写入地图目录。
+  log_io = File.open(async_log, 'a')
   pid = Process.spawn(
-    { 'CODEGRAPH_AUTO_INIT' => '1', 'CODEGRAPH_EXPORT_ASYNC' => '0' },
-    script_path,
+    script_env,
+    *script_arguments,
     chdir: __dir__,
     in: File::NULL,
     out: log_io,
@@ -148,7 +140,6 @@ def run_codegraph_init_script
     pgroup: true
   )
   Process.detach(pid)
-  File.write(pid_path, "#{pid}\n")
   Pod::UI.puts "[CodeGraph] 后台同步已启动，PID=#{pid}，日志=#{async_log}" if defined?(Pod::UI)
   Pod::UI.puts '[CodeGraph] pod install 主流程已完成，无需等待 CodeGraph' if defined?(Pod::UI)
 rescue => e

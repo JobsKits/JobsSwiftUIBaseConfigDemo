@@ -283,9 +283,11 @@ Demo 进入或重新请求时真实访问当前环境 `GET /get`，超时 3 秒�
 | [网络适配包](<./ScriptsByPods/【MacOS】🌐CocoaPods网络适配.command/README.md>) | Podfile 顶部、选源前同步执行；仅真实 `pod install` / `pod update` 查询 Git tag，优先验证显式代理或复用原链路，必要时并发测试系统已启用的 HTTPS / HTTP / SOCKS 代理 | 复用 Ruby、Git 与 `scutil`；只修改当前进程环境及子进程继承值，退出时恢复，不写全局代理、Git 配置或 shell profile；摘要在安装终端，所有链路失败时告警并继续原流程 |
 | 同包 `jobs_cocoapods_download_fallback.rb` | 仅安装 / 更新时注册；原 Git 下载因网络失败时，对已核验 `AMPopTip 4.12.0` 尝试同一固定提交的官方归档 | 不变更 Pod 声明、版本、校验和或锁对象；其它版本 / 仓库、分支、认证错误不回退；兼容基线 CocoaPods `1.17.0` / downloader `2.1`，未知 API 告警跳过；本工程当前不依赖 AMPopTip |
 | [公共源选择包](<./ScriptsByPods/【MacOS】🌐CocoaPods源自动选择.command/README.md>) | Podfile 在 `source` 声明前同步测试官方 CDN 与 Git Specs；优先使用锁文件里的公开 Pod 样本，无样本时用内置公开规格 | 复用 zsh、curl、Git；保留私有源与锁定版本，不主动重写磁盘锁文件；双源失败时尝试原有效 Git 缓存或回用 CDN，交回 CocoaPods；脚本缺失 / 异常告警回用 CDN |
-| `./ScriptsByPods/codegraph_init.command/codegraph_init.command` | `post_integrate` 后台启动；已有后台 PID 时跳过重复启动 | 生成 / 刷新 `.codegraph/codegraph.db` 并调度 Markdown 导出；`JOBS_SKIP_CODEGRAPH=1` 跳过，启动失败只告警，主安装流程无须等待 |
+| `./ScriptsByPods/codegraph_init.command/codegraph_init.command` | 成功集成后在 `post_integrate` 用 `/bin/zsh` 后台启动，明确传入工程根目录；工程锁控制并发 | 完整体检、按需补齐工具链，生成 / 刷新 `.codegraph/codegraph.db` 并导出 `.codegraph/codegraph.md/`；`JOBS_SKIP_CODEGRAPH=1` 跳过，失败只告警 / 写日志，主安装流程无须等待 |
 
 上述网络逻辑放在 Podfile 中，终端以及将来调用该 Podfile 的手动安装入口都会生效，无须为每个入口另配代理。查询命令不发送网络探测；Specs 可达不代表所有源码地址可达。缺少可用代理且 Git / 官方归档均受限时，安装仍可能失败。`--no-repo-update` 不关闭前置探测，也不保证完全离线；`--deployment` 保留原有严格锁文件校验。
+
+CodeGraph 收尾传入 `CODEGRAPH_AUTO_INIT=1`、`CODEGRAPH_EXPORT_ASYNC=0`，默认允许按需安装。完整体检包括系统 Shell / curl / Git / CLT、Brew 版本 / 配置 / doctor、Node.js 实际执行与 npm 配置、SQLite 内存查询、CLI 子命令及隔离样例建图，再检查目标状态 JSON 的工程路径和完整性。Homebrew 没有该官方 [**CodeGraph**](https://github.com/colbymchenry/codegraph) 对应 formula；缺失或损坏的 Node/npm 优先通过 [**Homebrew**](https://brew.sh/) 的 `node@24` 补齐，CLI 使用官方 npm 包 `@colbymchenry/codegraph` 安装到用户独立前缀，安装前展示来源；已有健康 CLI 直接复用，不自动升级。显式 `JOBS_POD_INSTALL_OFFLINE=1` 或 `CODEGRAPH_ALLOW_INSTALL=0` 禁止工具安装，健康工具仍可更新本地地图；`JOBS_POD_INSTALL_POST_SCRIPTS_CHECK_ONLY=1` 只体检、不安装或建图。重复任务由 `.codegraph/.jobs-update.lock` 工程锁处理，调度日志中的 PID 只供观察。
 
 日常命令保持 `pod install`。`JOBS_POD_NETWORK_ADAPT=0` 关闭代理适配，`JOBS_POD_GITHUB_ARCHIVE_FALLBACK=0` 关闭白名单归档回退；`JOBS_SPECS_SOURCE=auto` 默认实测，也可设为 `cdn` / `git` 固定来源并继续报告测试结果。Git 单轮默认超时 `6` 秒，Specs 每条候选默认 `8` 秒，具体配置见两个包的 README。
 
@@ -315,10 +317,10 @@ flowchart TD
 | 安装终端中的 `[PodNetwork]` 摘要 | 本次链路验证与已核验归档回退结果；不打印代理凭据 |
 | 系统临时目录中的 `jobs-cocoapods-source-<工程路径摘要>.log` | Podfile 自动选源测试日志，按工程路径隔离，运行时显示具体位置 |
 | 系统临时目录中的 `jobs-cocoapods-network.log` | 独立网络诊断入口确认后覆盖的摘要日志 |
-| 系统临时目录中的 `codegraph_init.async.log` | `pod install` 启动的 CodeGraph 后台流程日志 |
-| 系统临时目录中的 `codegraph_init.log` | CodeGraph 初始化 / 同步日志 |
+| 系统临时目录中的 `codegraph_init.<工程摘要>.async.log` | `pod install` 启动的 CodeGraph 后台流程日志；按工程路径隔离并追加，实际位置随安装输出显示 |
+| 系统临时目录中的 `codegraph_init.<工程摘要>.log` | CodeGraph 初始化 / 同步日志 |
 | 系统临时目录中的 `codegraph_export_md.log` | Markdown 导出日志 |
-| 系统临时目录中的 `codegraph_export_md.async.log` | 后台导出日志 |
+| 系统临时目录中的 `codegraph_export_md.async.log` | 历史独立后台导出日志；当前初始化脚本内部等待导出，不再生成此日志 |
 
 ## <span id="jobs-toc-heading-17" data-jobs-toc="v2">七、运行方式 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
@@ -423,7 +425,7 @@ pod install
 | 找不到新增 Demo 页面 | 确认新文件已加入 target，并已在 `DemoFeature.destination` 注册 |
 | Demo 列表排序不符合预期 | 删除 App 后重装，或清空 `JobsSwiftUIBaseConfigDemo.demoFeatureOrder` 对应的 `UserDefaults` 值 |
 | 命令行编译提示签名问题 | 模拟器构建命令加上 `CODE_SIGNING_ALLOWED=NO` |
-| `pod install` 后没有 `.codegraph` | 查看系统临时目录中的 `codegraph_init.async.log` |
+| `pod install` 后没有 `.codegraph` | 查看安装输出中的 `codegraph_init.<工程摘要>.async.log`；后台体检 / 安装 / 索引仍可能在运行，失败不影响 CocoaPods 已有结果 |
 | 只想验证 Podfile，不想启动 CodeGraph | 执行 `JOBS_SKIP_CODEGRAPH=1 pod install --no-repo-update` |
 | 不想刷新 CodeGraph | 只用 `xcodebuild` 或 Xcode 运行工程，不执行 `pod install` |
 | 远程图片加载失败 | 检查网络，或观察 `AsyncImage` 的失败占位是否正常展示 |
