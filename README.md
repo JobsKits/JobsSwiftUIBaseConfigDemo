@@ -29,14 +29,15 @@
   - [6.1、当前定位](#jobs-toc-heading-14)
   - [6.2、安装与构建自动挂载脚本](#jobs-toc-heading-15)
   - [6.3、脚本日志](#jobs-toc-heading-16)
-- [七、运行方式](#jobs-toc-heading-17)
-  - [7.1、使用 Xcode 运行](#jobs-toc-heading-18)
-  - [7.2、使用命令行编译](#jobs-toc-heading-19)
-  - [7.3、生成 CodeGraph](#jobs-toc-heading-20)
-  - [7.4、自动输出构建产物](#jobs-toc-heading-21)
-- [八、扩展 Demo](#jobs-toc-heading-22)
-- [九、注意事项](#jobs-toc-heading-23)
-- [十、排查方式](#jobs-toc-heading-24)
+  - [6.4、文档目录的源仓维护与首次克隆验收](#markdown-toc-workflow)
+- [七、运行方式](#jobs-toc-heading-18)
+  - [7.1、使用 Xcode 运行](#jobs-toc-heading-19)
+  - [7.2、使用命令行编译](#jobs-toc-heading-20)
+  - [7.3、生成 CodeGraph](#jobs-toc-heading-21)
+  - [7.4、自动输出构建产物](#jobs-toc-heading-22)
+- [八、扩展 Demo](#jobs-toc-heading-23)
+- [九、注意事项](#jobs-toc-heading-24)
+- [十、排查方式](#jobs-toc-heading-25)
 - [十一、项目统计与接手指南](#project-statistics)
   - [11.1、SDK、工具链与锁文件](#statistics-toolchain)
   - [11.2、Git 历史与统计边界](#statistics-history)
@@ -322,9 +323,23 @@ flowchart TD
 | 系统临时目录中的 `codegraph_export_md.log` | Markdown 导出日志 |
 | 系统临时目录中的 `codegraph_export_md.async.log` | 历史独立后台导出日志；当前初始化脚本内部等待导出，不再生成此日志 |
 
-## <span id="jobs-toc-heading-17" data-jobs-toc="v2">七、运行方式 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### 6.4、<span id="markdown-toc-workflow">文档目录的源仓维护与首次克隆验收</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-### <span id="jobs-toc-heading-18" data-jobs-toc="v2">7.1、使用 Xcode 运行 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+目录转换能力统一在本仓的 [`.jobs-markdown-toc`](./.jobs-markdown-toc/README.md) 维护。本地编辑保留 `[toc]`，整文件暂存时生成按标题层级缩进的折叠目录，Git 对象保留发布形态；已配置驱动的克隆与拉取在检出时自动还原标签。
+
+| 源仓文件 | 职责 |
+| --- | --- |
+| [MarkdownToc.mjs](./.jobs-markdown-toc/MarkdownToc.mjs) | `clean` / `smudge` 双向转换、只读验证与旧生成态的安全恢复 |
+| [MachineRegistration.mjs](./.jobs-markdown-toc/MachineRegistration.mjs) | 从本仓部署可信机器副本，按本仓精确远端注册首次检出前的驱动，并提供独立撤回 |
+| [fresh-clone.mjs](./.jobs-markdown-toc/tests/fresh-clone.mjs) | 验证全新克隆未运行 `install` 即为 `[toc]`，且 HEAD / 索引保留折叠目录、工作区干净 |
+
+当前机器已为本仓注册条件驱动，直接克隆无需在下载目录再执行安装。其它未注册机器仍须先完成一次机器注册；仓库内的 `.gitattributes` 不会使 `.git/config` 随克隆传播，完整范围与撤回方式见[工具说明](./.jobs-markdown-toc/README.md#machine-first-clone)。
+
+修改和修复落在本源仓；用户下载的实验副本作为首次检出验收样本，不对样本运行 `restore` 或直接改 README 后再宣称自动转换通过。源仓代码验证使用独立新目录，发布后的远端验收也使用新的普通克隆；未提交的源仓修改与远端已发布版本分别说明。
+
+## <span id="jobs-toc-heading-18" data-jobs-toc="v2">七、运行方式 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+
+### <span id="jobs-toc-heading-19" data-jobs-toc="v2">7.1、使用 Xcode 运行 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 1. 使用 [**Xcode**](https://developer.apple.com/xcode) 打开工作区：
 
@@ -338,7 +353,7 @@ flowchart TD
 
 4. 点击 Run。
 
-### <span id="jobs-toc-heading-19" data-jobs-toc="v2">7.2、使用命令行编译 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### <span id="jobs-toc-heading-20" data-jobs-toc="v2">7.2、使用命令行编译 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```shell
 xcodebuild \
@@ -350,7 +365,7 @@ xcodebuild \
 build
 ```
 
-### <span id="jobs-toc-heading-20" data-jobs-toc="v2">7.3、生成 CodeGraph <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### <span id="jobs-toc-heading-21" data-jobs-toc="v2">7.3、生成 CodeGraph <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 首次需要 CocoaPods 工作区或需要刷新 `.codegraph` 时，在工程根目录执行：
 
@@ -367,7 +382,7 @@ pod install
 
 `Pods/` 是 CocoaPods 生成物，不修改其中源码；业务调试源码维护在 `./JobsByPods/JobsSwiftUIDebugPanel@Pods/`，脚本锚点维护在 `./ScriptsByPods/JobsSwiftUICodeGraphHook/`。仅安装和编译验证、不刷新索引时使用 `JOBS_SKIP_CODEGRAPH=1 pod install --no-repo-update`。
 
-### <span id="jobs-toc-heading-21" data-jobs-toc="v2">7.4、自动输出构建产物 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### <span id="jobs-toc-heading-22" data-jobs-toc="v2">7.4、自动输出构建产物 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 主 App 最后一个 Build Phase `Save Build IPA` 调用 [save_device_ipa_after_build.sh](./ScriptsByDevTools/save_device_ipa_after_build.sh)，每次 iOS App 构建都会执行，Xcode 内无须手动确认。按设备平台保存以下产物：
 
@@ -392,7 +407,7 @@ pod install
 
 日志同步输出到 Xcode 构建日志与系统临时目录中的 `save_device_ipa_after_build.log`。终端手动运行会先展示内置自述并等待回车，仍需提供 Xcode 构建环境变量。
 
-## <span id="jobs-toc-heading-22" data-jobs-toc="v2">八、扩展 Demo <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+## <span id="jobs-toc-heading-23" data-jobs-toc="v2">八、扩展 Demo <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 新增一个 Demo 页面时，按下面顺序处理：
 
@@ -408,7 +423,7 @@ pod install
 
 6. 使用 `xcodebuild` 或 [**Xcode**](https://developer.apple.com/xcode) 编译验证。
 
-## <span id="jobs-toc-heading-23" data-jobs-toc="v2">九、注意事项 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+## <span id="jobs-toc-heading-24" data-jobs-toc="v2">九、注意事项 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 系统 UI Demo 保持原生 SwiftUI 写法；新增调试能力集中在独立本地 `JobsSwiftUIDebugPanel` Pod，不套用 UIKit 版面板或增加无关依赖。
 - `pod install` 维护 Debug 依赖及资源集成，并可生成 / 刷新 `.codegraph`，保持和兄弟工程一致的 CocoaPods 生命周期入口。
@@ -417,7 +432,7 @@ pod install
 - 当前工程面向 Demo 演示；Debug 环境 Demo 包含短超时网络请求及环境标识持久化，其它页面不扩展为完整业务网络层或登录系统。
 - 命令行编译示例使用 `CODE_SIGNING_ALLOWED=NO`，适合本地模拟器构建；真机运行需要按实际开发者账号配置签名。
 
-## <span id="jobs-toc-heading-24" data-jobs-toc="v2">十、排查方式 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+## <span id="jobs-toc-heading-25" data-jobs-toc="v2">十、排查方式 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 | 现象 | 处理方式 |
 | --- | --- |

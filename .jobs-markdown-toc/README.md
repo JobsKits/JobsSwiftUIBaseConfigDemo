@@ -10,6 +10,7 @@
 - [🔥 前言](#%E5%89%8D%E8%A8%80)
 - [一、文件职责](#files)
 - [二、安装与日常使用](#usage)
+  - [2.0、当前机器首次克隆即还原](#machine-first-clone)
   - [2.1、仓库首次接入与首次提交](#first-adoption)
   - [2.2、日常编辑与新增文档](#daily-editing)
   - [2.3、拉取更新与本地还原](#pull-and-restore)
@@ -29,7 +30,8 @@
 | --- | --- | --- |
 | 编辑并整文件暂存 | `clean` 生成 `<details>` 和按标题层级缩进的目录 | 保留 `[toc]` |
 | `git pull` 写入更新后的受控文档 | 保留发布目录 | `smudge` 恢复 `[toc]` 并撤销自有标题包装 |
-| 新克隆后尚未安装过滤器 | 保留发布目录 | 可能仍是发布目录；运行 `install` 一次恢复 |
+| 当前机器已注册本实验仓，直接新克隆 | 保留发布目录 | 首次检出即为 `[toc]`，无需仓内 `install` |
+| 未注册机器首次克隆 | 保留发布目录 | 仍是发布目录；机器注册或仓内安装后恢复 |
 | 拉取没有更新文档，或仅新增过滤器配置 | 不变 | Git 不保证重写现有文件；需要时运行 `restore` |
 
 ## 一、<span id="files">文件职责</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
@@ -37,15 +39,36 @@
 | 文件 | 职责 |
 | --- | --- |
 | [MarkdownToc.mjs](./MarkdownToc.mjs) | 自包含转换、安装、验证与卸载入口。 |
+| [MachineRegistration.mjs](./MachineRegistration.mjs) | 当前机器一次性注册本实验仓的精确来源条件，支持状态查看与撤回。 |
 | `manifest.json` | 仓库根相对路径清单；仅这些含有效目录标签的文档接入。 |
 | `README.md` | 本目录用途、命令与维护边界。 |
 | [tests/git-roundtrip.mjs](./tests/git-roundtrip.mjs) | 隔离本地 bare remote、发布端和接收端，实测暂存、拉取、检出与恢复保护。 |
+| [tests/fresh-clone.mjs](./tests/fresh-clone.mjs) | 未运行 install 的首次克隆、来源隔离与撤回验证。 |
 
 需要 [**Node.js**](https://nodejs.org/) 20 或更新版本以及 Git，不需要 npm 安装依赖。每个仓库自带完整工具，不依赖其它项目或本机 Skills 目录。清单内路径以仓库根定位；命令从本目录执行也能定位到正确仓库。
 
 ## 二、<span id="usage">安装与日常使用</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
-在本目录的终端执行一次安装，新克隆和 Node 路径变化后重新执行：
+### 2.0、<span id="machine-first-clone">当前机器首次克隆即还原</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+
+2026-10-21 当前机器已经注册本实验仓，普通终端或读取同一用户 Git 配置的 Sourcetree 克隆无需再运行仓内 `install`。机器侧按原仓现有 GitHub `JobsKits/JobsSwiftUIBaseConfigDemo`、Gitee `JobsGo/JobsSwiftUIBaseConfigDemo` 的 HTTPS / SSH 及 `.git` 后缀变体精确匹配，共 12 个地址，不通配其它仓库。Git 在首次检出前加载可信机器副本，按 `.gitattributes` 的已有精确路径转换；不执行新下载仓库的脚本，不依赖仓内工具先落盘，也不添加 hooks。
+
+换机需要先注册一次；尚未注册的机器不会自动继承 `.git/config`。在已审阅的实验仓工具目录执行：
+
+```shell
+node ./MachineRegistration.mjs install
+node ./MachineRegistration.mjs status
+```
+
+机器注册只向用户级 Git 配置添加本实验仓的 `includeIf hasconfig:remote.*.url`，条件文件仅定义目录驱动。可信副本、安装记录和精确字段备份保存在用户数据目录的 `jobs-markdown-toc/swiftui-experiment/`。撤回命令如下；只移除本工具拥有的精确 include 值，保留其它配置、各仓 local 驱动与备份：
+
+```shell
+node ./MachineRegistration.mjs uninstall
+```
+
+Node 路径或工具版本更新时先撤回再重新注册；活动副本不混合升级。此机器注册不替代其它电脑的配置，不代表推广到其它仓库。已有生成态文件不会因注册被自动重写，按下文 `restore` 处理。`MachineRegistration status` 查看机器范围；`MarkdownToc status` 查看当前仓库实际生效的驱动及来源。
+
+只需要单仓 local 安装且本机尚未注册时，在本目录执行；新克隆和 Node 路径变化后重新执行：
 
 ```shell
 node ./MarkdownToc.mjs install
@@ -76,7 +99,7 @@ node ./MarkdownToc.mjs status
 
 安装一次后照常在终端或 Sourcetree 拉取；Git 将更新的文档写入工作区时自动调用 `smudge`，无需每次手工刷新目录。`git fetch` 只取对象，不写工作文件；`git pull` 没有更新某份文档时也不会为它补跑过滤器。原始暂存内容与 `git show HEAD:README.md` 继续显示发布目录，不能用它们判断磁盘是否恢复。
 
-新克隆不继承本仓的 local 配置，先运行本目录的 `install`，安装会同时将已有发布目录还原。已配置过滤器但磁盘遗留生成目录时，从本目录执行：
+新克隆不继承本仓的 local 配置；本机条件注册解决首次检出前的驱动来源，未注册机器使用上述一次性注册或原有 local 安装。已下载的旧生成目录不会自动重写；驱动配置就绪后，从本目录执行：
 
 ```shell
 node ./MarkdownToc.mjs restore
@@ -115,9 +138,12 @@ node ./MarkdownToc.mjs preview
 
 ```shell
 node ./tests/git-roundtrip.mjs
+node ./tests/fresh-clone.mjs
 ```
 
 2026-10-21 单仓实验：上述 15 组全部通过，覆盖真实拉取、无更新不重写、新克隆缓存刷新、分支检出、未提交与部分暂存保护、损坏标记、split index 和已有索引锁。另将模板原有 38 项回归用于当前工具，全部通过；本仓 10 份受控文档的严格本地检查与隔离索引检查通过。本轮未向 GitHub / Gitee 发布或扩大到其它仓库，平台网页渲染仍按实际平台单独验收。
+
+用户随后用桌面 `1` 目录指出首次 clone 未还原：两仓版本一致，实际缺少 clone 前的驱动配置，前述“安装后 pull”不能证明“直接 clone”。补充 6 组 × 10 文档实验，确认无 install、无 local 驱动、并行检出时也直接得到 `[toc]`；错误来源不生效，撤回后新 clone 恢复生成态。当前机器注册后，真实 GitHub 普通 clone 的 10 文档首次落盘检查通过；桌面旧目录已安全恢复，正文、暂存内容及 local 配置未变，工作区干净。Gitee 来源匹配已配置，真实 Gitee 网络克隆未在本轮执行。
 
 ## 四、<span id="uninstall">卸载与兼容边界</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 

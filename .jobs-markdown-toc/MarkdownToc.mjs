@@ -538,7 +538,11 @@ function main(args) {
     console.log(`工作区 ${files.length} 份文档均为本地 [toc]，转换往返与幂等验证通过；未修改文件或暂存区。`);
   } else if (mode === 'status') {
     requireRepository();
-    for (const key of KEYS) console.log(`${key} = ${localValues(key).join(', ') || '(未配置)'}`);
+    for (const key of KEYS) {
+      const result = spawnSync('git', ['config', '--show-origin', '--get', key], { cwd: ROOT, encoding: 'utf8' });
+      if (result.status !== 0 && result.status !== 1) throw new Error(result.stderr || '无法读取有效过滤器配置。');
+      console.log(`${key} = ${result.status === 0 ? result.stdout.trim() : '(未配置)'}`);
+    }
     console.log(`受控文档：${managedFiles().length} 份；清单：${MANIFEST}`);
   } else if (mode === 'preview') {
     const files = managedFiles();
