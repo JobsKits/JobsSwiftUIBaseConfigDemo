@@ -36,7 +36,7 @@ struct PresentationDemoView: View {
         /// iPad 通常显示为浮层；在紧凑尺寸设备上系统可能自适应为 Sheet。
         .popover(isPresented: $showPopover) {
             PresentationContentView(title: "Popover", symbol: "bubble.left.and.bubble.right")
-                .frame(width: 320, height: 240)
+                .frame(idealWidth: 320, maxWidth: .infinity, minHeight: 240)
         }
         /// fullScreenCover 覆盖整个界面，因此内部自建 NavigationStack 来承载关闭按钮。
         .fullScreenCover(isPresented: $showFullScreenCover) {

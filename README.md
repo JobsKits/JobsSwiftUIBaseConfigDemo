@@ -48,6 +48,7 @@
   - [11.7、业务代码占比与复核命令](#statistics-code-share)
   - [11.8、直接依赖清单与风险](#statistics-dependencies)
   - [11.9、运行、构建、测试与常见问题](#statistics-run)
+- [十二、iPhone Duo 与动态窗口适配](#iphone-duo)
 
 </details>
 <!-- jobs-toc:end -->
@@ -676,5 +677,22 @@ xcodebuild \
 | 构建输出覆盖 | `Save Build IPA` 会在成功打包后清空 `build/` 并仅保留当前平台 IPA；DerivedData 应放在 `./DerivedData`，不要放进 `build/`。模拟器 IPA 不能用于真机分发 |
 
 本节验证范围：读取已跟踪文件清单、入口源码、依赖声明与锁文件，复算静态数量，保留原有文档正文并检查新增相对路径 / 围栏 / 目录转换。不执行实际依赖安装、构建、测试、业务脚本、提交或推送；本地 Mermaid 发布形态与真实平台渲染是不同验收层，不能把静态语法检查写成真机功能通过。
+
+## 十二、<span id="iphone-duo">iPhone Duo 与动态窗口适配</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+
+以 [**Apple 的适配步骤**](https://developer.apple.com/iphone-duo/prepare/)及 Xcode 导出的 `app-resizability` 为检查依据，构建时使用 Xcode 27.1 / iOS 27.1 SDK 或更新版本；最低部署版本仍为 iOS 17。主界面保留 `WindowGroup`、`TabView`、`NavigationStack`、系统列表和弹层，由系统响应窗口尺寸与竖排栏变化。
+
+| 路径 | 原行为 | 当前行为 |
+| --- | --- | --- |
+| `JobsSwiftUIDebugOverlayView` | 浮钮容器忽略安全区，再手工套用宿主窗口 inset | 容器直接位于 SwiftUI 当前安全区，只对可用尺寸计算拖动范围；安全区换边时无需缓存或镜像左右数值 |
+| `AnimationDemoView` | 展开卡片固定宽度 260 点，内容不可滚动 | 260 点为宽度上限，窄窗口自动收缩；矮窗口可滚动到动作按钮，动画状态保留 |
+| `TabPageDemoView` | 分页和 Picker 在矮窗口中可能超出可见范围 | 纵向滚动承载分页与 Picker，保留当前选页 |
+| `PresentationDemoView` | Popover 内容固定宽度 320 点 | 320 点为理想宽度，实际宽度由当前展示容器决定 |
+
+静态检查范围为 App 主源码与 `JobsSwiftUIDebugPanel` 的 Jobs 自有源码：未发现 `UIScreen.main`、设备方向选布局、设备 idiom 选布局、旧上下布局 guide 或系统 Anchor 约束；背景层的 `ignoresSafeArea()` 为有意全出血，设计间距的 `.padding(.horizontal)` 不代替系统 inset，均保留。`GalleryTabView` 与 `LayoutDemoView` 已使用 adaptive 网格。Debug / Release 均声明启动画面、iPad 四方向与场景入口，没有 `UIRequiresFullScreen`。
+
+验证基线（2026-10-23）：使用本机 iOS 27.1 Simulator SDK 独立编译调试 Pod 模块，App 的 Debug / Release 源码类型检查均通过；另在临时副本关闭原有输出 IPA 的构建脚本后，完成 Debug 整包构建（arm64 / x86_64，关闭签名）。原工程、Pods 和锁文件未因构建修改，没有重新安装依赖。新建 Duo 模拟器首次启动和一次重启均报 `Data Migration Failed`，仅见系统壁纸与黑屏，已删除该自建设备；闭合、展开、半折、左右分屏、极窄 / 极矮窗口、安全区换边及浮钮交互仍待可用运行环境验收，不能据构建成功宣称全部姿态通过。
+
+项目采用系统容器的基础自适应方案，没有新增相机双屏、铰链交互或自绘内容的保留区排版。App Store 截图与上架操作由发布流程单独完成。
 
 <a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

@@ -21,42 +21,44 @@ struct TabPageDemoView: View {
     ]
     
     var body: some View {
-        VStack(spacing: 22) {
-            /// selection 与每页 tag 对应；滑动页面会写回 selectedPage。
-            TabView(selection: $selectedPage) {
-                /// indices 适合既需要数组下标又需要元素的固定数组。
-                ForEach(pages.indices, id: \.self) { index in
-                    let page = pages[index]
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(page.color)
-                        .overlay {
-                            VStack(spacing: 12) {
-                                Image(systemName: page.symbol)
-                                    .font(.system(size: 52))
-                                Text(page.title)
-                                    .font(.title.bold())
+        ScrollView {
+            VStack(spacing: 22) {
+                /// selection 与每页 tag 对应；滑动页面会写回 selectedPage。
+                TabView(selection: $selectedPage) {
+                    /// indices 适合既需要数组下标又需要元素的固定数组。
+                    ForEach(pages.indices, id: \.self) { index in
+                        let page = pages[index]
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(page.color)
+                            .overlay {
+                                VStack(spacing: 12) {
+                                    Image(systemName: page.symbol)
+                                        .font(.system(size: 52))
+                                    Text(page.title)
+                                        .font(.title.bold())
+                                }
+                                .foregroundStyle(.white)
                             }
-                            .foregroundStyle(.white)
-                        }
-                        .padding(.horizontal)
-                        .tag(index)
+                            .padding(.horizontal)
+                            .tag(index)
+                    }
                 }
-            }
-            .tabViewStyle(.page(indexDisplayMode: .automatic))
-            .frame(height: 280)
+                .tabViewStyle(.page(indexDisplayMode: .automatic))
+                .frame(height: 280)
             
-            Picker("分页", selection: $selectedPage) {
-                ForEach(pages.indices, id: \.self) { index in
-                    Text("\(index + 1)").tag(index)
+                Picker("分页", selection: $selectedPage) {
+                    ForEach(pages.indices, id: \.self) { index in
+                        Text("\(index + 1)").tag(index)
+                    }
                 }
-            }
-            /// Picker 写入同一个状态，因此点选分段也会驱动上面的 TabView 翻页。
-            .pickerStyle(.segmented)
-            .padding(.horizontal)
+                /// Picker 写入同一个状态，因此点选分段也会驱动上面的 TabView 翻页。
+                .pickerStyle(.segmented)
+                .padding(.horizontal)
             
-            Spacer()
+                Spacer()
+            }
+            .padding(.top)
         }
-        .padding(.top)
     }
 }
 

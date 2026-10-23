@@ -59,7 +59,6 @@ struct JobsSwiftUIDebugOverlayView: View {
                         )
                     }
             }
-                .ignoresSafeArea()
         }
         .environment(\.jobsSwiftUIDebugOpenPanel, {
             JobsSwiftUIDebugPanel.shared.open(state)
@@ -68,19 +67,13 @@ struct JobsSwiftUIDebugOverlayView: View {
         .onPreferenceChange(ButtonFrameKey.self, perform: frameChanged)
     }
 
-    /// 保存相对位置，尺寸或安全区变化后仍将整枚按钮限制在可操作范围内。
+    /// GeometryReader 已由系统放入逐边安全区，只在当前可用空间内保留按钮边距。
     private func legalCenterRange(in geometry: GeometryProxy) -> CGRect {
         let margin: CGFloat = 36
-        let insets = state.hostWindow?.safeAreaInsets ?? UIEdgeInsets(
-            top: geometry.safeAreaInsets.top,
-            left: geometry.safeAreaInsets.leading,
-            bottom: geometry.safeAreaInsets.bottom,
-            right: geometry.safeAreaInsets.trailing
-        )
-        let minimumX = insets.left + margin
-        let minimumY = insets.top + margin
-        let maximumX = max(minimumX, geometry.size.width - insets.right - margin)
-        let maximumY = max(minimumY, geometry.size.height - insets.bottom - margin)
+        let minimumX = min(margin, geometry.size.width * 0.5)
+        let minimumY = min(margin, geometry.size.height * 0.5)
+        let maximumX = max(minimumX, geometry.size.width - margin)
+        let maximumY = max(minimumY, geometry.size.height - margin)
         return CGRect(x: minimumX, y: minimumY, width: maximumX - minimumX, height: maximumY - minimumY)
     }
 
