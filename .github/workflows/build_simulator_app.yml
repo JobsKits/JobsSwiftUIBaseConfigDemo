@@ -28,6 +28,7 @@ jobs:
     env:
       CONFIGURATION: ${{ matrix.configuration }}
       JOBS_SKIP_CODEGRAPH: '1'
+      JOBS_SPECS_SOURCE: cdn
       COCOAPODS_DISABLE_STATS: 'true'
 
     steps:
@@ -53,10 +54,16 @@ jobs:
         with:
           ruby-version: '3.3'
 
-      - name: Install local Pods
+      - name: Install CocoaPods
+        timeout-minutes: 5
         run: |
           set -euo pipefail
-          gem install cocoapods --version 1.17.0 --no-document
+          gem install cocoapods --version 1.17.0 --no-document 2>&1 | tee "$RUNNER_TEMP/swiftui-evidence/cocoapods-install.log"
+
+      - name: Install local Pods
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
           pod install --deployment --no-repo-update 2>&1 | tee "$RUNNER_TEMP/swiftui-evidence/pod-install.log"
 
       - name: Build complete app

@@ -5,7 +5,7 @@
 | 阶段 | 检查与产物 |
 | --- | --- |
 | 环境 | `xcode-27` runner，明确选择 Xcode 27.1，拒绝低于 iOS 27.1 的 Simulator SDK |
-| 依赖 | Ruby 3.3、CocoaPods 1.17.0，按已提交锁文件执行 `pod install --deployment --no-repo-update`；不运行 CodeGraph 后台索引 |
+| 依赖 | Ruby 3.3、CocoaPods 1.17.0，按已提交锁文件执行 `pod install --deployment --no-repo-update`；临时 runner 显式使用源模块的 CDN 模式，避免 Specs Git 冷克隆；Gem / Pods 安装各限时 5 分钟，分别保留日志；不运行 CodeGraph 后台索引 |
 | 构建 | 独立执行 Debug、Release 的完整 arm64 Simulator App 构建，保留原工程 Build Phases，不要求签名 |
 | 产物 | 核对 Bundle ID、实际可执行文件、Simulator 平台和 SDK 后，上传完整 `.app` ZIP |
 | 证据 | 依赖安装日志、构建日志、xcresult 与平台检查输出；失败也保留已生成的证据，保存 7 天 |
