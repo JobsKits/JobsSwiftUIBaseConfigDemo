@@ -1,0 +1,114 @@
+name: Build Simulator App
+
+on:
+  push:
+    branches: [main, 'codex/**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: SwiftUI ${{ matrix.configuration }} / iOS Simulator
+    runs-on: xcode-27
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        configuration: [Debug, Release]
+    defaults:
+      run:
+        shell: bash
+    env:
+      CONFIGURATION: ${{ matrix.configuration }}
+      JOBS_SKIP_CODEGRAPH: '1'
+      COCOAPODS_DISABLE_STATS: 'true'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+
+      - name: Select Xcode and verify Duo SDK
+        run: |
+          set -euo pipefail
+          export DEVELOPER_DIR=/Applications/Xcode_27.1.app/Contents/Developer
+          test -d "$DEVELOPER_DIR"
+          echo "DEVELOPER_DIR=$DEVELOPER_DIR" >> "$GITHUB_ENV"
+          xcodebuild -version
+          sdk_version="$(xcrun --sdk iphonesimulator --show-sdk-version)"
+          ruby -rrubygems -e 'abort "iOS Simulator SDK 27.1 or newer is required" if Gem::Version.new(ARGV.fetch(0)) < Gem::Version.new("27.1")' "$sdk_version"
+          echo "SDK_VERSION=$sdk_version" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/swiftui-evidence"
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+
+      - name: Install local Pods
+        run: |
+          set -euo pipefail
+          gem install cocoapods --version 1.17.0 --no-document
+          pod install --deployment --no-repo-update 2>&1 | tee "$RUNNER_TEMP/swiftui-evidence/pod-install.log"
+
+      - name: Build complete app
+        run: |
+          set -euo pipefail
+          xcodebuild \
+            -workspace JobsSwiftUIBaseConfigDemo.xcworkspace \
+            -scheme JobsSwiftUIBaseConfigDemo \
+            -configuration "$CONFIGURATION" \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath "$RUNNER_TEMP/swiftui-derived-data" \
+            -resultBundlePath "$RUNNER_TEMP/swiftui-evidence/build.xcresult" \
+            ARCHS=arm64 \
+            ONLY_ACTIVE_ARCH=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            build 2>&1 | tee "$RUNNER_TEMP/swiftui-evidence/build.log"
+
+      - name: Verify and package app
+        run: |
+          set -euo pipefail
+          app_path="$RUNNER_TEMP/swiftui-derived-data/Build/Products/$CONFIGURATION-iphonesimulator/JobsSwiftUIBaseConfigDemo.app"
+          info_plist="$app_path/Info.plist"
+          test -d "$app_path"
+          bundle_id="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$info_plist")"
+          test "$bundle_id" = com.jobs.jobsswiftuibaseconfigdemo
+          executable="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleExecutable' "$info_plist")"
+          test -x "$app_path/$executable"
+          lipo -verify_arch arm64 "$app_path/$executable"
+          file "$app_path/$executable" | tee "$RUNNER_TEMP/swiftui-evidence/executable.txt"
+          xcrun vtool -show-build "$app_path/$executable" | tee "$RUNNER_TEMP/swiftui-evidence/platform.txt"
+          grep -q 'IOSSIMULATOR' "$RUNNER_TEMP/swiftui-evidence/platform.txt"
+          app_sdk="$(/usr/libexec/PlistBuddy -c 'Print :DTSDKName' "$info_plist")"
+          test "$app_sdk" = "iphonesimulator$SDK_VERSION"
+          ditto -c -k --norsrc --keepParent \
+            "$app_path" \
+            "$RUNNER_TEMP/JobsSwiftUIBaseConfigDemo-$CONFIGURATION-iphonesimulator.zip"
+
+      - name: Upload simulator app
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: SwiftUI-${{ matrix.configuration }}-iOS-Simulator
+          path: ${{ runner.temp }}/JobsSwiftUIBaseConfigDemo-${{ matrix.configuration }}-iphonesimulator.zip
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload build evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: SwiftUI-${{ matrix.configuration }}-build-evidence
+          path: ${{ runner.temp }}/swiftui-evidence
+          if-no-files-found: warn
+          retention-days: 7

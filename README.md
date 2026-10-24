@@ -691,8 +691,10 @@ xcodebuild \
 
 静态检查范围为 App 主源码与 `JobsSwiftUIDebugPanel` 的 Jobs 自有源码：未发现 `UIScreen.main`、设备方向选布局、设备 idiom 选布局、旧上下布局 guide 或系统 Anchor 约束；背景层的 `ignoresSafeArea()` 为有意全出血，设计间距的 `.padding(.horizontal)` 不代替系统 inset，均保留。`GalleryTabView` 与 `LayoutDemoView` 已使用 adaptive 网格。Debug / Release 均声明启动画面、iPad 四方向与场景入口，没有 `UIRequiresFullScreen`。
 
-验证基线（2026-10-23）：使用本机 iOS 27.1 Simulator SDK 独立编译调试 Pod 模块，App 的 Debug / Release 源码类型检查均通过；另在临时副本关闭原有输出 IPA 的构建脚本后，完成 Debug 整包构建（arm64 / x86_64，关闭签名）。原工程、Pods 和锁文件未因构建修改，没有重新安装依赖。新建 Duo 模拟器首次启动和一次重启均报 `Data Migration Failed`，仅见系统壁纸与黑屏，已删除该自建设备；闭合、展开、半折、左右分屏、极窄 / 极矮窗口、安全区换边及浮钮交互仍待可用运行环境验收，不能据构建成功宣称全部姿态通过。
+验证基线（2026-10-24）：前轮 iOS 27.1 Simulator SDK 的独立模块编译与 App Debug / Release 类型检查通过；本轮另从已提交源码创建全新副本，按锁文件完成 `pod install --deployment --no-repo-update`，保留全部原工程 Build Phases，Debug / Release 的完整 arm64 Simulator App 构建及工作流原文的产物校验、打包均通过。原仓工程、Pods 和锁文件未因验证修改。前轮新建 Duo 模拟器首次启动和一次重启均报 `Data Migration Failed`，仅见系统壁纸与黑屏，已删除该自建设备；闭合、展开、半折、左右分屏、极窄 / 极矮窗口、安全区换边及浮钮交互仍待可用运行环境验收，不能据构建成功宣称全部姿态通过。
 
 项目采用系统容器的基础自适应方案，没有新增相机双屏、铰链交互或自绘内容的保留区排版。App Store 截图与上架操作由发布流程单独完成。
+
+[**GitHub Actions**](https://docs.github.com/actions) 的 [构建工作流](./.github/workflows/build_simulator_app.yml)分别构建 Debug / Release 的完整 arm64 Simulator App，校验目标平台与 SDK，并保存可下载 App 和失败日志；触发条件、构建环境及验收边界见 [CI 说明](./.github/README.md)。新增配置尚待发布后验证真实远端运行结果。
 
 <a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>
