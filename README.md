@@ -695,6 +695,6 @@ xcodebuild \
 
 项目采用系统容器的基础自适应方案，没有新增相机双屏、铰链交互或自绘内容的保留区排版。App Store 截图与上架操作由发布流程单独完成。
 
-[**GitHub Actions**](https://docs.github.com/actions) 的 [构建工作流](./.github/workflows/build_simulator_app.yml)分别构建 Debug / Release 的完整 arm64 Simulator App，校验目标平台与 SDK，并保存可下载 App 和失败日志；触发条件、构建环境及验收边界见 [CI 说明](./.github/README.md)。新增配置尚待发布后验证真实远端运行结果。
+[**GitHub Actions**](https://docs.github.com/actions) 的 [构建工作流](./.github/workflows/build_simulator_app.yml)分别构建 Debug / Release 的完整 arm64 Simulator App，校验目标平台与 SDK，并保存可下载 App 和失败日志；触发条件、构建环境及验收边界见 [CI 说明](./.github/README.md)。验收以对应提交的完整远端运行和下载产物核验为准。
 
 <a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>
