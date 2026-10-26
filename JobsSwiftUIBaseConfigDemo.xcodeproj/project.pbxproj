@@ -178,8 +178,8 @@
 				A00000000000000000000007 /* Sources */,
 				A00000000000000000000008 /* Frameworks */,
 				A00000000000000000000009 /* Resources */,
-				A2D000042026092500000004 /* Save Build IPA */,
 				374068C26B3A8D8A521173CC /* [CP] Copy Pods Resources */,
+				A2D000042026092500000004 /* Save Build IPA */,
 			);
 			buildRules = (
 			);
@@ -282,7 +282,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/ScriptsByDevTools/save_device_ipa_after_build.sh",
+				"$(SRCROOT)/ScriptsByDevTools/save_device_ipa_after_build.command/save_device_ipa_after_build.command",
 			);
 			name = "Save Build IPA";
 			outputFileListPaths = (
@@ -292,7 +292,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/zsh;
-			shellScript = "/bin/zsh \"${SRCROOT}/ScriptsByDevTools/save_device_ipa_after_build.sh\"\n";
+			shellScript = "/bin/zsh \"${SRCROOT}/ScriptsByDevTools/save_device_ipa_after_build.command/save_device_ipa_after_build.command\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

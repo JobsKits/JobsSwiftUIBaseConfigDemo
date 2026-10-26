@@ -28,16 +28,17 @@
 - [六、项目配置支持](#jobs-toc-heading-13)
   - [6.1、当前定位](#jobs-toc-heading-14)
   - [6.2、安装与构建自动挂载脚本](#jobs-toc-heading-15)
-  - [6.3、脚本日志](#jobs-toc-heading-16)
+    - [6.2.1、真机 Run 构建后的 IPA 留存](#build-ipa-retention)
+  - [6.3、脚本日志](#jobs-toc-heading-17)
   - [6.4、文档目录的源仓维护与首次克隆验收](#markdown-toc-workflow)
-- [七、运行方式](#jobs-toc-heading-18)
-  - [7.1、使用 Xcode 运行](#jobs-toc-heading-19)
-  - [7.2、使用命令行编译](#jobs-toc-heading-20)
-  - [7.3、生成 CodeGraph](#jobs-toc-heading-21)
-  - [7.4、自动输出构建产物](#jobs-toc-heading-22)
-- [八、扩展 Demo](#jobs-toc-heading-23)
-- [九、注意事项](#jobs-toc-heading-24)
-- [十、排查方式](#jobs-toc-heading-25)
+- [七、运行方式](#jobs-toc-heading-19)
+  - [7.1、使用 Xcode 运行](#jobs-toc-heading-20)
+  - [7.2、使用命令行编译](#jobs-toc-heading-21)
+  - [7.3、生成 CodeGraph](#jobs-toc-heading-22)
+  - [7.4、自动输出构建产物](#jobs-toc-heading-23)
+- [八、扩展 Demo](#jobs-toc-heading-24)
+- [九、注意事项](#jobs-toc-heading-25)
+- [十、排查方式](#jobs-toc-heading-26)
 - [十一、项目统计与接手指南](#project-statistics)
   - [11.1、SDK、工具链与锁文件](#statistics-toolchain)
   - [11.2、Git 历史与统计边界](#statistics-history)
@@ -70,7 +71,7 @@
 | 网络链路 | `pod install` / `pod update` 先同步实测当前链路，必要时验证机器上已配置、已启用的代理，并让后续源码下载继承同一进程环境 |
 | 公共 Specs | 依据官方 CDN 与 Git Specs 的真实请求结果选源，替代固定 `https://github.com/CocoaPods/Specs.git` |
 | 源码归档 | 仅已核验的 `AMPopTip 4.12.0` Git 网络失败可回退官方固定提交归档；本工程目前只有本地 Pod，不会触发该白名单 |
-| 安装后任务 | 保留原有 `post_install` 工程设置及 `post_integrate` 后台 CodeGraph；网络增强异常只告警，依赖安装失败仍由 CocoaPods 正常报告 |
+| 安装后任务 | 保留原有 `post_install` 工程设置；`post_integrate` 前台确认并执行 CodeGraph，继承终端输入并等待真实结果；网络增强异常只告警，依赖安装失败仍由 CocoaPods 正常报告 |
 
 ## <span id="jobs-toc-heading-2" data-jobs-toc="v2">一、工程信息 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
@@ -285,11 +286,19 @@ Demo 进入或重新请求时真实访问当前环境 `GET /get`，超时 3 秒�
 | [网络适配包](<./ScriptsByPods/【MacOS】🌐CocoaPods网络适配.command/README.md>) | Podfile 顶部、选源前同步执行；仅真实 `pod install` / `pod update` 查询 Git tag，优先验证显式代理或复用原链路，必要时并发测试系统已启用的 HTTPS / HTTP / SOCKS 代理 | 复用 Ruby、Git 与 `scutil`；只修改当前进程环境及子进程继承值，退出时恢复，不写全局代理、Git 配置或 shell profile；摘要在安装终端，所有链路失败时告警并继续原流程 |
 | 同包 `jobs_cocoapods_download_fallback.rb` | 仅安装 / 更新时注册；原 Git 下载因网络失败时，对已核验 `AMPopTip 4.12.0` 尝试同一固定提交的官方归档 | 不变更 Pod 声明、版本、校验和或锁对象；其它版本 / 仓库、分支、认证错误不回退；兼容基线 CocoaPods `1.17.0` / downloader `2.1`，未知 API 告警跳过；本工程当前不依赖 AMPopTip |
 | [公共源选择包](<./ScriptsByPods/【MacOS】🌐CocoaPods源自动选择.command/README.md>) | Podfile 在 `source` 声明前同步测试官方 CDN 与 Git Specs；优先使用锁文件里的公开 Pod 样本，无样本时用内置公开规格 | 复用 zsh、curl、Git；保留私有源与锁定版本，不主动重写磁盘锁文件；双源失败时尝试原有效 Git 缓存或回用 CDN，交回 CocoaPods；脚本缺失 / 异常告警回用 CDN |
-| `./ScriptsByPods/codegraph_init.command/codegraph_init.command` | 成功集成后在 `post_integrate` 用 `/bin/zsh` 后台启动，明确传入工程根目录；工程锁控制并发 | 完整体检、按需补齐工具链，生成 / 刷新 `.codegraph/codegraph.db` 并导出 `.codegraph/codegraph.md/`；`JOBS_SKIP_CODEGRAPH=1` 跳过，失败只告警 / 写日志，主安装流程无须等待 |
+| `./ScriptsByPods/codegraph_init.command/codegraph_init.command` | 成功集成后在 `post_integrate` 用 `/bin/zsh` 前台调用，明确传入工程根目录并继承当前键盘输入；工程锁控制并发 | 展示自述并确认后体检、经选择补齐工具链、生成 / 刷新 `.codegraph/codegraph.db` 并导出 `.codegraph/codegraph.md/`；等待结束显示真实结果，`JOBS_SKIP_CODEGRAPH=1` 跳过，失败告警但不改变 CocoaPods 已完成的安装结果 |
 
 上述网络逻辑放在 Podfile 中，终端以及将来调用该 Podfile 的手动安装入口都会生效，无须为每个入口另配代理。查询命令不发送网络探测；Specs 可达不代表所有源码地址可达。缺少可用代理且 Git / 官方归档均受限时，安装仍可能失败。`--no-repo-update` 不关闭前置探测，也不保证完全离线；`--deployment` 保留原有严格锁文件校验。
 
-CodeGraph 收尾传入 `CODEGRAPH_AUTO_INIT=1`、`CODEGRAPH_EXPORT_ASYNC=0`，默认允许按需安装。完整体检包括系统 Shell / curl / Git / CLT、Brew 版本 / 配置 / doctor、Node.js 实际执行与 npm 配置、SQLite 内存查询、CLI 子命令及隔离样例建图，再检查目标状态 JSON 的工程路径和完整性。Homebrew 没有该官方 [**CodeGraph**](https://github.com/colbymchenry/codegraph) 对应 formula；缺失或损坏的 Node/npm 优先通过 [**Homebrew**](https://brew.sh/) 的 `node@24` 补齐，CLI 使用官方 npm 包 `@colbymchenry/codegraph` 安装到用户独立前缀，安装前展示来源；已有健康 CLI 直接复用，不自动升级。显式 `JOBS_POD_INSTALL_OFFLINE=1` 或 `CODEGRAPH_ALLOW_INSTALL=0` 禁止工具安装，健康工具仍可更新本地地图；`JOBS_POD_INSTALL_POST_SCRIPTS_CHECK_ONLY=1` 只体检、不安装或建图。重复任务由 `.codegraph/.jobs-update.lock` 工程锁处理，调度日志中的 PID 只供观察。
+CodeGraph 收尾与终端共用输入，先显示内置自述并等待回车，具体工具安装 / 升级和地图更新按脚本提示选择；`CODEGRAPH_AUTO_INIT`、`JOBS_POD_INSTALL_HOOK` 和 `JOBS_SKIP_README` 不能代替用户确认。完整体检包括系统 Shell / curl / Git / CLT、Brew 版本 / 配置 / doctor、Node.js 实际执行与 npm 配置、SQLite、CLI 子命令及隔离样例建图，再检查目标状态 JSON 的工程路径和完整性。Homebrew 没有该官方 [**CodeGraph**](https://github.com/colbymchenry/codegraph) 对应 formula；缺失或损坏的 Node/npm 经确认后优先通过 [**Homebrew**](https://brew.sh/) 的 `node@24` 补齐，CLI 使用官方 npm 包 `@colbymchenry/codegraph` 安装到用户独立前缀，安装前展示来源。已有健康工具复用，旧索引按实际能力与完整性检查决定更新或确认重建，不能把不完整状态当成功。重复任务由 `.codegraph/.jobs-update.lock` 工程锁处理。
+
+| `JOBS_POD_INSTALL_INTERACTION` | 收尾行为 |
+| --- | --- |
+| `interactive`（默认） | 在真实终端保留自述和业务选择；无 TTY 明确跳过辅助写任务，不把管道输入当授权 |
+| `check-only` | 只读体检，不安装、不建图或导出；兼容 `JOBS_POD_INSTALL_POST_SCRIPTS_CHECK_ONLY=1` |
+| `skip` | 跳过 CodeGraph 辅助任务 |
+
+`JOBS_POD_INSTALL_PURE=1` 或 `JOBS_POD_INSTALL_SKIP_EXTERNAL_SCRIPTS=1` 同样跳过辅助任务。显式 `JOBS_POD_INSTALL_OFFLINE=1` 或 `CODEGRAPH_ALLOW_INSTALL=0` 禁止工具安装，已有健康工具仍可在确认后更新本地地图。此工程保留原有 CodeGraph 挂载，不为功能表对齐额外挂入 OC / UIKit 的依赖报告或 PIF 脚本。
 
 日常命令保持 `pod install`。`JOBS_POD_NETWORK_ADAPT=0` 关闭代理适配，`JOBS_POD_GITHUB_ARCHIVE_FALLBACK=0` 关闭白名单归档回退；`JOBS_SPECS_SOURCE=auto` 默认实测，也可设为 `cdn` / `git` 固定来源并继续报告测试结果。Git 单轮默认超时 `6` 秒，Specs 每条候选默认 `8` 秒，具体配置见两个包的 README。
 
@@ -307,22 +316,41 @@ flowchart TD
     E --> F["Local Hook Pod"]
     F --> G["post_install: patch build settings"]
     G --> H["post_integrate"]
-    H --> I["codegraph_init.command"]
+    H --> M{"辅助模式与终端"}
+    M -->|interactive 且有终端| I["确认并前台执行 CodeGraph"]
+    M -->|check-only| Q["只读体检"]
+    M -->|skip 或无终端| X["跳过辅助写任务"]
     I --> J[".codegraph/codegraph.db"]
     I --> K[".codegraph/codegraph.md"]
 ```
 
-### <span id="jobs-toc-heading-16" data-jobs-toc="v2">6.3、脚本日志 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+#### 6.2.1、<span id="build-ipa-retention">真机 Run 构建后的 IPA 留存</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
+
+主 App 的唯一 `Save Build IPA` 位于 [Build Phases](./JobsSwiftUIBaseConfigDemo.xcodeproj/project.pbxproj) 最后，在 `[CP] Copy Pods Resources` 后调用 [IPA 留存脚本](./ScriptsByDevTools/save_device_ipa_after_build.command/save_device_ipa_after_build.command)；完整说明见[脚本 README](./ScriptsByDevTools/save_device_ipa_after_build.command/README.md)。这是主 App 构建阶段，真机 Run 触发构建后即可留存，不需要等 App 退出；它发生在 Scheme 后置动作和可能的测试之前，不能作为整个 Scheme 成功判据。
+
+| 构建平台 | 项目根目录产物 | 使用边界 |
+| --- | --- | --- |
+| `iphoneos` | `./build/真机.ipa` | 需要有效签名身份和对应授权；安装范围取决于签名与描述文件，不替代 Archive / 正式分发导出 |
+| `iphonesimulator` | `./build/模拟器.ipa` | 仅为模拟器 App 快照，可按需解压运行 `.app`，不能装到真机或用于商店分发 |
+
+脚本在 build 外的临时目录创建标准 `Payload/<App>.app` 快照，保留 App 名称与资源结构。已有完整有效签名原样保留；未满足签名要求的真机快照按 Xcode 提供的身份补签，并完成严格验证后才压缩。签名、复制或压缩失败时保留旧包，不能用失败产物替换现有输出。
+
+打包成功后清空 `./build/` 全部内容，包括隐藏文件、子目录及另一平台的 IPA，再写入本次唯一包；`build/` 只用于一次性产物，源码、原 App 和 DerivedData 必须放在外面。脚本拒绝清理符号链接 build 或含当前构建路径的 build。`clean`、非 iOS、Tests / Widget 不独立输出，测试若触发主 App 重建则按主 App 阶段更新。
+
+Xcode 通过明确的 `XCODE_VERSION_ACTUAL` 和 `TARGET_BUILD_DIR` 识别构建上下文并自动执行；独立终端运行先展示自述并回车，再精确输入 `YES` 授权清理，仍需有效构建环境变量。无 TTY 且无 Xcode 构建上下文时拒绝写入。旧 `./ScriptsByDevTools/save_device_ipa_after_build.sh` 仅保留转发兼容，不重复挂载。日志在 Xcode 输出与系统临时目录中的 `save_device_ipa_after_build.log` 同时可见。
+
+已用临时 App、假签名器与系统压缩工具验证打包及失败保护分支，并核对唯一阶段的位置、输入与输出；未执行真实工程构建、开发者证书签名或真机安装。
+
+### <span id="jobs-toc-heading-17" data-jobs-toc="v2">6.3、脚本日志 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 | 日志 | 说明 |
 | --- | --- |
 | 安装终端中的 `[PodNetwork]` 摘要 | 本次链路验证与已核验归档回退结果；不打印代理凭据 |
 | 系统临时目录中的 `jobs-cocoapods-source-<工程路径摘要>.log` | Podfile 自动选源测试日志，按工程路径隔离，运行时显示具体位置 |
 | 系统临时目录中的 `jobs-cocoapods-network.log` | 独立网络诊断入口确认后覆盖的摘要日志 |
-| 系统临时目录中的 `codegraph_init.<工程摘要>.async.log` | `pod install` 启动的 CodeGraph 后台流程日志；按工程路径隔离并追加，实际位置随安装输出显示 |
-| 系统临时目录中的 `codegraph_init.<工程摘要>.log` | CodeGraph 初始化 / 同步日志 |
+| 系统临时目录中的 `codegraph_init.<工程摘要>.log` | CodeGraph 前台初始化 / 同步日志；与安装终端同时显示，按工程路径隔离 |
 | 系统临时目录中的 `codegraph_export_md.log` | Markdown 导出日志 |
-| 系统临时目录中的 `codegraph_export_md.async.log` | 历史独立后台导出日志；当前初始化脚本内部等待导出，不再生成此日志 |
+| 系统临时目录中的 `save_device_ipa_after_build.log` | 主 App 最后构建阶段的 IPA 留存日志，与 Xcode 构建日志同时显示 |
 
 ### 6.4、<span id="markdown-toc-workflow">文档目录的源仓维护与首次克隆验收</span> <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 
@@ -338,9 +366,9 @@ flowchart TD
 
 修改和修复落在本源仓；用户下载的实验副本作为首次检出验收样本，不对样本运行 `restore` 或直接改 README 后再宣称自动转换通过。源仓代码验证使用独立新目录，发布后的远端验收也使用新的普通克隆；未提交的源仓修改与远端已发布版本分别说明。
 
-## <span id="jobs-toc-heading-18" data-jobs-toc="v2">七、运行方式 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+## <span id="jobs-toc-heading-19" data-jobs-toc="v2">七、运行方式 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### <span id="jobs-toc-heading-19" data-jobs-toc="v2">7.1、使用 Xcode 运行 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### <span id="jobs-toc-heading-20" data-jobs-toc="v2">7.1、使用 Xcode 运行 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 1. 使用 [**Xcode**](https://developer.apple.com/xcode) 打开工作区：
 
@@ -354,7 +382,7 @@ flowchart TD
 
 4. 点击 Run。
 
-### <span id="jobs-toc-heading-20" data-jobs-toc="v2">7.2、使用命令行编译 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### <span id="jobs-toc-heading-21" data-jobs-toc="v2">7.2、使用命令行编译 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```shell
 xcodebuild \
@@ -366,7 +394,7 @@ xcodebuild \
 build
 ```
 
-### <span id="jobs-toc-heading-21" data-jobs-toc="v2">7.3、生成 CodeGraph <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### <span id="jobs-toc-heading-22" data-jobs-toc="v2">7.3、生成 CodeGraph <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 首次需要 CocoaPods 工作区或需要刷新 `.codegraph` 时，在工程根目录执行：
 
@@ -383,7 +411,7 @@ pod install
 
 `Pods/` 是 CocoaPods 生成物，不修改其中源码；业务调试源码维护在 `./JobsByPods/JobsSwiftUIDebugPanel@Pods/`，脚本锚点维护在 `./ScriptsByPods/JobsSwiftUICodeGraphHook/`。仅安装和编译验证、不刷新索引时使用 `JOBS_SKIP_CODEGRAPH=1 pod install --no-repo-update`。
 
-### <span id="jobs-toc-heading-22" data-jobs-toc="v2">7.4、自动输出构建产物 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### <span id="jobs-toc-heading-23" data-jobs-toc="v2">7.4、自动输出构建产物 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 主 App 最后一个 Build Phase `Save Build IPA` 调用 [save_device_ipa_after_build.sh](./ScriptsByDevTools/save_device_ipa_after_build.sh)，每次 iOS App 构建都会执行，Xcode 内无须手动确认。按设备平台保存以下产物：
 
@@ -408,7 +436,7 @@ pod install
 
 日志同步输出到 Xcode 构建日志与系统临时目录中的 `save_device_ipa_after_build.log`。终端手动运行会先展示内置自述并等待回车，仍需提供 Xcode 构建环境变量。
 
-## <span id="jobs-toc-heading-23" data-jobs-toc="v2">八、扩展 Demo <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+## <span id="jobs-toc-heading-24" data-jobs-toc="v2">八、扩展 Demo <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 新增一个 Demo 页面时，按下面顺序处理：
 
@@ -424,7 +452,7 @@ pod install
 
 6. 使用 `xcodebuild` 或 [**Xcode**](https://developer.apple.com/xcode) 编译验证。
 
-## <span id="jobs-toc-heading-24" data-jobs-toc="v2">九、注意事项 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+## <span id="jobs-toc-heading-25" data-jobs-toc="v2">九、注意事项 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 系统 UI Demo 保持原生 SwiftUI 写法；新增调试能力集中在独立本地 `JobsSwiftUIDebugPanel` Pod，不套用 UIKit 版面板或增加无关依赖。
 - `pod install` 维护 Debug 依赖及资源集成，并可生成 / 刷新 `.codegraph`，保持和兄弟工程一致的 CocoaPods 生命周期入口。
@@ -433,7 +461,7 @@ pod install
 - 当前工程面向 Demo 演示；Debug 环境 Demo 包含短超时网络请求及环境标识持久化，其它页面不扩展为完整业务网络层或登录系统。
 - 命令行编译示例使用 `CODE_SIGNING_ALLOWED=NO`，适合本地模拟器构建；真机运行需要按实际开发者账号配置签名。
 
-## <span id="jobs-toc-heading-25" data-jobs-toc="v2">十、排查方式 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+## <span id="jobs-toc-heading-26" data-jobs-toc="v2">十、排查方式 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 | 现象 | 处理方式 |
 | --- | --- |

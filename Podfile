@@ -97,10 +97,21 @@ def jobs_external_script_command(script_path)
   [script_path]
 end
 
-# CodeGraph: pod install 完成后在后台生成 CodeGraph 索引。
+# 集成完成后在当前终端执行 CodeGraph，保留真实输入和子脚本状态。
 def run_codegraph_init_script
-  if ENV['JOBS_SKIP_CODEGRAPH'] == '1'
-    Pod::UI.puts '[CodeGraph] JOBS_SKIP_CODEGRAPH=1，已跳过本次后台同步' if defined?(Pod::UI)
+  truthy = %w[1 true yes y on]
+  skip_keys = %w[JOBS_SKIP_CODEGRAPH JOBS_POD_INSTALL_PURE JOBS_POD_INSTALL_SKIP_EXTERNAL_SCRIPTS]
+  return if skip_keys.any? { |key| truthy.include?(ENV.fetch(key, '').strip.downcase) }
+
+  mode = ENV.fetch('JOBS_POD_INSTALL_INTERACTION', 'interactive').strip.downcase
+  return if mode == 'skip'
+  mode = 'check-only' if truthy.include?(ENV.fetch('JOBS_POD_INSTALL_POST_SCRIPTS_CHECK_ONLY', '').strip.downcase)
+  unless %w[interactive check-only].include?(mode)
+    warn '[CodeGraph] 无效的交互模式，已跳过辅助任务。'
+    return
+  end
+  if mode == 'interactive' && !STDIN.tty?
+    puts '[CodeGraph] 当前无可交互终端，跳过辅助任务；可显式设置 JOBS_POD_INSTALL_INTERACTION=check-only。'
     return
   end
 
@@ -108,44 +119,25 @@ def run_codegraph_init_script
     File.join('ScriptsByPods', 'codegraph_init.command'),
     base_dir: __dir__
   )
-
   unless File.file?(script_path)
-    Pod::UI.puts "[CodeGraph] skip, script not found: #{script_path}" if defined?(Pod::UI)
+    warn "[CodeGraph] 脚本不存在，已跳过：#{script_path}"
     return
   end
 
-  project_tag = Digest::SHA256.hexdigest(__dir__)[0, 12]
-  async_log = File.join(Dir.tmpdir, "codegraph_init.#{project_tag}.async.log")
-  offline = %w[1 true yes y on].include?(ENV.fetch('JOBS_POD_INSTALL_OFFLINE', '').strip.downcase)
-  check_only = %w[1 true yes y on].include?(ENV.fetch('JOBS_POD_INSTALL_POST_SCRIPTS_CHECK_ONLY', '').strip.downcase)
+  offline = truthy.include?(ENV.fetch('JOBS_POD_INSTALL_OFFLINE', '').strip.downcase)
   script_env = {
-    'CODEGRAPH_AUTO_INIT' => '1',
-    'CODEGRAPH_ALLOW_INSTALL' => offline || check_only ? '0' : ENV.fetch('CODEGRAPH_ALLOW_INSTALL', '1'),
+    'JOBS_POD_INSTALL_INTERACTION' => mode,
+    'CODEGRAPH_ALLOW_INSTALL' => offline || mode == 'check-only' ? '0' : ENV.fetch('CODEGRAPH_ALLOW_INSTALL', '1'),
     'CODEGRAPH_EXPORT_ASYNC' => '0',
     'JOBS_CODEGRAPH_PROJECT_ROOT' => __dir__,
     'JOBS_POD_INSTALL_HOOK' => '1'
   }
-  script_arguments = ['/bin/zsh', script_path]
-  script_arguments << '--check-only' if check_only
-
-  # 子脚本校验输出目录并管理工程锁；调度层不提前创建或写入地图目录。
-  log_io = File.open(async_log, 'a')
-  pid = Process.spawn(
-    script_env,
-    *script_arguments,
-    chdir: __dir__,
-    in: File::NULL,
-    out: log_io,
-    err: log_io,
-    pgroup: true
-  )
-  Process.detach(pid)
-  Pod::UI.puts "[CodeGraph] 后台同步已启动，PID=#{pid}，日志=#{async_log}" if defined?(Pod::UI)
-  Pod::UI.puts '[CodeGraph] pod install 主流程已完成，无需等待 CodeGraph' if defined?(Pod::UI)
-rescue => e
-  Pod::UI.puts "[CodeGraph] ⚠️ 后台任务启动失败，已跳过：#{e.message}" if defined?(Pod::UI)
-ensure
-  log_io&.close
+  arguments = ['/bin/zsh', script_path]
+  arguments << '--check-only' if mode == 'check-only'
+  succeeded = system(script_env, *arguments, chdir: __dir__)
+  warn '[CodeGraph] 辅助任务失败，CocoaPods 集成已完成；请查看上方诊断。' unless succeeded
+rescue StandardError => error
+  warn "[CodeGraph] 辅助任务异常，CocoaPods 集成结果保留：#{error.message}"
 end
 
 # 统一写入 build settings（对某个 target 的所有 config）。
