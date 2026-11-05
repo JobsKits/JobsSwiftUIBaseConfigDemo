@@ -6,9 +6,12 @@ require 'fileutils'
 require 'open3'
 require 'json'
 
-# 所有安装器和 CLI 均在临时目录模拟，不调用真实 brew/npm、pod install 或构建。
+# 用途：验证 CodeGraph 初始化工具链的逐层体检、安装顺序、失败中止、样例建图和锁释放。
+# 运行：在本文件目录执行 ruby ./init_workflow_test.rb；保留所属工具的完整目录和相对依赖。
+# 边界：安装器与 CLI 全部在临时目录模拟，不调用真实 brew / npm、pod install 或构建；不是 App 源码。
+
 class JobsCodeGraphInitWorkflowTest < Minitest::Test
-  SCRIPT = File.expand_path(ENV.fetch('JOBS_CODEGRAPH_SCRIPT', '../codegraph_init.command'), __dir__)
+  SCRIPT = File.expand_path(ENV.fetch('JOBS_CODEGRAPH_SCRIPT', '../../【MacOS】codegraph_init.command'), __dir__)
   MOCK_TOOL = <<~'ZSH'
     #!/bin/zsh
     tool="${0:t}"
@@ -426,6 +429,44 @@ class JobsCodeGraphInitWorkflowTest < Minitest::Test
     assert_equal "2147483647\n", File.read(marker)
   end
 
+  def test_brew_update_preflight_failure_never_runs_update_or_downstream
+    mark_ready('brew', 'node', 'cli')
+    fixture = <<~'ZSH'
+      codegraph_ask_to_run() { return 0; }
+      jobs_brew_prepare_network() { fixture_trace network:prepare; return 19; }
+    ZSH
+    result = shell(fixture + 'ensure_brew; fixture_trace downstream')
+    refute result[:status].success?, result[:stdout] + result[:stderr]
+    assert_equal 1, events.count('network:prepare')
+    refute_includes events, 'brew:update'
+    refute_includes events, 'downstream'
+    assert_includes result[:stdout], 'Homebrew 更新或网络预检失败'
+  end
+
+  def test_node_install_preflight_failure_never_runs_brew_install
+    mark_ready('brew')
+    fixture = <<~'ZSH'
+      jobs_brew_prepare_network() { fixture_trace network:prepare; return 19; }
+    ZSH
+    result = shell(fixture + 'ensure_node_npm; fixture_trace downstream')
+    refute result[:status].success?, result[:stdout] + result[:stderr]
+    assert_equal 1, events.count('network:prepare')
+    assert_empty events.grep(/^brew:(?:install|reinstall) /)
+    refute_includes events, 'downstream'
+  end
+
+  def test_declining_brew_update_does_not_prepare_network
+    mark_ready('brew')
+    fixture = <<~'ZSH'
+      codegraph_ask_to_run() { return 1; }
+      jobs_brew_prepare_network() { fixture_trace network:prepare; return 19; }
+    ZSH
+    result = shell(fixture + 'ensure_brew')
+    assert_success result
+    refute_includes events, 'network:prepare'
+    refute_includes events, 'brew:update'
+  end
+
   private
 
   def mark_ready(*names)
@@ -492,6 +533,9 @@ class JobsCodeGraphInitWorkflowTest < Minitest::Test
         codegraph_run_logged "$CODEGRAPH_BIN" index "$PROJECT_ROOT" || codegraph_stop 'CodeGraph 全量重建失败'
       }
       # 只替换发现与网络安装边界；健康检查、状态校验和下游编排沿用真实实现。
+      # 网络选路用独立回归覆盖，本夹具不访问外网。
+      jobs_brew_prepare_network() { return 0; }
+      jobs_brew_run_network() { "$@"; }
       jobs_brew_find() {
         jobs_brew_candidate_ok "$FIXTURE_HOME/bin/brew" || return 1
         print -r -- "$FIXTURE_HOME/bin/brew"

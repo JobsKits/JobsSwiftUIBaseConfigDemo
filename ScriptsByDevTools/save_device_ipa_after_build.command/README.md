@@ -71,10 +71,10 @@ App 缺失、路径不安全、签名或压缩失败时返回非零，阻断当�
 - 构建阶段找不到脚本：核对输入路径与执行路径均指向 `save_device_ipa_after_build.command/save_device_ipa_after_build.command`，通过 `/bin/zsh` 调用。
 - 将整个 App 目录声明为构建输入可能引起签名或测试依赖循环；保留仅脚本文件作为输入的配置。
 
-[隔离回归](./Tests/run_regression.rb)使用临时 App、假签名器及系统 `ditto` 验证 12 项：模拟器留存、有效真机签名保留、补签与复检、缺少身份 / 签名失败 / 压缩失败 / App 缺失 / 不安全路径时保留旧产物、clean / 非 App / 非 iOS 跳过，以及唯一主 App 阶段位于资源复制后并保留正确输入输出。签名器只记录和返回假结果，不调用真实签名身份；没有执行真实工程构建、依赖安装或真机安装。
+[隔离回归](./Tests/run_regression.rb/run_regression.rb)使用临时 App、假签名器及系统 `ditto` 验证 12 项：模拟器留存、有效真机签名保留、补签与复检、缺少身份 / 签名失败 / 压缩失败 / App 缺失 / 不安全路径时保留旧产物、clean / 非 App / 非 iOS 跳过，以及唯一主 App 阶段位于资源复制后并保留正确输入输出。签名器只记录和返回假结果，不调用真实签名身份；没有执行真实工程构建、依赖安装或真机安装。
 
 ```shell
-ruby './Tests/run_regression.rb' --run
+ruby './Tests/run_regression.rb/run_regression.rb' --run
 ```
 
 <a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

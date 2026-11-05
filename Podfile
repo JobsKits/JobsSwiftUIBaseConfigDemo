@@ -7,7 +7,7 @@ require 'tmpdir'
 
 # 先准备本次安装的链路，让公共源测试和后续源码下载继承相同环境。
 jobs_pod_network_dir = File.join(__dir__, 'ScriptsByPods', '【MacOS】🌐CocoaPods网络适配.command')
-jobs_pod_network_path = File.join(jobs_pod_network_dir, 'jobs_cocoapods_network.rb')
+jobs_pod_network_path = File.join(jobs_pod_network_dir, 'jobs_cocoapods_network.rb', 'jobs_cocoapods_network.rb')
 begin
   if File.file?(jobs_pod_network_path)
     require jobs_pod_network_path
@@ -23,7 +23,7 @@ end
 jobs_pod_dependency_command = File.basename($PROGRAM_NAME) == 'pod' &&
   %w[install update].include?(ARGV.find { |argument| !argument.start_with?('-') })
 if jobs_pod_dependency_command
-  jobs_pod_download_fallback_path = File.join(jobs_pod_network_dir, 'jobs_cocoapods_download_fallback.rb')
+  jobs_pod_download_fallback_path = File.join(jobs_pod_network_dir, 'jobs_cocoapods_download_fallback.rb', 'jobs_cocoapods_download_fallback.rb')
   begin
     if File.file?(jobs_pod_download_fallback_path)
       require jobs_pod_download_fallback_path
@@ -41,7 +41,7 @@ jobs_specs_source_path = File.join(
   __dir__,
   'ScriptsByPods',
   '【MacOS】🌐CocoaPods源自动选择.command',
-  'jobs_cocoapods_source.rb'
+  'jobs_cocoapods_source.rb', 'jobs_cocoapods_source.rb'
 )
 begin
   if File.file?(jobs_specs_source_path)
@@ -116,7 +116,7 @@ def run_codegraph_init_script
   end
 
   script_path = jobs_resolve_external_script_path(
-    File.join('ScriptsByPods', 'codegraph_init.command'),
+    File.join('ScriptsByPods', '【MacOS】codegraph_init.command'),
     base_dir: __dir__
   )
   unless File.file?(script_path)

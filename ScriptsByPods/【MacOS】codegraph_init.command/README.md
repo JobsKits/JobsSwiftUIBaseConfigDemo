@@ -1,4 +1,4 @@
-# `codegraph_init.command`
+# `【MacOS】codegraph_init.command`
 
 ![Jobs出品，必属精品](https://picsum.photos/1500/400)
 
@@ -24,7 +24,7 @@
 
 入口先显示内置自述：标题红色加粗，编号正文蓝色且不加粗；终端按回车后进入工具链体检，各项安装、更新、地图同步和报告导出均为“直接回车跳过、任意非空输入执行”，按 `Ctrl+C` 取消。全量重建数据库另需精确输入 `YES`。没有可交互输入时，默认清楚提示并跳过写任务，不创建日志或锁；显式 `--check-only` / `JOBS_POD_INSTALL_INTERACTION=check-only` 只读体检，不安装、建图或导出，不能据此声称地图已更新。`CODEGRAPH_AUTO_INIT`、`JOBS_POD_INSTALL_HOOK` 和旧确认环境变量都不能跳过终端确认。
 
-`codegraph_init.command` 由 `Podfile` 的 `post_integrate` 在工程集成完成后同步调用，在当前终端选择 [**CodeGraph**](https://github.com/colbymchenry/codegraph) 初始化 / 同步及相邻 `../codegraph_export_md.command/codegraph_export_md.command` 的深度 [**Markdown**](https://markdown.cn) / [**Mermaid**](https://mermaid.js.org) 图谱导出。
+`【MacOS】codegraph_init.command` 由 `Podfile` 的 `post_integrate` 在工程集成完成后同步调用，在当前终端选择 [**CodeGraph**](https://github.com/colbymchenry/codegraph) 初始化 / 同步及相邻 `../【MacOS】codegraph_export_md.command/【MacOS】codegraph_export_md.command` 的深度 [**Markdown**](https://markdown.cn) / [**Mermaid**](https://mermaid.js.org) 图谱导出。
 
 自动流程包含：
 
@@ -78,14 +78,14 @@ flowchart TD
 - 双击入口需要执行权限时，在本说明所在目录授权：
 
   ```shell
-  chmod +x ./codegraph_init.command
-  chmod +x ../codegraph_export_md.command/codegraph_export_md.command
+  chmod +x ./【MacOS】codegraph_init.command
+  chmod +x ../【MacOS】codegraph_export_md.command/【MacOS】codegraph_export_md.command
   ```
 
 - 独立运行（不依赖执行权限）：
 
   ```shell
-  /bin/zsh ./codegraph_init.command
+  /bin/zsh ./【MacOS】codegraph_init.command
   ```
 
 - 正常执行：
@@ -116,7 +116,7 @@ flowchart TD
 - 只读体检（不安装、不建图、不导出）：
 
   ```shell
-  /bin/zsh ./codegraph_init.command --check-only
+  /bin/zsh ./【MacOS】codegraph_init.command --check-only
   ```
 
 - 查看运行详情：将占位路径替换为输出中的完整日志路径。
@@ -198,12 +198,23 @@ flowchart TD
 
 - Homebrew 缺失时需在交互终端选择安装位置：精确 `YES` 选择系统目录，其它输入或回车选择用户目录；后台无法选择时停止并提示在终端完成安装。路径失败不会自动切换，不预先收集管理员密码。
 - `brew update`、当前实际使用的 Brew Node 公式升级及 CodeGraph 官方包更新均需非空输入；回车跳过。不执行全局 `brew upgrade` / `cleanup`；`brew doctor` 诊断保留。非 Brew Node 来源不强装另一份。无关 cask、tap 或 keg 警告不等于当前依赖不可执行；必需层的实际命令失败仍停止下游。
+- 仅在你确认实际安装或更新后，才为本次 Homebrew 操作执行只读网络预检；回车跳过、只读检查或显式离线模式不进行该预检。
+- 已有显式代理环境变量（包括空字符串）或生效的 [**Git**](https://git-scm.com/) 代理配置时保留原选择；否则动态读取已启用的系统 HTTPS / HTTP / SOCKS 代理，优先测试系统代理，失败再测试原网络链路。保留 `NO_PROXY` / `no_proxy` 和系统代理例外，不执行 PAC。
+- 维护既有 Homebrew 时，预检优先使用 `HOMEBREW_BREW_GIT_REMOTE`，否则读取现有 Brew 仓库的 `origin`，没有现有配置时使用官方 GitHub；API 来源使用 `HOMEBREW_API_DOMAIN` 或官方 `formulae.brew.sh`。操作前显示脱敏来源及所选链路。
+- Homebrew 引导安装单独预检实际入口：系统目录路线包含 `raw.githubusercontent.com` 官方安装器、上述 Brew Git 源及 API；用户目录路线包含 `api.github.com` 最新稳定发布接口及实际使用的 `github.com/Homebrew/brew.git`。安装完成后的维护重新按已安装 Homebrew 的实际来源选路，不沿用引导阶段的缓存。
+- Git 代理使用完整 Git 来源 URL 匹配，保留按仓库路径配置的代理或显式空代理；HTTP 安装器和 API 请求不套用 Git 专属代理配置。
+- 系统代理候选最多三个；每个来源的预检请求默认连接限时 `2s`、单次请求总限时 `4s`。可用 `JOBS_BREW_NETWORK_CONNECT_TIMEOUT`（整数 `1`～`30` 秒）及 `JOBS_BREW_NETWORK_PROBE_TIMEOUT`（整数 `1`～`60` 秒）调整，无效值回默认；该时限不限制真实维护命令。
+- 选路仅向本次维护命令及子进程注入环境，退出即结束；不修改系统代理、Shell 启动文件、Git 配置或证书验证设置。
+- 系统代理例外按逗号拆分；常见域规则及 IPv4 末尾通配（例如 `127.*`）转换后，仅在维护子进程内与原 `NO_PROXY` / `no_proxy` 合并，保留用户原旁路。无法精确转换的通配逐一匹配本次来源主机，命中时保守沿用原链路，未命中则允许测试系统代理；不将 `*zhihu.com` 近似替换为 `.zhihu.com`。启用简单主机旁路且本次来源为简单主机时，同样沿用原链路。
+- 预检只覆盖本次 Brew 源和 API 主机；后续其它下载地址及完整系统代理 / PAC 规则不在预检保证内。
+- 预检均失败时不开始维护，返回失败并提示检查网络后重新运行。每条安装 / 更新命令只执行一次，不在失败后自动重放全局升级或清理；短预检成功不能保证后续 Git 传输、下载和构建一定成功，也不是实际命令的总时限。
 - Node/npm 缺失或损坏时 Brew 安装 / 重装一次 `node@24`，并立即复检；CodeGraph 安装前测试官方 Registry，保留平台可选包，安装后验证 CLI 与隔离建图。
 - 业务初始化显式使用 `CODEGRAPH_NO_WATCH=0`，避开发布版 1.6.2 在 `NO_WATCH=1 + init --yes` 下自动写 Git hooks 的分支；临时体检样例不属于 Git 仓库，使用 `NO_WATCH=1` 防止遗留样例守护进程。
 - 系统 SQLite 对没有 WAL 附属文件的数据库只读打开失败时，仅在不存在 `codegraph.db-wal` 的条件下回退到只读 immutable URI 检查 `nodes` 表；完整状态仍由 CodeGraph JSON 验收，不忽略活跃 WAL。
-- PATH 与环境仅作用当前脚本和子进程，不写 Shell 配置或代理，不调用 `codegraph install`。工具链体检和安装日志追加保存；本工程锁在正常结束或受控中断时释放，无法确认的锁保留并报告，不能只凭旧 PID 跳过。
+- PATH 与环境仅作用当前脚本和子进程，不写 Shell 或持久代理配置，不调用 `codegraph install`。工具链体检和安装日志追加保存；本工程锁在正常结束或受控中断时释放，无法确认的锁保留并报告，不能只凭旧 PID 跳过。
 - 旧索引缺少 `index.state`，或 `index.reindexRecommended=true` 时，先核对项目身份，再要求精确 `YES` 执行 CLI 的全量 `index`；CLI 会重建派生数据库，并可能停止本工程已验证的地图守护进程。拒绝则保留原索引，不把未知状态强行认作完整。重建后必须重新满足 `state=complete`、待处理计数为零和不再建议重建。
 - 索引完整性失败停止导出；导出固定读取已验证的本工程数据库，不从继承的 `CODEGRAPH_DB_PATH` 读取其它位置。Markdown 失败 / 超时单独报告，已完成数据库保留；辅助脚本失败不会改写 CocoaPods 的退出状态。
-- `ruby ./Tests/init_workflow_test.rb` 覆盖依赖链、锁及状态校验；`ruby ./Tests/interaction_test.rb` 使用伪终端验证普通选择、精确 `YES`、旧版本重建及自动化写入保护。全部安装器使用假命令，不执行真实包安装、`pod install` 或构建；该结果不替代实际工程验收。
+- `ruby ./Tests/init_workflow_test.rb/init_workflow_test.rb` 覆盖依赖链、锁及状态校验；`ruby ./Tests/interaction_test.rb/interaction_test.rb` 使用伪终端验证普通选择、精确 `YES`、旧版本重建及自动化写入保护。全部安装器使用假命令，不执行真实包安装、`pod install` 或构建；该结果不替代实际工程验收。
+- `ruby ./Tests/network_regression.rb/network_regression.rb` 验证网络选路、代理与旁路保留、完整 Git 来源匹配、引导安装来源、失败传播及子进程环境隔离；使用假命令，不执行真实联网或工具安装。
 
 <a id="🔚" href="#前言" style="font-size:17px; color:green; font-weight:bold;">我是有底线的➤点我回到首页</a>

@@ -1,0 +1,383 @@
+{
+  "version": 1,
+  "projectID": "swiftui",
+  "routes": [
+    {
+      "id": "textImage",
+      "title": "Text / Label / Image",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/TextImageDemoView.swift",
+      "className": "TextImageDemoView",
+      "kind": "page"
+    },
+    {
+      "id": "buttonMenu",
+      "title": "Button / Menu / ControlGroup",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/ButtonMenuDemoView.swift",
+      "className": "ButtonMenuDemoView",
+      "kind": "page"
+    },
+    {
+      "id": "inputFields",
+      "title": "TextField / SecureField / TextEditor",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/InputFieldsDemoView.swift",
+      "className": "InputFieldsDemoView",
+      "kind": "page"
+    },
+    {
+      "id": "controlValues",
+      "title": "Toggle / Slider / Stepper",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/ControlValuesDemoView.swift",
+      "className": "ControlValuesDemoView",
+      "kind": "page"
+    },
+    {
+      "id": "pickers",
+      "title": "Picker / DatePicker / ColorPicker",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/PickersDemoView.swift",
+      "className": "PickersDemoView",
+      "kind": "page"
+    },
+    {
+      "id": "progressGauge",
+      "title": "ProgressView / Gauge",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/ProgressGaugeDemoView.swift",
+      "className": "ProgressGaugeDemoView",
+      "kind": "page"
+    },
+    {
+      "id": "listForm",
+      "title": "List / Form / Section",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/ListFormDemoView.swift",
+      "className": "ListFormDemoView",
+      "kind": "page"
+    },
+    {
+      "id": "navigation",
+      "title": "NavigationStack / Toolbar",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/NavigationDemoView.swift",
+      "className": "NavigationDemoView",
+      "kind": "page"
+    },
+    {
+      "id": "directionalPush",
+      "title": "Directional Push VC",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/DirectionalPushDemoView.swift",
+      "className": "DirectionalPushDemoView",
+      "kind": "page"
+    },
+    {
+      "id": "alertDialog",
+      "title": "Alert / ConfirmationDialog",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/AlertDialogDemoView.swift",
+      "className": "AlertDialogDemoView",
+      "kind": "page"
+    },
+    {
+      "id": "presentation",
+      "title": "Sheet / Popover / FullScreenCover",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/PresentationDemoView.swift",
+      "className": "PresentationDemoView",
+      "kind": "page"
+    },
+    {
+      "id": "layout",
+      "title": "ScrollView / LazyVGrid / Grid",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/LayoutDemoView.swift",
+      "className": "LayoutDemoView",
+      "kind": "page"
+    },
+    {
+      "id": "tabPage",
+      "title": "TabView 分页",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/TabPageDemoView.swift",
+      "className": "TabPageDemoView",
+      "kind": "page"
+    },
+    {
+      "id": "disclosureOutline",
+      "title": "DisclosureGroup / OutlineGroup",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/DisclosureOutlineDemoView.swift",
+      "className": "DisclosureOutlineDemoView",
+      "kind": "page"
+    },
+    {
+      "id": "asyncLinkShare",
+      "title": "AsyncImage / Link / ShareLink",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/AsyncLinkShareDemoView.swift",
+      "className": "AsyncLinkShareDemoView",
+      "kind": "page"
+    },
+    {
+      "id": "animation",
+      "title": "Animation / Transition",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/AnimationDemoView.swift",
+      "className": "AnimationDemoView",
+      "kind": "page"
+    },
+    {
+      "id": "timer",
+      "title": "Timer 定时器",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/TimerDemoView.swift",
+      "className": "TimerDemoView",
+      "kind": "page"
+    },
+    {
+      "id": "debugPanel",
+      "title": "SwiftUI Debug 调试面板",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/JobsSwiftUIDebugPanelDemoView.swift",
+      "className": "JobsSwiftUIDebugPanelDemoView",
+      "kind": "page"
+    },
+    {
+      "id": "home",
+      "title": "Demo列表",
+      "source": "JobsSwiftUIBaseConfigDemo/MainTabView.swift",
+      "className": "MainTabView",
+      "kind": "page"
+    },
+    {
+      "id": "gallery",
+      "title": "速览",
+      "source": "JobsSwiftUIBaseConfigDemo/GalleryTabView.swift",
+      "className": "GalleryTabView",
+      "kind": "page"
+    },
+    {
+      "id": "about",
+      "title": "关于",
+      "source": "JobsSwiftUIBaseConfigDemo/AboutTabView.swift",
+      "className": "AboutTabView",
+      "kind": "page"
+    },
+    {
+      "id": "navigation.push",
+      "title": "普通 Push",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/NavigationDemoView.swift",
+      "kind": "page",
+      "parentRoute": "navigation",
+      "navigationSteps": [
+        {
+          "kind": "tap",
+          "target": "id:jobs.navigation.open.push"
+        },
+        {
+          "kind": "expect",
+          "target": "id:jobs.coverage.page.navigation.push"
+        }
+      ]
+    },
+    {
+      "id": "navigation.toolbar",
+      "title": "工具栏",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/NavigationDemoView.swift",
+      "kind": "page",
+      "parentRoute": "navigation",
+      "navigationSteps": [
+        {
+          "kind": "tap",
+          "target": "id:jobs.navigation.open.toolbar"
+        },
+        {
+          "kind": "expect",
+          "target": "id:jobs.coverage.page.navigation.toolbar"
+        }
+      ]
+    },
+    {
+      "id": "navigation.inlineTitle",
+      "title": "内联标题",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/NavigationDemoView.swift",
+      "kind": "page",
+      "parentRoute": "navigation",
+      "navigationSteps": [
+        {
+          "kind": "tap",
+          "target": "id:jobs.navigation.open.inlineTitle"
+        },
+        {
+          "kind": "expect",
+          "target": "id:jobs.coverage.page.navigation.inlineTitle"
+        }
+      ]
+    },
+    {
+      "id": "presentation.sheet",
+      "title": "Sheet",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/PresentationDemoView.swift",
+      "kind": "page",
+      "parentRoute": "presentation",
+      "navigationSteps": [
+        {
+          "kind": "tap",
+          "target": "id:jobs.presentation.open.sheet"
+        },
+        {
+          "kind": "expect",
+          "target": "id:jobs.coverage.page.presentation.Sheet"
+        }
+      ]
+    },
+    {
+      "id": "presentation.popover",
+      "title": "Popover",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/PresentationDemoView.swift",
+      "kind": "page",
+      "parentRoute": "presentation",
+      "navigationSteps": [
+        {
+          "kind": "tap",
+          "target": "id:jobs.presentation.open.popover"
+        },
+        {
+          "kind": "expect",
+          "target": "id:jobs.coverage.page.presentation.Popover"
+        }
+      ]
+    },
+    {
+      "id": "presentation.fullScreenCover",
+      "title": "FullScreenCover",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/PresentationDemoView.swift",
+      "kind": "page",
+      "parentRoute": "presentation",
+      "navigationSteps": [
+        {
+          "kind": "tap",
+          "target": "id:jobs.presentation.open.fullScreenCover"
+        },
+        {
+          "kind": "expect",
+          "target": "id:jobs.coverage.page.presentation.FullScreenCover"
+        }
+      ]
+    },
+    {
+      "id": "directionalPush.top",
+      "title": "从上侧Push次级页面",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/DirectionalPushDemoView.swift",
+      "kind": "page",
+      "parentRoute": "directionalPush",
+      "navigationSteps": [
+        {
+          "kind": "tap",
+          "target": "label:上"
+        },
+        {
+          "kind": "tap",
+          "target": "id:jobs.directionalPush.open"
+        },
+        {
+          "kind": "expect",
+          "target": "id:jobs.coverage.page.directionalPush.top"
+        }
+      ]
+    },
+    {
+      "id": "directionalPush.bottom",
+      "title": "从下侧Push次级页面",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/DirectionalPushDemoView.swift",
+      "kind": "page",
+      "parentRoute": "directionalPush",
+      "navigationSteps": [
+        {
+          "kind": "tap",
+          "target": "label:下"
+        },
+        {
+          "kind": "tap",
+          "target": "id:jobs.directionalPush.open"
+        },
+        {
+          "kind": "expect",
+          "target": "id:jobs.coverage.page.directionalPush.bottom"
+        }
+      ]
+    },
+    {
+      "id": "directionalPush.left",
+      "title": "从左侧Push次级页面",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/DirectionalPushDemoView.swift",
+      "kind": "page",
+      "parentRoute": "directionalPush",
+      "navigationSteps": [
+        {
+          "kind": "tap",
+          "target": "label:左"
+        },
+        {
+          "kind": "tap",
+          "target": "id:jobs.directionalPush.open"
+        },
+        {
+          "kind": "expect",
+          "target": "id:jobs.coverage.page.directionalPush.left"
+        }
+      ]
+    },
+    {
+      "id": "directionalPush.right",
+      "title": "从右侧Push次级页面",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/DirectionalPushDemoView.swift",
+      "kind": "page",
+      "parentRoute": "directionalPush",
+      "navigationSteps": [
+        {
+          "kind": "tap",
+          "target": "label:右"
+        },
+        {
+          "kind": "tap",
+          "target": "id:jobs.directionalPush.open"
+        },
+        {
+          "kind": "expect",
+          "target": "id:jobs.coverage.page.directionalPush.right"
+        }
+      ]
+    }
+  ],
+  "catalogDigests": {
+    "JobsByPods/JobsSwiftUIDebugPanel@Pods/Core/JobsSwiftUIDebugAction/JobsSwiftUIDebugAction.swift": "01573b06a8aebef5d418a124ed7d6ab98fff9d20f2ef17ac243803e8d5efe47b",
+    "JobsByPods/JobsSwiftUIDebugPanel@Pods/Core/JobsSwiftUIDebugEnvironment/JobsSwiftUIDebugEnvironment.swift": "9c65ab82de4abf311baf7a6946bca29e9ddad6a1d611af0c2edfab8adb84d9cf",
+    "JobsByPods/JobsSwiftUIDebugPanel@Pods/Core/JobsSwiftUIDebugEnvironmentsView/JobsSwiftUIDebugEnvironmentsView.swift": "cbdada9b8a044ec6fff3cbe38d3206160399ce7bf87c5c27ffdfe5d9c441f8dc",
+    "JobsByPods/JobsSwiftUIDebugPanel@Pods/Core/JobsSwiftUIDebugHostModifier/JobsSwiftUIDebugHostModifier.swift": "0c77213434bf0a415050870386b9c3b79912ff2379c4323775e11c2d9405029f",
+    "JobsByPods/JobsSwiftUIDebugPanel@Pods/Core/JobsSwiftUIDebugMenuView/JobsSwiftUIDebugMenuView.swift": "780102554c615eb27ab94987d3bbb2b0c272244b51d1040e84b4d13e98897386",
+    "JobsByPods/JobsSwiftUIDebugPanel@Pods/Core/JobsSwiftUIDebugOverlayView/JobsSwiftUIDebugOverlayView.swift": "bedc43a265afade87f7361874a84a86737f4f07021684a14cf73d054304e7ae1",
+    "JobsByPods/JobsSwiftUIDebugPanel@Pods/Core/JobsSwiftUIDebugOverlayWindow/JobsSwiftUIDebugOverlayWindow.swift": "afcc18a4a5866d4a3913472da436bb11092871dc334ba01d2210f655502653e5",
+    "JobsByPods/JobsSwiftUIDebugPanel@Pods/Core/JobsSwiftUIDebugPanel/JobsSwiftUIDebugPanel.swift": "4e918dfaf0e4e0b682acc66f3c6f9cb388522b01343ed42f299ee986c104772b",
+    "JobsByPods/JobsSwiftUIDebugPanel@Pods/Core/JobsSwiftUIDebugResource/JobsSwiftUIDebugResource.swift": "2e818a19924869e06b5c7ba62555af344f391cfea5d4dbcd8d27512569f4c203",
+    "JobsByPods/JobsSwiftUIDebugPanel@Pods/Core/JobsSwiftUIDebugSceneState/JobsSwiftUIDebugSceneState.swift": "3c43273354b8e6023780e0f29ef71483524d8b7feb9f48433d4d3a704c8bde9b",
+    "JobsByPods/JobsSwiftUIDebugPanel@Pods/Core/UIImage+Make/UIImage+Make.swift": "39d78fcf6f823dc10e60a8013c4044ee31d3c6fcfccdc88407870410b0972a5a",
+    "JobsSwiftUIBaseConfigDemo.xcodeproj/project.pbxproj": "c945cfb3a1bbda0fbf2e9b139dbe25ad26c44c8326e86050f2e20438d476da2a",
+    "JobsSwiftUIBaseConfigDemo/AboutTabView.swift": "e5788e170c5d2cc4464f7ed369990ad7f83fa3b46c6043afe907fe610343b054",
+    "JobsSwiftUIBaseConfigDemo/DemoFeature.swift": "146f2a54b45b730e9ed426b0f24aff2a249f0b9a3bf1e675ce71f9e7f274060e",
+    "JobsSwiftUIBaseConfigDemo/DemoFeatureRow.swift": "ad447d99974ff6396dd4ac3aa1731d247bdb92ee63d0862861f361589ac5c57b",
+    "JobsSwiftUIBaseConfigDemo/DemoListView.swift": "db99cc894a3b45b6ce3df64a1973d233c3e177b7320ba6562558185500cc44ea",
+    "JobsSwiftUIBaseConfigDemo/Demos/AlertDialogDemoView.swift": "b77c0488cb3822900045011bdb2162d0b89d94d1338b1c930970452a2bc435ba",
+    "JobsSwiftUIBaseConfigDemo/Demos/AnimationDemoView.swift": "9161473572e4392c7902f88df674c01dd9020acdf3a054c1f1c8a9d76efd80c9",
+    "JobsSwiftUIBaseConfigDemo/Demos/AsyncLinkShareDemoView.swift": "5b3df8906bde4110468d834d40b103d20553273644b3c0b62907a5d304bb6f60",
+    "JobsSwiftUIBaseConfigDemo/Demos/ButtonMenuDemoView.swift": "ef3f2c23be8b6f23c1df1b110322c18838f27e4108547553f6f027b8a550f99b",
+    "JobsSwiftUIBaseConfigDemo/Demos/ControlValuesDemoView.swift": "e8eaa8ad2f0e4b15a465451408be23af8240e06a2b3e164558fa98769b1ef72a",
+    "JobsSwiftUIBaseConfigDemo/Demos/CustomCircularGaugeView.swift": "541bdb8dd83644fee03e75737ca3af32b497309192629e06c425f3f51a7411ed",
+    "JobsSwiftUIBaseConfigDemo/Demos/DirectionalPushDemoView.swift": "9ac6d707df4b897ecfb66fe2c4a0f9c537a568c4f635796fe09bb01c2fa67f98",
+    "JobsSwiftUIBaseConfigDemo/Demos/DisclosureOutlineDemoView.swift": "0f1e305a1a9107ae08957ea0bde7c146cd50ef5b5dd2d802534d23b93c432d85",
+    "JobsSwiftUIBaseConfigDemo/Demos/InputFieldsDemoView.swift": "dd303cba5b629cc020ab922e85e768e04845bc3bfc65b2ccedecd85c9e711e9a",
+    "JobsSwiftUIBaseConfigDemo/Demos/JobsSwiftUIDebugPanelDemoView.swift": "d0fc97eea7165056d745fb916d399180d1b93d70cd82b31456bfc63eccadba0e",
+    "JobsSwiftUIBaseConfigDemo/Demos/LayoutDemoView.swift": "a5b5069d24c1889c5dc855741d32677214007cec9bd46c44a176c0f91938c5a4",
+    "JobsSwiftUIBaseConfigDemo/Demos/ListFormDemoView.swift": "f5165b785ae3a49357254f51e4509306e5c5fb0e7d7ceea68e50c172e22cf02c",
+    "JobsSwiftUIBaseConfigDemo/Demos/NavigationDemoView.swift": "0539503957f9cdaaf6a85ab22e96f06843ddac367faf1f55561199ccecb4b44c",
+    "JobsSwiftUIBaseConfigDemo/Demos/PickersDemoView.swift": "965575fb2500a4a117e840cfb24fbb096df20b4d5633fb81fa094bb1df0c8bd5",
+    "JobsSwiftUIBaseConfigDemo/Demos/PresentationDemoView.swift": "7f354c971f4514b29f3769029b2fe9e37df6bacf0b6e23ce8c230b3cc0a0c9a0",
+    "JobsSwiftUIBaseConfigDemo/Demos/ProgressGaugeDemoView.swift": "b1065099b062515a9582514e33dc4fb057eac150876dd9197c5fecff849d1695",
+    "JobsSwiftUIBaseConfigDemo/Demos/TabPageDemoView.swift": "9f1e7eec2ac5abbf0e708ce2ce4d4981e52f8f0f21f8f0e6604984c5c0a3ea20",
+    "JobsSwiftUIBaseConfigDemo/Demos/TextImageDemoView.swift": "b2fb8aea74a2706d553f36b010d9f03f486505820305ecf4c25ea0a5ee18d322",
+    "JobsSwiftUIBaseConfigDemo/Demos/TimerDemoView.swift": "2f556b49e8407a4e2326f99dcc66ba62fc709f92f44bb70b78cf62e296a7d8d5",
+    "JobsSwiftUIBaseConfigDemo/GalleryTabView.swift": "04b468af539424f8c575caa44249be89671eb07c4984336fb24f15bba6371d50",
+    "JobsSwiftUIBaseConfigDemo/JobsSwiftUIBaseConfigDemoApp.swift": "99a279e18c8dd9e40f0929a2fd23d08a55ef2cf0fa6b5669e871ffba3be0422a",
+    "JobsSwiftUIBaseConfigDemo/JobsSwiftUIDebugAppDelegate.swift": "9b247d7c8ec5faebb6a8a807a98cddc04c8710d7ab197fb424a49fd6077d2d52",
+    "JobsSwiftUIBaseConfigDemo/JobsSwiftUIDebugNetworkEnvironment.swift": "15c5a94ab708d913bba752653b88489cab12359cdc8cbcc8c7d45075e8db0188",
+    "JobsSwiftUIBaseConfigDemo/MainTabView.swift": "a8bd93da212dad416a931a28e62620812a003aebd922f54c2d7093788f19455d",
+    "Podfile.lock": "c9f12f972ced9791136010786d488162776c428d39f7871165c40a5d4928fa77",
+    "ScriptsByDevTools/【MacOS】🧪iOS自动巡检.command/Coverage/SourceAudit.json": "47d21d46e26e6ef1ac37f15eb8a6b1ddecca815bdab8348699b64201b5e2ee38"
+  }
+}

@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
-# 用真实 CocoaPods 解析完整 Podfile，不运行安装、hook 或联网测试。
 require 'cocoapods'
 require 'digest'
 
-project_root = File.expand_path('../../..', __dir__)
+# 用途：用真实 CocoaPods 只读解析完整 Podfile，核对唯一官方源、本地依赖、hooks 与锁文件保持。
+# 运行：在本文件目录执行 ruby ./podfile_parse_test.rb；需要 CocoaPods 和完整工程目录。
+# 边界：不执行安装、hook 或联网探测，不证明 App 已完成编译；仅供配置回归。
+
+project_root = File.expand_path('../../../..', __dir__)
 inputs = %w[Podfile Podfile.deps Podfile.lock Pods/Manifest.lock].map do |path|
   File.join(project_root, path)
 end

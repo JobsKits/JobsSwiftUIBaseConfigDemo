@@ -28,13 +28,32 @@ struct ProgressGaugeDemoView: View {
             
             Section("Gauge") {
                 /// `$progress` 允许子视图拖动仪表盘后反向修改父视图的 State。
-                CustomCircularGaugeView(
-                    progress: $progress,
-                    title: "完成度",
-                    completedColor: .blue,
-                    remainingColor: Color(.systemGray5)
-                )
-                .frame(width: 92, height: 92)
+                #if DEBUG
+                if ProcessInfo.processInfo.arguments.contains("--jobs-coverage-route") {
+                    HStack(spacing: 16) {
+                        CustomCircularGaugeView(
+                            progress: $progress,
+                            title: "完成度",
+                            completedColor: .blue,
+                            remainingColor: Color(.systemGray5)
+                        )
+                        .frame(width: 92, height: 92)
+
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text("可交互环形仪表盘")
+                                .font(.headline)
+                            Text("拖动圆环调整完成度")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    .accessibilityElement(children: .contain)
+                } else {
+                    originalCustomGauge
+                }
+                #else
+                originalCustomGauge
+                #endif
                 
                 Gauge(value: progress, in: 0...1) {
                     /// 系统 Gauge 只负责语义和值，gaugeStyle 决定具体视觉形态。
@@ -49,4 +68,15 @@ struct ProgressGaugeDemoView: View {
             }
         }
     }
+
+    private var originalCustomGauge: some View {
+        CustomCircularGaugeView(
+            progress: $progress,
+            title: "完成度",
+            completedColor: .blue,
+            remainingColor: Color(.systemGray5)
+        )
+        .frame(width: 92, height: 92)
+    }
+
 }

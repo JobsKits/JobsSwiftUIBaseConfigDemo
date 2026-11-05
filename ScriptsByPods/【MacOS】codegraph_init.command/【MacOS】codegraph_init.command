@@ -1,7 +1,7 @@
 #!/bin/zsh
 # shell: zsh
 # 脚本自述：
-# - 脚本名称：codegraph_init.command。
+# - 脚本名称：【MacOS】codegraph_init.command。
 # - 核心用途：pod install 集成后体检工具链、补齐缺失组件、更新精确工程的代码地图并导出 Markdown。
 # - 影响范围：本工程 .codegraph；必要时经 Brew 准备 Node/npm，再安装官方 CodeGraph npm 包。
 # - 运行提示：终端回车确认，各项安装 / 更新回车跳过；check-only 禁止安装和索引写入。
@@ -20,7 +20,8 @@ show_script_intro_and_wait() {
   codegraph_intro_line body '1、完整体检：系统工具 / CLT → Homebrew → Node/npm → CodeGraph，以及 SQLite / JSON 和隔离样例建图。'
   codegraph_intro_line body '2、地图更新需选择执行；首次 init --yes，已有地图 sync；全量重建须精确输入 YES。'
   codegraph_intro_line body '3、缺失时 Brew 准备 node@24，再安装官方 @colbymchenry/codegraph；当前无该产品的 Brew formula。'
-  codegraph_intro_line body '4、各项安装 / 更新直接回车跳过、任意非空输入执行；不修改 Shell 配置或代理，失败不影响 CocoaPods。'
+  codegraph_intro_line body '4、各项安装 / 更新直接回车跳过、任意非空输入执行；失败不影响 CocoaPods。'
+  codegraph_intro_line body '网络：确认 Brew 维护后短时预检；保留显式代理，否则复用可用系统代理。仅影响该命令及子进程，退出即结束；可能改变流量出口，不写系统 / Git / Shell 配置。'
   codegraph_intro_line body '5、--check-only 只检查、不安装、不建图；离线模式禁止安装。日志在系统临时目录 codegraph_init.<工程摘要>.log。'
   CODEGRAPH_INTERACTION="${JOBS_POD_INSTALL_INTERACTION:-interactive}"
   case "$CODEGRAPH_INTERACTION" in
@@ -61,7 +62,7 @@ initialize_runtime() {
         PROJECT_ROOT="$1"
         ;;
       --help|-h)
-        print -r -- '用法：codegraph_init.command [--check-only] [--project-root 路径]'
+        print -r -- '用法：【MacOS】codegraph_init.command [--check-only] [--project-root 路径]'
         exit 0
         ;;
       *) print -u2 -r -- "未知参数：$1"; exit 2 ;;
@@ -211,7 +212,7 @@ codegraph_offer_node_upgrade() {
     candidate="$prefix/bin/node"
     [[ -x "$candidate" && "${candidate:A}" == "${CODEGRAPH_NODE_BIN:A}" ]] || continue
     if codegraph_ask_to_run "是否通过 Homebrew 升级 $formula（包含 npm）"; then
-      codegraph_run_logged "$JOBS_HOMEBREW_BIN" upgrade "$formula" || codegraph_stop 'Node.js 升级失败'
+      codegraph_brew_run_network "$JOBS_HOMEBREW_BIN" upgrade "$formula" || codegraph_stop 'Node.js 升级失败'
       codegraph_find_node_npm || codegraph_stop 'Node/npm 升级后复检失败'
     fi
     return 0
@@ -317,7 +318,7 @@ run_export_with_heartbeat() {
 export_codegraph_markdown() {
   (( CHECK_ONLY == 0 && INDEX_UPDATED == 1 )) || return 0
   [[ "${CODEGRAPH_SKIP_EXPORT:-0}" != 1 ]] || { codegraph_log 'ℹ CODEGRAPH_SKIP_EXPORT=1，跳过 Markdown。'; return 0; }
-  local export_script="$PROJECT_ROOT/ScriptsByPods/codegraph_export_md.command/codegraph_export_md.command" result=0
+  local export_script="$PROJECT_ROOT/ScriptsByPods/【MacOS】codegraph_export_md.command/【MacOS】codegraph_export_md.command" result=0
   [[ -f "$export_script" ]] || { codegraph_log "⚠ 导出脚本不存在，索引已完成：$export_script"; return 0; }
   codegraph_ask_to_run '是否导出 CodeGraph Markdown / Mermaid 报告（覆盖既有导出文件）' || { codegraph_log 'ℹ 已跳过 Markdown 导出，索引更新结果保留。'; return 0; }
   export CODEGRAPH_MD_OUT_DIR="${CODEGRAPH_MD_OUT_DIR:-.codegraph/codegraph.md}"
@@ -447,7 +448,7 @@ codegraph_ensure_homebrew() {
     codegraph_log '⚠ Homebrew doctor 有诊断提示；用户前缀或无关公式警告不等于本次依赖不可用，继续按实际 Node/npm 健康检查判断。'
   fi
   if [[ "$ALLOW_INSTALL" == 1 ]] && codegraph_ask_to_run '是否更新 Homebrew 软件源'; then
-    codegraph_run_logged "$JOBS_HOMEBREW_BIN" update || codegraph_stop 'Homebrew 更新失败'
+    codegraph_brew_run_network "$JOBS_HOMEBREW_BIN" update || codegraph_stop 'Homebrew 更新或网络预检失败，未自动重放；请检查网络后重新运行'
   fi
 }
 # Node 执行 JS，npm 校验版本与只读配置。
@@ -490,7 +491,7 @@ codegraph_ensure_node_npm() {
   "$JOBS_HOMEBREW_BIN" list --versions node@24 >> "$CODEGRAPH_LOG_FILE" 2>&1 && operation=reinstall
   codegraph_log '━━━━━━━━━━ 来源｜Node.js / npm ━━━━━━━━━━'
   codegraph_log "📥 来源：Homebrew 官方 node@24 公式；动作：$operation；包下载地址由 Homebrew 解析"
-  codegraph_run_logged "$JOBS_HOMEBREW_BIN" "$operation" node@24 || codegraph_stop 'Homebrew Node.js 安装或修复失败'
+  codegraph_brew_run_network "$JOBS_HOMEBREW_BIN" "$operation" node@24 || codegraph_stop 'Homebrew Node.js 安装或修复失败'
   node_prefix="$("$JOBS_HOMEBREW_BIN" --prefix node@24 2>> "$CODEGRAPH_LOG_FILE")" || codegraph_stop '无法读取 node@24 安装前缀'
   [[ "$node_prefix" == /* && -d "$node_prefix" ]] || codegraph_stop 'node@24 返回了无效安装前缀'
   CODEGRAPH_NODE_BIN="$node_prefix/bin/node"
@@ -564,6 +565,317 @@ codegraph_validate_status() {
   fi
 }
 # >>> Jobs Homebrew install choice >>>
+# >>> Jobs Homebrew network >>>
+# Homebrew 网络预检与单次执行；由宿主在用户确认维护后调用，不写持久网络配置。
+typeset -g JOBS_BREW_NETWORK_READY=0
+typeset -g JOBS_BREW_NETWORK_STATUS=1
+typeset -g JOBS_BREW_NETWORK_PROXY=""
+typeset -g JOBS_BREW_NETWORK_NO_PROXY=""
+typeset -g JOBS_BREW_NETWORK_SYSTEM_EXCEPTIONS=""
+typeset -g JOBS_BREW_NETWORK_GIT_REPOSITORY=""
+typeset -ga JOBS_BREW_NETWORK_PROBE_URLS=()
+typeset -ga JOBS_BREW_NETWORK_PROBE_GIT_URLS=()
+typeset -ga JOBS_BREW_NETWORK_GIT_SOURCE_URLS=()
+# 提取无凭据的 HTTP 站点根地址；SSH、本地及未知协议不套用 HTTP 选路。
+jobs_brew_probe_url_root() {
+  local value="$1" scheme="" authority=""
+  case "$value" in
+    http://*|https://*) ;;
+    *) return 1 ;;
+  esac
+  [[ "$value" != *[[:space:][:cntrl:]]* ]] || return 1
+  scheme="${value%%://*}"
+  authority="${${value#*://}%%/*}"
+  authority="${authority##*@}"
+  [[ -n "$authority" && "$authority" != *[\?\#]* ]] || return 1
+  print -r -- "${scheme}://${authority}/"
+}
+# 使用调用方传入的实际来源；未传入时读取本机 Brew origin 与 API 配置。
+jobs_brew_collect_probe_urls() {
+  local origin="${HOMEBREW_BREW_GIT_REMOTE:-}" repository="" value="" root="" source_index=0
+  local -a sources=() kinds=()
+  JOBS_BREW_NETWORK_PROBE_URLS=()
+  JOBS_BREW_NETWORK_PROBE_GIT_URLS=()
+  JOBS_BREW_NETWORK_GIT_SOURCE_URLS=()
+  if [[ -n "${JOBS_HOMEBREW_BIN:-}" ]]; then
+    repository="$("$JOBS_HOMEBREW_BIN" --repository 2>/dev/null)"
+    [[ -n "$repository" && -d "$repository" ]] && JOBS_BREW_NETWORK_GIT_REPOSITORY="$repository"
+  fi
+  if (( ${+parameters[JOBS_BREW_NETWORK_SOURCE_URLS]} )); then
+    sources=("${JOBS_BREW_NETWORK_SOURCE_URLS[@]}")
+    if (( ${+parameters[JOBS_BREW_NETWORK_SOURCE_KINDS]} )); then
+      kinds=("${JOBS_BREW_NETWORK_SOURCE_KINDS[@]}")
+    else
+      kinds=(git)
+    fi
+  else
+    if [[ -z "$origin" && -n "${JOBS_HOMEBREW_BIN:-}" ]]; then
+      if [[ -n "$repository" && -d "$repository" ]]; then
+        origin="$(/usr/bin/git -C "$repository" remote get-url origin 2>/dev/null)"
+      fi
+    fi
+    sources=("${origin:-https://github.com/Homebrew/brew.git}")
+    kinds=(git)
+    if [[ "${HOMEBREW_NO_INSTALL_FROM_API:-0}" != 1 ]]; then
+      sources+=("${HOMEBREW_API_DOMAIN:-https://formulae.brew.sh/api}")
+      kinds+=(http)
+    fi
+  fi
+  for value in "${sources[@]}"; do
+    source_index=$((source_index + 1))
+    root="$(jobs_brew_probe_url_root "$value")" || continue
+    JOBS_BREW_NETWORK_PROBE_URLS+=("$root")
+    if [[ "${kinds[$source_index]:-http}" == git ]]; then
+      JOBS_BREW_NETWORK_PROBE_GIT_URLS+=("$value")
+      JOBS_BREW_NETWORK_GIT_SOURCE_URLS+=("$value")
+    else
+      JOBS_BREW_NETWORK_PROBE_GIT_URLS+=("")
+    fi
+  done
+}
+# 任何显式代理变量（包括空字符串）均由调用方决定，不用系统代理覆盖。
+jobs_brew_proxy_environment_is_explicit() {
+  local variable=""
+  for variable in http_proxy https_proxy all_proxy HTTP_PROXY HTTPS_PROXY ALL_PROXY; do
+    (( ${+parameters[$variable]} )) && return 0
+  done
+  return 1
+}
+# 在实际 Brew 仓库读取生效代理，避免受调用目录的无关仓库配置影响。
+jobs_brew_git_proxy_value() {
+  /usr/bin/git -C "${JOBS_BREW_NETWORK_GIT_REPOSITORY:-/}" config --get-urlmatch http.proxy "$1"
+}
+# 保留实际目标上已经生效的 Git 代理，包含显式配置的空代理。
+jobs_brew_git_proxy_is_explicit() {
+  local target=""
+  for target in "${JOBS_BREW_NETWORK_GIT_SOURCE_URLS[@]}"; do
+    jobs_brew_git_proxy_value "$target" >/dev/null 2>&1 && return 0
+  done
+  return 1
+}
+# 仅读取已经启用的系统代理；此函数单独保留，便于隔离测试替换。
+jobs_brew_system_proxy_snapshot() {
+  /usr/sbin/scutil --proxy
+}
+# 解析根层手工代理开关，不执行 PAC、不扫描端口、不推测代理地址。
+jobs_brew_system_proxy_rows() {
+  /usr/bin/awk '
+    {
+      if (depth<=1 && $1 ~ /^(HTTPSEnable|HTTPSProxy|HTTPSPort|HTTPEnable|HTTPProxy|HTTPPort|SOCKSEnable|SOCKSProxy|SOCKSPort)$/) {
+        key=$1; value=$0; sub(/^[^:]*:[[:space:]]*/, "", value); sub(/[[:space:]]*$/, "", value); values[key]=value
+      }
+      depth+=gsub(/\{/, "{")-gsub(/\}/, "}")
+    }
+    END {
+      split("HTTPS HTTP SOCKS", kinds, " ")
+      for (i=1;i<=3;i++) {
+        kind=kinds[i]
+        if (values[kind "Enable"]=="1") printf "%s\t%s\t%s\n", kind, values[kind "Proxy"], values[kind "Port"]
+      }
+    }'
+}
+# 按完整系统通配规则逐项检查本次来源，无法精确判断的 IPv6 CIDR 保守旁路。
+jobs_brew_sources_match_bypass_rule() {
+  emulate -L zsh
+  local rule="${1:l}" target="" authority="" host=""
+  for target in "${JOBS_BREW_NETWORK_PROBE_URLS[@]}"; do
+    authority="${${target#*://}%%/*}"
+    if [[ "$authority" == \[* ]]; then
+      host="${${authority%%\]*}#\[}"
+    else
+      host="${authority%%:*}"
+    fi
+    host="${host:l}"
+    if [[ "$rule" == '<local>' ]]; then
+      [[ "$host" != *[.:]* ]] && return 0
+    elif [[ "$rule" == *:*/* && "$host" == *:* ]]; then
+      return 0
+    elif [[ "$host" == ${~rule} ]]; then
+      return 0
+    fi
+  done
+  return 1
+}
+# 合并可表达的系统旁路；复杂规则只对本次来源检查，不冒充全系统等价重放。
+jobs_brew_collect_system_bypass() {
+  local snapshot="$1" rows="" rule="" normalized="" combined="${no_proxy:-}" complex_checked=0
+  [[ -z "${NO_PROXY:-}" ]] || combined="${combined:+${combined},}${NO_PROXY}"
+  if print -r -- "$snapshot" | /usr/bin/grep -Eq '^[[:space:]]*ExcludeSimpleHostnames[[:space:]]*:[[:space:]]*1[[:space:]]*$'; then
+    if jobs_brew_sources_match_bypass_rule '<local>'; then
+      jobs_brew_note "本次来源命中系统简单主机旁路；保留当前链路，不自动注入代理。"
+      return 1
+    fi
+    complex_checked=1
+  fi
+  rows="$(print -r -- "$snapshot" | /usr/bin/awk '
+    /ExceptionsList[[:space:]]*:[[:space:]]*<array>/ { inside=1; next }
+    inside && /^[[:space:]]*}/ { inside=0 }
+    inside && /^[[:space:]]*[0-9]+[[:space:]]*:/ {
+      sub(/^[^:]*:[[:space:]]*/, ""); count=split($0,rules,",")
+      for (i=1;i<=count;i++) { gsub(/^[[:space:]]+|[[:space:]]+$/,"",rules[i]); print rules[i] }
+    }
+  ')"
+  JOBS_BREW_NETWORK_SYSTEM_EXCEPTIONS="$rows"
+  while IFS= read -r rule; do
+    [[ -n "$rule" ]] || continue
+    normalized="$rule"
+    [[ "$normalized" == \*.* ]] && normalized="${normalized#\*}"
+    if [[ "$normalized" =~ '^[0-9]{1,3}(\.[0-9]{1,3}){0,2}\.\*$' ]]; then
+      normalized="$(print -r -- "${normalized%.\*}" | /usr/bin/awk -F . '
+        {
+          for (i=1;i<=NF;i++) if ($i>255) exit 1
+          printf "%d.%d.%d.%d/%d",$1,$2,$3,0,NF*8
+        }')" || normalized=""
+    fi
+    if [[ "$normalized" =~ '^([0-9]{1,3}\.){0,3}[0-9]{1,3}/[0-9]{1,2}$' ]]; then
+      normalized="$(print -r -- "$normalized" | /usr/bin/awk -F / '
+        {
+          if ($2>32) exit 1
+          count=split($1,octets,".")
+          for (i=1;i<=count;i++) if (octets[i]>255) exit 1
+          printf "%d.%d.%d.%d/%d",octets[1],octets[2],octets[3],octets[4],$2
+        }')" || normalized=""
+    fi
+    if [[ "$normalized" == */* && ! "$normalized" =~ '^([0-9]{1,3}\.){3}[0-9]{1,3}/[0-9]{1,2}$' ]]; then
+      normalized=""
+    fi
+    if [[ -z "$normalized" || ( "$normalized" != '*' && ! "$normalized" =~ '^([A-Za-z0-9._:/-]+|\[[0-9A-Fa-f:]+\])$' ) ]]; then
+      if jobs_brew_sources_match_bypass_rule "$rule"; then
+        jobs_brew_note "本次来源命中不能忠实转换的系统旁路规则；保留当前链路，不自动注入代理。"
+        return 1
+      fi
+      complex_checked=1
+      continue
+    fi
+    combined="${combined:+${combined},}${normalized}"
+  done <<< "$rows"
+  if (( complex_checked == 1 )); then
+    jobs_brew_note "系统复杂旁路已按本次来源检查；后续下载地址不在预检保证内，未将其改写为其它匹配规则。"
+  fi
+  JOBS_BREW_NETWORK_NO_PROXY="$combined"
+  return 0
+}
+# 仅以短 HEAD 请求检查连接与 TLS；不携带 Git 凭据，不代表安装一定成功。
+jobs_brew_probe_route() {
+  local proxy="$1" target="$2" code="" result=0 git_proxy="" git_source="${3:-}" source_index=0
+  local connect_timeout="${JOBS_BREW_NETWORK_CONNECT_TIMEOUT:-2}"
+  local probe_timeout="${JOBS_BREW_NETWORK_PROBE_TIMEOUT:-4}"
+  local -a command=(/usr/bin/curl --disable --silent --head --output /dev/null --write-out '%{http_code}' --proto '=http,https')
+  [[ "$connect_timeout" =~ '^[0-9]{1,2}$' ]] && (( 10#$connect_timeout >= 1 && 10#$connect_timeout <= 30 )) || connect_timeout=2
+  [[ "$probe_timeout" =~ '^[0-9]{1,2}$' ]] && (( 10#$probe_timeout >= 1 && 10#$probe_timeout <= 60 )) || probe_timeout=4
+  command+=(--connect-timeout "$connect_timeout" --max-time "$probe_timeout")
+  if [[ -n "$proxy" ]]; then
+    code="$(no_proxy="$JOBS_BREW_NETWORK_NO_PROXY" NO_PROXY="$JOBS_BREW_NETWORK_NO_PROXY" "${command[@]}" --proxy "$proxy" "$target" 2>/dev/null)" || result=$?
+  else
+    if (( $# < 3 )); then
+      source_index=${JOBS_BREW_NETWORK_PROBE_URLS[(Ie)$target]}
+      if (( source_index > 0 )); then
+        git_source="${JOBS_BREW_NETWORK_PROBE_GIT_URLS[$source_index]:-}"
+      else
+        git_source="$target"
+      fi
+    fi
+    if [[ -n "$git_source" ]] && git_proxy="$(jobs_brew_git_proxy_value "$git_source" 2>/dev/null)"; then
+      command+=(--proxy "$git_proxy")
+    fi
+    code="$("${command[@]}" "$target" 2>/dev/null)" || result=$?
+  fi
+  (( result == 0 )) && [[ "$code" =~ '^[1-5][0-9][0-9]$' && "$code" != 407 ]]
+}
+# 所有本次实际 HTTP 来源都通过才接受候选；每个候选最多探测一次。
+jobs_brew_probe_all_sources() {
+  local proxy="$1" target="" source_index=0
+  for target in "${JOBS_BREW_NETWORK_PROBE_URLS[@]}"; do
+    source_index=$((source_index + 1))
+    jobs_brew_probe_route "$proxy" "$target" "${JOBS_BREW_NETWORK_PROBE_GIT_URLS[$source_index]:-}" || return 1
+  done
+  return 0
+}
+# 确认后的有界预检缓存结果；全失败时明确阻止本次维护，不重放真实业务。
+jobs_brew_prepare_network() {
+  local snapshot="" rows="" kind="" host="" port="" scheme="" proxy=""
+  local -a candidates=()
+  if [[ "$JOBS_BREW_NETWORK_READY" == 1 ]]; then
+    return "$JOBS_BREW_NETWORK_STATUS"
+  fi
+  JOBS_BREW_NETWORK_READY=1
+  JOBS_BREW_NETWORK_STATUS=1
+  JOBS_BREW_NETWORK_PROXY=""
+  jobs_brew_collect_probe_urls
+  if (( ${#JOBS_BREW_NETWORK_PROBE_URLS} == 0 )); then
+    jobs_brew_note "本次来源无需 HTTP 预检；保留既有协议与配置，仅执行一次维护命令。"
+    JOBS_BREW_NETWORK_STATUS=0
+    return 0
+  fi
+  local probe_source=""
+  for probe_source in "${JOBS_BREW_NETWORK_PROBE_URLS[@]}"; do
+    jobs_brew_note "网络预检来源：${probe_source}（无凭据 HEAD，仅验证连接与 TLS）。"
+  done
+  if jobs_brew_proxy_environment_is_explicit || jobs_brew_git_proxy_is_explicit; then
+    jobs_brew_note "保留显式代理或 Git 代理配置（包含显式空值）；只预检当前链路，不自动换路。"
+    if jobs_brew_probe_all_sources ""; then
+      JOBS_BREW_NETWORK_STATUS=0
+      return 0
+    fi
+    jobs_brew_note "网络预检失败；本次未执行 Homebrew 维护。检查既有代理或网络后重新运行。"
+    return 1
+  fi
+  snapshot="$(jobs_brew_system_proxy_snapshot 2>/dev/null)"
+  if [[ -n "$snapshot" ]] && jobs_brew_collect_system_bypass "$snapshot"; then
+    rows="$(print -r -- "$snapshot" | jobs_brew_system_proxy_rows)"
+    while IFS=$'\t' read -r kind host port; do
+      [[ -n "$kind" && "$port" =~ '^[0-9]{1,5}$' ]] || continue
+      (( 10#$port >= 1 && 10#$port <= 65535 )) || continue
+      [[ "$host" =~ '^([A-Za-z0-9_.-]+|[0-9A-Fa-f:]+|\[[0-9A-Fa-f:]+\])$' ]] || continue
+      [[ "$host" == *:* && "$host" != \[*\] ]] && host="[$host]"
+      scheme=http
+      [[ "$kind" == SOCKS ]] && scheme=socks5h
+      proxy="${scheme}://${host}:${port}"
+      (( ${candidates[(Ie)$proxy]} )) && continue
+      candidates+=("$proxy")
+      if jobs_brew_probe_all_sources "$proxy"; then
+        JOBS_BREW_NETWORK_PROXY="$proxy"
+        JOBS_BREW_NETWORK_STATUS=0
+        jobs_brew_note "已验证系统 ${kind} 代理；仅本次 Homebrew 及其子进程临时使用，退出即撤回，父环境及系统配置不变。"
+        return 0
+      fi
+    done <<< "$rows"
+  fi
+  jobs_brew_note "系统代理未选中；短时预检当前链路，保留既有旁路与 TLS 校验。"
+  if jobs_brew_probe_all_sources ""; then
+    JOBS_BREW_NETWORK_STATUS=0
+    return 0
+  fi
+  jobs_brew_note "系统代理与当前链路均未通过网络预检；本次未执行 Homebrew 维护。恢复网络后重新运行。"
+  return 1
+}
+# 仅在目标子进程注入选定路由；保留原退出码，业务失败不自动重放。
+jobs_brew_run_network() {
+  jobs_brew_prepare_network || return 1
+  (
+    if [[ -n "$JOBS_BREW_NETWORK_PROXY" ]]; then
+      local count="${GIT_CONFIG_COUNT:-0}" variable=""
+      if [[ ! "$count" =~ '^[0-9]{1,6}$' ]]; then
+        jobs_brew_note "GIT_CONFIG_COUNT 无效，未覆盖既有 Git 环境；本次未执行维护。"
+        return 1
+      fi
+      count="$((10#$count))"
+      for variable in http_proxy https_proxy all_proxy HTTP_PROXY HTTPS_PROXY ALL_PROXY; do
+        export "$variable=$JOBS_BREW_NETWORK_PROXY"
+      done
+      export no_proxy="$JOBS_BREW_NETWORK_NO_PROXY" NO_PROXY="$JOBS_BREW_NETWORK_NO_PROXY"
+      export "GIT_CONFIG_KEY_${count}=http.proxy" "GIT_CONFIG_VALUE_${count}=$JOBS_BREW_NETWORK_PROXY"
+      export GIT_CONFIG_COUNT="$((count + 1))"
+    fi
+    "$@"
+  )
+}
+# <<< Jobs Homebrew network <<<
+# 确认后准备网络，在日志管道外缓存选路，避免子进程丢失准备结果。
+codegraph_brew_run_network() {
+  jobs_brew_prepare_network || return $?
+  codegraph_run_logged jobs_brew_run_network "$@"
+}
 # 输出安装诊断，避免混入返回的命令路径。
 jobs_brew_note() {
   codegraph_log "ℹ $*" >&2
@@ -624,11 +936,18 @@ jobs_brew_choose_installation() {
 }
 # 将官方系统安装器下载到临时文件后执行，失败不自动改装到用户目录。
 jobs_brew_install_system() {
+  local JOBS_BREW_NETWORK_READY=0
+  local -a JOBS_BREW_NETWORK_SOURCE_URLS=(
+    https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+    "${HOMEBREW_BREW_GIT_REMOTE:-https://github.com/Homebrew/brew.git}"
+    "${HOMEBREW_API_DOMAIN:-https://formulae.brew.sh/api}"
+  )
+  local -a JOBS_BREW_NETWORK_SOURCE_KINDS=(http git http)
   local installer system_prefix="$(jobs_brew_system_prefix)" installer_result=0
   command -v curl >/dev/null 2>&1 || { jobs_brew_note "缺少 curl，无法获取官方安装器。"; return 1; }
   installer="$(mktemp "${TMPDIR:-/tmp}/jobs-homebrew-install.XXXXXX")" || return 1
-  if curl -fsSL --connect-timeout 10 --max-time 120 https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh -o "$installer"; then
-    codegraph_run_logged /bin/bash "$installer" || installer_result=$?
+  if codegraph_brew_run_network curl -fsSL --connect-timeout 10 --max-time 120 https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh -o "$installer"; then
+    codegraph_brew_run_network /bin/bash "$installer" || installer_result=$?
   else
     installer_result=1
   fi
@@ -642,6 +961,12 @@ jobs_brew_install_system() {
 }
 # 克隆官方稳定版本到用户目录；不覆盖非空目录，不调用 sudo。
 jobs_brew_install_user() {
+  local JOBS_BREW_NETWORK_READY=0
+  local -a JOBS_BREW_NETWORK_SOURCE_URLS=(
+    https://api.github.com/repos/Homebrew/brew/releases/latest
+    https://github.com/Homebrew/brew.git
+  )
+  local -a JOBS_BREW_NETWORK_SOURCE_KINDS=(http git)
   local prefix="${JOBS_HOMEBREW_INSTALL_PREFIX:-$HOME/.local/homebrew}" stage release_tag git_bin
   [[ "$prefix" == /* && "$prefix" != / && "$prefix" != *[[:space:]:]* ]] || {
     jobs_brew_note "Homebrew 用户前缀须为不含空白或冒号的绝对目录：$prefix"
@@ -657,14 +982,14 @@ jobs_brew_install_user() {
   export HOMEBREW_NO_SUDO=1
   mkdir -p "${prefix:h}" || return 1
   stage="$(mktemp -d "${prefix:h}/.jobs-homebrew.XXXXXX")" || return 1
-  if ! curl -fsSL --connect-timeout 10 --max-time 60 https://api.github.com/repos/Homebrew/brew/releases/latest -o "$stage/release.json"; then
+  if ! codegraph_brew_run_network curl -fsSL --connect-timeout 10 --max-time 60 https://api.github.com/repos/Homebrew/brew/releases/latest -o "$stage/release.json"; then
     rm -r -- "$stage"
     jobs_brew_note "获取官方稳定版本失败，停止安装。"
     return 1
   fi
   release_tag="$(/usr/bin/plutil -extract tag_name raw -o - "$stage/release.json" 2>/dev/null)"
   if [[ ! "$release_tag" =~ '^[0-9]+\.[0-9]+\.[0-9]+$' ]] ||
-     ! GIT_TERMINAL_PROMPT=0 codegraph_run_logged "$git_bin" -c http.lowSpeedLimit=1 -c http.lowSpeedTime=60 clone --depth 1 --branch "$release_tag" --single-branch https://github.com/Homebrew/brew.git "$stage/brew" ||
+     ! GIT_TERMINAL_PROMPT=0 codegraph_brew_run_network "$git_bin" -c http.lowSpeedLimit=1 -c http.lowSpeedTime=60 clone --depth 1 --branch "$release_tag" --single-branch https://github.com/Homebrew/brew.git "$stage/brew" ||
      ! "$git_bin" -C "$stage/brew" checkout -b stable ||
      ! "$git_bin" -C "$stage/brew" config remote.origin.fetch '+refs/heads/*:refs/remotes/origin/*' ||
      ! mkdir -p "$stage/brew/Cellar" "$stage/brew/Caskroom" "$stage/brew/etc" "$stage/brew/var"; then

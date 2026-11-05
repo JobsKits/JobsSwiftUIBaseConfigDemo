@@ -20,12 +20,15 @@ struct PresentationDemoView: View {
                 Button("显示 Sheet") {
                     showSheet = true
                 }
+                .accessibilityIdentifier("jobs.presentation.open.sheet")
                 Button("显示 Popover") {
                     showPopover = true
                 }
+                .accessibilityIdentifier("jobs.presentation.open.popover")
                 Button("显示 FullScreenCover") {
                     showFullScreenCover = true
                 }
+                .accessibilityIdentifier("jobs.presentation.open.fullScreenCover")
             }
         }
         /// sheet 依附于当前 View；presentationDetents 定义用户可以停留的高度档位。
@@ -67,9 +70,12 @@ private struct PresentationContentView: View {
                 .foregroundStyle(.blue)
             Text(title)
                 .font(.title.bold())
+                .accessibilityIdentifier("jobs.coverage.page.presentation.\(title)")
             Text("这是 SwiftUI 原生的页面展示能力。")
                 .foregroundStyle(.secondary)
         }
         .padding()
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("jobs.presentation.content.\(title)")
     }
 }

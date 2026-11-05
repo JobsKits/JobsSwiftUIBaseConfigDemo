@@ -26,7 +26,30 @@ struct CustomCircularGaugeView: View {
         "\(Int(clampedProgress * 100))%"
     }
     
+    @ViewBuilder
     var body: some View {
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("--jobs-coverage-route") {
+            gaugeContent(coverage: true)
+                .accessibilityElement(children: .contain)
+        } else {
+            originalAccessibleGauge
+        }
+        #else
+        originalAccessibleGauge
+        #endif
+    }
+
+    private var originalAccessibleGauge: some View {
+        gaugeContent(coverage: false)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(title)
+            .accessibilityValue(progressText)
+            /// VoiceOver 用户可以上下滑动，以固定步长调整这个自定义控件。
+            .accessibilityAdjustableAction(adjustProgress)
+    }
+
+    private func gaugeContent(coverage: Bool) -> some View {
         /// GeometryReader 把父容器实际分配的尺寸交给闭包，适合依赖尺寸的自定义绘制。
         GeometryReader { proxy in
             /// body 闭包内可以声明局部常量；任一输入变化后都会随 body 一起重新计算。
@@ -41,7 +64,7 @@ struct CustomCircularGaugeView: View {
                 y: center.y + radius * sin(angle.radians)
             )
             
-            ZStack {
+            let drawing = ZStack {
                 /// Circle.trim 使用 0...1 的路径比例；0.75 表示绘制 270°，留出底部 90° 缺口。
                 Circle()
                     .trim(from: 0, to: 0.75)
@@ -90,27 +113,42 @@ struct CustomCircularGaugeView: View {
                         updateProgress(from: value.location, in: proxy.size)
                     }
             )
+            #if DEBUG
+            if coverage {
+                drawing
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel(title)
+                    .accessibilityValue(progressText)
+                    .accessibilityIdentifier("jobs.gesture.circularGauge")
+                    .accessibilityActivationPoint(
+                        CGPoint(x: proxy.frame(in: .global).midX,
+                                y: proxy.frame(in: .global).midY)
+                    )
+                    .accessibilityAdjustableAction(adjustProgress)
+            } else {
+                drawing
+            }
+            #else
+            drawing
+            #endif
         }
         .aspectRatio(1, contentMode: .fit)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(title)
-        .accessibilityValue(progressText)
-        /// VoiceOver 用户可以上下滑动，以固定步长调整这个自定义控件。
-        .accessibilityAdjustableAction { direction in
-            switch direction {
-            /// 无障碍“增加”动作把进度提高 5%。
-            case .increment:
-                progress = min(progress + 0.05, 1)
-            /// 无障碍“减少”动作把进度降低 5%。
-            case .decrement:
-                progress = max(progress - 0.05, 0)
-            /// 为未来系统新增的方向保留安全兜底。
-            @unknown default:
-                break
-            }
-        }
     }
     
+    private func adjustProgress(_ direction: AccessibilityAdjustmentDirection) {
+        switch direction {
+        /// 无障碍“增加”动作把进度提高 5%。
+        case .increment:
+            progress = min(progress + 0.05, 1)
+        /// 无障碍“减少”动作把进度降低 5%。
+        case .decrement:
+            progress = max(progress - 0.05, 0)
+        /// 为未来系统新增的方向保留安全兜底。
+        @unknown default:
+            break
+        }
+    }
+
     private func updateProgress(from location: CGPoint, in size: CGSize) {
         progress = progressValue(from: location, in: size)
     }

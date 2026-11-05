@@ -39,6 +39,11 @@ module JobsCocoaPodsSource
     return previous_url if SOURCE_URLS.include?(previous_url)
 
     probe = run_probe.nil? ? dependency_command? : !!run_probe
+    # 基础安装模式只复用本地锁源，不启动附加网络探测。
+    skip_probe = %w[JOBS_POD_INSTALL_PURE JOBS_POD_INSTALL_SKIP_EXTERNAL_SCRIPTS].any? do |key|
+      %w[1 true yes y on].include?(ENV.fetch(key, '').strip.downcase)
+    end
+    probe = false if skip_probe
     selected_url = select_source(project_root: project_root, probe: probe)
     align_lockfile_source!(current_lockfile, selected_url)
     podfile.source(selected_url)
@@ -67,7 +72,7 @@ module JobsCocoaPodsSource
     fallback_url = forced_url || fallback_source(lockfile)
     return fallback_url unless probe
 
-    script_path = File.join(__dir__, SCRIPT_NAME)
+    script_path = File.join(__dir__, '..', SCRIPT_NAME)
     unless File.file?(script_path)
       boundary_warning("源探测脚本不存在，使用 #{fallback_url}：#{script_path}", log_path)
       return fallback_url

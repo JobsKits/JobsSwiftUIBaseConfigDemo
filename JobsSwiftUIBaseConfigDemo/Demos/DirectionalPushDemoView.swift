@@ -71,6 +71,7 @@ struct DirectionalPushDemoView: View {
                         .background(.blue, in: RoundedRectangle(cornerRadius: 8))
                 }
                 .buttonStyle(.plain)
+                .accessibilityIdentifier("jobs.directionalPush.open")
                 .listRowInsets(EdgeInsets())
                 .listRowBackground(Color.clear)
             }
@@ -215,11 +216,25 @@ private final class DirectionalNavigationTransitionController: NSObject, Observa
         detailStackDepth = navigationController.viewControllers.count + 1
         
         /// UIHostingController 把 SwiftUI View 包装成 UIKit UIViewController，才能压入现有导航栈。
-        let detailViewController = UIHostingController(rootView: DirectionalPushDetailView(direction: direction))
+        #if DEBUG
+        let content = DirectionalPushDetailView(direction: direction,
+                                                coverageBack: { [weak self] in
+            self?.popCoverageDetail()
+        })
+        #else
+        let content = DirectionalPushDetailView(direction: direction)
+        #endif
+        let detailViewController = UIHostingController(rootView: content)
         detailViewController.title = "次级页面"
         detailViewController.navigationItem.largeTitleDisplayMode = .never
         navigationController.pushViewController(detailViewController, animated: true)
     }
+
+    #if DEBUG
+    @objc private func popCoverageDetail() {
+        navigationController?.popViewController(animated: true)
+    }
+    #endif
 }
 
 extension DirectionalNavigationTransitionController: UINavigationControllerDelegate {
@@ -440,6 +455,9 @@ private extension UIViewController {
 private struct DirectionalPushDetailView: View {
     
     let direction: PushDirection
+    #if DEBUG
+    var coverageBack: (() -> Void)? = nil
+    #endif
     
     var body: some View {
         ZStack {
@@ -461,7 +479,16 @@ private struct DirectionalPushDetailView: View {
                     Text("从\(direction.title)侧 Push 进入")
                         .font(.title3)
                         .foregroundStyle(.secondary)
+                        .accessibilityIdentifier("jobs.coverage.page.directionalPush.\(direction.rawValue)")
                 }
+                #if DEBUG
+                if ProcessInfo.processInfo.arguments.contains("--jobs-coverage-route"),
+                   let coverageBack {
+                    Button("返回", action: coverageBack)
+                        .buttonStyle(.borderedProminent)
+                        .accessibilityIdentifier("jobs.directionalPush.back")
+                }
+                #endif
                 
                 Spacer()
             }

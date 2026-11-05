@@ -17,6 +17,8 @@
 
 ---
 
+* 每份自维护脚本均放在与完整文件名一致的目录内，包含真实脚本和对应 `README.md`。系统 Shell 入口使用 `【MacOS】`；挂载 Xcode Behavior 的入口使用 `【MacOS@Xcode】`；Ruby 辅助与测试脚本保留 `.rb` 原名，不添加系统前缀。复制时保留整个 `ScriptsByPods`，以携带全部相对依赖。
+
 ## <span id="jobs-toc-heading-1" data-jobs-toc="v2">🔥 <font id=前言>前言</font></span><!-- jobs-toc:heading-end -->
 
 `ScriptsByPods` 存放由 [**CocoaPods**](https://cocoapods.org/) 生命周期挂载的辅助脚本。
@@ -27,11 +29,13 @@
 
 | 脚本 | 触发方式 | 作用 |
 | --- | --- | --- |
+| [Xcode 当前工程通用入口](<./【MacOS@Xcode】🫘当前工程Pod Install.command/README.md>) | `Xcode → Behaviors → 🫘当前工程 · Pod Install` 手动调用 | 识别当前工程；空回车仅基础 `pod install`，跳过附加探测、报告与可选辅助任务；精确输入大写 `YES` 才走原完整流程，保留各子任务确认与已有开关。其它输入、Ctrl+C 或输入结束（EOF）取消；`--check` 只读定位。复用现有 CocoaPods，独立临时日志与真实退出码；不加入 Podfile 钩子或构建流程，随本目录复制 |
+| [Xcode 当前工程更新入口](<./【MacOS@Xcode】🫘当前工程Pod Update.command/README.md>) | `Xcode → Behaviors → 🫘当前工程 · Pod Update` 手动调用 | 空回车仅基础 `pod update`；大写 `YES` 检查现有 CocoaPods 后执行目标 Podfile 对 update 的完整流程，保留已有开关与子脚本确认。按 Podfile 范围更新全部依赖，可能更新锁文件；基础跳可选增强，必要工程配置保留。`--check` 只读定位，独立更新日志及真实退出码；本机已接入工程相对路径；用户级设置不随工程分发，换电脑首次登记 |
 | [CocoaPods 网络适配](<./【MacOS】🌐CocoaPods网络适配.command/README.md>) | Podfile 顶部，选源前同步执行 | 实测已有链路 / 已启用代理，本次安装进程及后续源码下载继承相同配置；已核验 AMPopTip 网络失败有官方固定归档回退 |
 | [CocoaPods 源自动选择](<./【MacOS】🌐CocoaPods源自动选择.command/README.md>) | Podfile 的 `source` 声明前同步执行 | 测试官方 CDN 与 Git Specs，选择当前可用公共源，保留私有源与锁定版本 |
 | `./JobsSwiftUICodeGraphHook/` | `Podfile.deps` | 本地脚本锚点 Pod，让 CocoaPods 完整走 install 生命周期 |
-| `./codegraph_init.command/codegraph_init.command` | `Podfile` 的 `post_integrate`，后台执行 | 完整体检工具链、按需安装，初始化 / 同步 `.codegraph/codegraph.db`，并导出 Markdown |
-| `./codegraph_export_md.command/codegraph_export_md.command` | `codegraph_init.command` 调用 | 从 `.codegraph/codegraph.db` 导出 `.codegraph/codegraph.md/` |
+| `./【MacOS】codegraph_init.command/【MacOS】codegraph_init.command` | `Podfile` 的 `post_integrate`，后台执行 | 完整体检工具链、按需安装，初始化 / 同步 `.codegraph/codegraph.db`，并导出 Markdown |
+| `./【MacOS】codegraph_export_md.command/【MacOS】codegraph_export_md.command` | `【MacOS】codegraph_init.command` 调用 | 从 `.codegraph/codegraph.db` 导出 `.codegraph/codegraph.md/` |
 
 ## <span id="jobs-toc-heading-3" data-jobs-toc="v2">二、运行方式 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
@@ -49,7 +53,7 @@ pod install
 - `Podfile.deps` 声明本地 `JobsSwiftUICodeGraphHook` 与仅 Debug 生效的 `JobsSwiftUIDebugPanel`；当前没有远程 AMPopTip 依赖，归档白名单不会因接入脚本而新增依赖。
 - 网络与选源仅在真实安装 / 更新时同步探测，查询命令不联网；可选模块缺失或初始化失败告警后继续原流程，实际下载失败仍由 CocoaPods 报告。
 - 迁移需保留本工程 Podfile 和两个完整网络脚本包；终端及调用该 Podfile 的其它安装入口自动覆盖，不写全局代理。测试不运行真实安装或构建，相关日志和环境开关见两个包的 README。
-- CodeGraph 会完整检查系统 Shell / curl / Git / CLT、[**Homebrew**](https://brew.sh/) 的版本 / 配置 / doctor、Node.js 实际执行及 npm 配置、SQLite 内存查询、CLI 子命令与隔离样例建图，再核对目标状态 JSON 的工程路径与完整性。体检只读入口为 `./codegraph_init.command/codegraph_init.command --check-only`，不安装、不建图、不导出。
+- CodeGraph 会完整检查系统 Shell / curl / Git / CLT、[**Homebrew**](https://brew.sh/) 的版本 / 配置 / doctor、Node.js 实际执行及 npm 配置、SQLite 内存查询、CLI 子命令与隔离样例建图，再核对目标状态 JSON 的工程路径与完整性。体检只读入口为 `./【MacOS】codegraph_init.command/【MacOS】codegraph_init.command --check-only`，不安装、不建图、不导出。
 - Homebrew 没有该官方 [**CodeGraph**](https://github.com/colbymchenry/codegraph) 对应 formula；缺失或损坏的 Node/npm 优先由 Brew 的 `node@24` 补齐，再将官方 npm 包 `@colbymchenry/codegraph` 安装到用户独立前缀。安装前显示来源，已有健康 CLI 直接复用，不自动升级。
 - `JOBS_SKIP_CODEGRAPH=1` 跳过地图；`JOBS_POD_INSTALL_OFFLINE=1` 或 `CODEGRAPH_ALLOW_INSTALL=0` 禁止工具安装，健康工具仍可更新地图。`JOBS_POD_INSTALL_POST_SCRIPTS_CHECK_ONLY=1` 让后台任务只体检；这些开关不保证 CocoaPods 自身完全离线。
 - 调度日志中的 PID 只供观察，重复任务由 `.codegraph/.jobs-update.lock` 工程锁处理。工具安装、体检、索引或导出失败只写后台日志，不阻断已经完成的 CocoaPods 安装。

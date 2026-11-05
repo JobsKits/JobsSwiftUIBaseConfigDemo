@@ -32,8 +32,8 @@
 | 文件 | 职责 |
 | --- | --- |
 | [同名 `.command`](./【MacOS】🌐CocoaPods网络适配.command) | 独立运行只做网络诊断，先展示自述并等待回车，不启动安装 |
-| [jobs_cocoapods_network.rb](./jobs_cocoapods_network.rb) | 读取当前配置、探测真实 Git 链路，并让本次安装继承验证过的代理 |
-| [jobs_cocoapods_download_fallback.rb](./jobs_cocoapods_download_fallback.rb) | 对已核验的源码请求注册官方归档回退，保留原依赖声明与版本 |
+| [jobs_cocoapods_network.rb](./jobs_cocoapods_network.rb/jobs_cocoapods_network.rb) | 读取当前配置、探测真实 Git 链路，并让本次安装继承验证过的代理 |
+| [jobs_cocoapods_download_fallback.rb](./jobs_cocoapods_download_fallback.rb/jobs_cocoapods_download_fallback.rb) | 对已核验的源码请求注册官方归档回退，保留原依赖声明与版本 |
 | [Tests](./Tests/) | 假网络与临时目录中的隔离回归，不运行真实安装 |
 
 Podfile 顶部在公共 Specs 选择之前同步调用网络适配器，并在真实 `pod install` / `pod update` 时注册归档适配。`pod ipc` 等查询不发送该模块的网络请求、不注册归档回退。此顺序保证随后的源选择脚本和源码下载子进程能继承同一本次代理配置；它不是异步报告任务，也不放入 `post_install`。
@@ -98,8 +98,8 @@ pod install
 从本目录运行隔离测试：
 
 ```zsh
-ruby Tests/network_test.rb
-ruby Tests/podfile_integration_test.rb
+ruby Tests/network_test.rb/network_test.rb
+ruby Tests/podfile_integration_test.rb/podfile_integration_test.rb
 ```
 
 归档测试需要 CocoaPods 所用 Ruby 与 Gem 环境。标准 Homebrew 布局可从已有命令路径定位，不调用 Homebrew 更新或 API 查询；Ruby 自带的 Gem 路径仍需保留：
@@ -112,12 +112,12 @@ jobs_pod_test_gems="$("$jobs_pod_test_ruby" -rrubygems -e 'print Gem.default_pat
 GEM_HOME="$jobs_pod_test_prefix/opt/cocoapods/libexec" \
   GEM_PATH="$jobs_pod_test_prefix/opt/cocoapods/libexec:$jobs_pod_test_gems" \
   "$jobs_pod_test_ruby" \
-  Tests/download_fallback_test.rb
+  Tests/download_fallback_test.rb/download_fallback_test.rb
 
 GEM_HOME="$jobs_pod_test_prefix/opt/cocoapods/libexec" \
   GEM_PATH="$jobs_pod_test_prefix/opt/cocoapods/libexec:$jobs_pod_test_gems" \
   "$jobs_pod_test_ruby" \
-  Tests/podfile_parse_test.rb
+  Tests/podfile_parse_test.rb/podfile_parse_test.rb
 ```
 
 测试不安装依赖：网络单元测试使用假请求；归档测试复用真实 CocoaPods Request、下载器和系统 tar，但 Git / curl 是本地替身；挂载测试在临时工程执行真实 Podfile 顶部代码；`podfile_parse_test.rb` 使用真实 CocoaPods 只读解析完整 Podfile，验证唯一公共源、原本地依赖和 hooks 保留、锁文件不变，不执行 hooks。网络 23 项 / 101 断言、归档 39 项、Podfile 挂载 13 项 / 193 断言均通过；未执行真实 `pod install` 或构建。

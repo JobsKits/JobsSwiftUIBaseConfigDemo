@@ -1,6 +1,6 @@
 #!/bin/zsh
 # 脚本自述：
-# - 脚本名称：codegraph_export_md.command
+# - 脚本名称：【MacOS】codegraph_export_md.command
 # - 核心用途：将已有 CodeGraph 数据库导出为 Markdown 文档和关系图。
 # - 影响范围：脚本指定文件或缓存的删除 / 清理；脚本所在工程或指定目标中的文件。
 # - 运行提示：先阅读自述并按回车确认，按 Ctrl+C 取消。
@@ -30,7 +30,7 @@ jobs_intro_style() {
 }
 # 打印固定自述，确认后才进入原有脚本流程。
 show_script_intro_and_wait() {
-  printf '%s\n' codegraph_export_md.command | jobs_intro_style title
+  printf '%s\n' 【MacOS】codegraph_export_md.command | jobs_intro_style title
   printf '%s\n' '1、核心用途：将已有 CodeGraph 数据库导出为 Markdown 文档和关系图。' | jobs_intro_style body
   printf '%s\n' '2、影响范围：脚本指定文件或缓存的删除 / 清理；脚本所在工程或指定目标中的文件。' | jobs_intro_style body
   printf '%s\n' '3、运行策略：确认后执行原有流程；后续危险操作的确认保持原样。' | jobs_intro_style body
@@ -289,7 +289,7 @@ write_project_overview() {
   write_md_header "$file_path" "CodeGraph 项目概览"
 
   cat >> "$file_path" <<MD
-本目录由 \`codegraph_export_md.command\` 从 \`.codegraph/codegraph.db\` 导出。重点不是堆文件列表，而是把 CodeGraph 已经索引到的项目内在关系变成人能读的结构报告。
+本目录由 \`【MacOS】codegraph_export_md.command\` 从 \`.codegraph/codegraph.db\` 导出。重点不是堆文件列表，而是把 CodeGraph 已经索引到的项目内在关系变成人能读的结构报告。
 
 ## 一、导出信息 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a>
 

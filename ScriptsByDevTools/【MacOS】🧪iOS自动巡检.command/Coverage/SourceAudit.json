@@ -1,0 +1,377 @@
+{
+  "version": 1,
+  "projectID": "swiftui",
+  "meaning": "当前源码入口与实际catalog场景ID映射；静态登记不代表运行通过。失败及后续修复以各轮原始XCTest报告为准。",
+  "pages": [
+    {
+      "id": "textImage",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/TextImageDemoView.swift"
+    },
+    {
+      "id": "buttonMenu",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/ButtonMenuDemoView.swift"
+    },
+    {
+      "id": "inputFields",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/InputFieldsDemoView.swift"
+    },
+    {
+      "id": "controlValues",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/ControlValuesDemoView.swift"
+    },
+    {
+      "id": "pickers",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/PickersDemoView.swift"
+    },
+    {
+      "id": "progressGauge",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/ProgressGaugeDemoView.swift"
+    },
+    {
+      "id": "listForm",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/ListFormDemoView.swift"
+    },
+    {
+      "id": "navigation",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/NavigationDemoView.swift"
+    },
+    {
+      "id": "directionalPush",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/DirectionalPushDemoView.swift"
+    },
+    {
+      "id": "alertDialog",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/AlertDialogDemoView.swift"
+    },
+    {
+      "id": "presentation",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/PresentationDemoView.swift"
+    },
+    {
+      "id": "layout",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/LayoutDemoView.swift"
+    },
+    {
+      "id": "tabPage",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/TabPageDemoView.swift"
+    },
+    {
+      "id": "disclosureOutline",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/DisclosureOutlineDemoView.swift"
+    },
+    {
+      "id": "asyncLinkShare",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/AsyncLinkShareDemoView.swift"
+    },
+    {
+      "id": "animation",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/AnimationDemoView.swift"
+    },
+    {
+      "id": "timer",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/TimerDemoView.swift"
+    },
+    {
+      "id": "debugPanel",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/JobsSwiftUIDebugPanelDemoView.swift"
+    },
+    {
+      "id": "home",
+      "source": "JobsSwiftUIBaseConfigDemo/MainTabView.swift"
+    },
+    {
+      "id": "gallery",
+      "source": "JobsSwiftUIBaseConfigDemo/GalleryTabView.swift"
+    },
+    {
+      "id": "about",
+      "source": "JobsSwiftUIBaseConfigDemo/AboutTabView.swift"
+    },
+    {
+      "id": "navigation.push",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/NavigationDemoView.swift"
+    },
+    {
+      "id": "navigation.toolbar",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/NavigationDemoView.swift"
+    },
+    {
+      "id": "navigation.inlineTitle",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/NavigationDemoView.swift"
+    },
+    {
+      "id": "presentation.sheet",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/PresentationDemoView.swift"
+    },
+    {
+      "id": "presentation.popover",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/PresentationDemoView.swift"
+    },
+    {
+      "id": "presentation.fullScreenCover",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/PresentationDemoView.swift"
+    },
+    {
+      "id": "directionalPush.top",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/DirectionalPushDemoView.swift"
+    },
+    {
+      "id": "directionalPush.bottom",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/DirectionalPushDemoView.swift"
+    },
+    {
+      "id": "directionalPush.left",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/DirectionalPushDemoView.swift"
+    },
+    {
+      "id": "directionalPush.right",
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/DirectionalPushDemoView.swift"
+    }
+  ],
+  "navigation": [
+    {
+      "source": "JobsSwiftUIBaseConfigDemo/DemoListView.swift",
+      "line": 98,
+      "call": "NavigationLink {",
+      "classification": "mappedTargets",
+      "sceneIDs": [
+        "page.textImage",
+        "page.buttonMenu",
+        "page.inputFields",
+        "page.controlValues",
+        "page.pickers",
+        "page.progressGauge",
+        "page.listForm",
+        "page.navigation",
+        "page.directionalPush",
+        "page.alertDialog",
+        "page.presentation",
+        "page.layout",
+        "page.tabPage",
+        "page.disclosureOutline",
+        "page.asyncLinkShare",
+        "page.animation",
+        "page.timer",
+        "page.debugPanel"
+      ],
+      "reason": "实际目标及参数模式已登记；页面登记不代表每条入口边已经运行通过。"
+    },
+    {
+      "source": "JobsSwiftUIBaseConfigDemo/GalleryTabView.swift",
+      "line": 26,
+      "call": "NavigationLink {",
+      "classification": "mappedTargets",
+      "sceneIDs": [
+        "page.textImage",
+        "page.buttonMenu",
+        "page.inputFields",
+        "page.controlValues",
+        "page.pickers",
+        "page.progressGauge",
+        "page.listForm",
+        "page.navigation",
+        "page.directionalPush",
+        "page.alertDialog",
+        "page.presentation",
+        "page.layout",
+        "page.tabPage",
+        "page.disclosureOutline",
+        "page.asyncLinkShare",
+        "page.animation",
+        "page.timer",
+        "page.debugPanel"
+      ],
+      "reason": "实际目标及参数模式已登记；页面登记不代表每条入口边已经运行通过。"
+    },
+    {
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/PresentationDemoView.swift",
+      "line": 35,
+      "call": ".sheet(isPresented: $showSheet) {",
+      "classification": "mappedTargets",
+      "sceneIDs": [
+        "page.presentation.sheet",
+        "presentation.sheet.dismiss"
+      ],
+      "reason": "实际目标及参数模式已登记；页面登记不代表每条入口边已经运行通过。"
+    },
+    {
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/PresentationDemoView.swift",
+      "line": 40,
+      "call": ".popover(isPresented: $showPopover) {",
+      "classification": "mappedTargets",
+      "sceneIDs": [
+        "page.presentation.popover",
+        "presentation.popover.dismiss"
+      ],
+      "reason": "实际目标及参数模式已登记；页面登记不代表每条入口边已经运行通过。"
+    },
+    {
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/PresentationDemoView.swift",
+      "line": 45,
+      "call": ".fullScreenCover(isPresented: $showFullScreenCover) {",
+      "classification": "mappedTargets",
+      "sceneIDs": [
+        "page.presentation.fullScreenCover",
+        "presentation.fullScreenCover.dismiss"
+      ],
+      "reason": "实际目标及参数模式已登记；页面登记不代表每条入口边已经运行通过。"
+    },
+    {
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/NavigationDemoView.swift",
+      "line": 17,
+      "call": "Section(\"NavigationLink\") {",
+      "classification": "nonNavigationText",
+      "sceneIDs": [],
+      "reason": "说明文本或Section标题包含NavigationLink字样，不是导航调用。"
+    },
+    {
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/NavigationDemoView.swift",
+      "line": 20,
+      "call": "NavigationLink {",
+      "classification": "mappedTargets",
+      "sceneIDs": [
+        "page.navigation.push",
+        "page.navigation.toolbar",
+        "page.navigation.inlineTitle"
+      ],
+      "reason": "实际目标及参数模式已登记；页面登记不代表每条入口边已经运行通过。"
+    },
+    {
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/NavigationDemoView.swift",
+      "line": 104,
+      "call": "case .push: \"NavigationLink 会在当前 NavigationStack 内推出新页面。\"",
+      "classification": "nonNavigationText",
+      "sceneIDs": [],
+      "reason": "说明文本或Section标题包含NavigationLink字样，不是导航调用。"
+    },
+    {
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/DirectionalPushDemoView.swift",
+      "line": 230,
+      "call": "navigationController.pushViewController(detailViewController, animated: true)",
+      "classification": "mappedTargets",
+      "sceneIDs": [
+        "page.directionalPush.top",
+        "page.directionalPush.bottom",
+        "page.directionalPush.left",
+        "page.directionalPush.right"
+      ],
+      "reason": "实际目标及参数模式已登记；页面登记不代表每条入口边已经运行通过。"
+    }
+  ],
+  "gestures": [
+    {
+      "source": "JobsSwiftUIBaseConfigDemo/DemoListView.swift",
+      "line": 108,
+      "call": ".onDrop(",
+      "classification": "mappedGesture",
+      "sceneIDs": [
+        "gesture.demoList.reorder"
+      ],
+      "reason": "真实拖放/拖动后断言绑定数值或实际排序；测试顺序使用独立偏好键。"
+    },
+    {
+      "source": "JobsSwiftUIBaseConfigDemo/DemoListView.swift",
+      "line": 123,
+      "call": ".onDrag {",
+      "classification": "mappedGesture",
+      "sceneIDs": [
+        "gesture.demoList.reorder"
+      ],
+      "reason": "真实拖放/拖动后断言绑定数值或实际排序；测试顺序使用独立偏好键。"
+    },
+    {
+      "source": "JobsSwiftUIBaseConfigDemo/DemoListView.swift",
+      "line": 136,
+      "call": ".onDrop(",
+      "classification": "mappedGesture",
+      "sceneIDs": [
+        "gesture.demoList.reorder"
+      ],
+      "reason": "真实拖放/拖动后断言绑定数值或实际排序；测试顺序使用独立偏好键。"
+    },
+    {
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/CustomCircularGaugeView.swift",
+      "line": 111,
+      "call": "DragGesture(minimumDistance: 0)",
+      "classification": "mappedGesture",
+      "sceneIDs": [
+        "gesture.circularGauge"
+      ],
+      "reason": "真实拖放/拖动后断言绑定数值或实际排序；测试顺序使用独立偏好键。"
+    },
+    {
+      "source": "JobsByPods/JobsSwiftUIDebugPanel@Pods/Core/JobsSwiftUIDebugOverlayView/JobsSwiftUIDebugOverlayView.swift",
+      "line": 117,
+      "call": "let pan = UIPanGestureRecognizer.makeDebugPanel",
+      "classification": "mappedGesture",
+      "sceneIDs": [
+        "gesture.debugFloating.pan"
+      ],
+      "reason": "实际已挂载全局浮球，使用原GR/点击回调，真实frame/原面板开关AX状态/按钮消失作终态；无替代handler、不调整识别优先级。"
+    },
+    {
+      "source": "JobsByPods/JobsSwiftUIDebugPanel@Pods/Core/JobsSwiftUIDebugOverlayView/JobsSwiftUIDebugOverlayView.swift",
+      "line": 119,
+      "call": "let tap = UITapGestureRecognizer.makeDebugPanel",
+      "classification": "mappedGesture",
+      "sceneIDs": [
+        "gesture.debugFloating.tap"
+      ],
+      "reason": "实际已挂载全局浮球，使用原GR/点击回调，真实frame/原面板开关AX状态/按钮消失作终态；无替代handler、不调整识别优先级。"
+    },
+    {
+      "source": "JobsByPods/JobsSwiftUIDebugPanel@Pods/Core/JobsSwiftUIDebugOverlayView/JobsSwiftUIDebugOverlayView.swift",
+      "line": 118,
+      "call": "let longPress = UILongPressGestureRecognizer.makeDebugPanel",
+      "classification": "mappedGesture",
+      "sceneIDs": [
+        "gesture.debugFloating.longPress"
+      ],
+      "reason": "实际已挂载全局浮球，使用原GR/点击回调，真实frame/原面板开关AX状态/按钮消失作终态；无替代handler、不调整识别优先级。"
+    }
+  ],
+  "notApplicable": [
+    {
+      "capability": "登录/注册/找回密码",
+      "reason": "此工程没有实现认证功能；SecureField示例不是登录流程，不制造不存在功能的pending。"
+    },
+    {
+      "capability": "双指旋转",
+      "reason": "实际主工程及已挂载Debug浮球未实现双指Rotation手势；浮球真实Pan、Tap与LongPress已分别登记，不能归作不存在功能。"
+    },
+    {
+      "capability": "摇动恢复调试浮球",
+      "source": "JobsByPods/JobsSwiftUIDebugPanel@Pods/Core/JobsSwiftUIDebugOverlayView/JobsSwiftUIDebugOverlayView.swift",
+      "reason": "当前SwiftUI主App与该Pod没有motionShake监听或摇动恢复实现；原提示为长按隐藏至下次启动。三项真实触摸测试分别验证Pan/Tap/LongPress，不代表硬件运动测试或整个调试面板所有事件已通过。"
+    }
+  ],
+  "scope": {
+    "additionalGestureRoots": [
+      "JobsByPods/JobsSwiftUIDebugPanel@Pods/Core"
+    ]
+  },
+  "knownDefects": [
+    {
+      "id": "demoList.dropNotCompleted",
+      "source": "JobsSwiftUIBaseConfigDemo/DemoListView.swift",
+      "sceneIDs": [
+        "gesture.demoList.reorder"
+      ],
+      "reason": "既有真实测试排序失败（含原label位置首轮，以及外移尝试后的dragEvent=drag:buttonMenu但无Drop）；本轮已恢复原onDrop位置，不以旧版证明新源已通过，保留真实变序与dropped终态严格检查。"
+    }
+  ],
+  "productionBoundary": [
+    {
+      "source": "JobsSwiftUIBaseConfigDemo/DemoListView.swift",
+      "reason": "原onDrop恢复在NavigationLink的label，未成功的外移尝试已局部逆转；Debug巡检保留只读原drag/drop观察与独立排序偏好，不注入排序结果。原位置的新慢速重测以本轮结果为准。"
+    },
+    {
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/ProgressGaugeDemoView.swift",
+      "reason": "HStack说明布局仅在DEBUG且含巡检参数时用于稳定目标；普通启动与Release恢复原92×92单仪表盘布局。"
+    },
+    {
+      "source": "JobsSwiftUIBaseConfigDemo/Demos/CustomCircularGaugeView.swift",
+      "reason": "inner AX与activationPoint仅用于DEBUG巡检；普通和Release保留原outer label/value/adjustable语义及原绘制/DragGesture/数值规则。"
+    }
+  ]
+}

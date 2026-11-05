@@ -1,15 +1,32 @@
 {
   "version": 1,
   "files": [
+    "ScriptsByDevTools/README.md",
+    "ScriptsByDevTools/【MacOS】🧪iOS自动巡检.command/README.md",
     ".jobs-markdown-toc/README.md",
     "JobsByPods/JobsSwiftUIDebugPanel@Pods/README.md",
     "README.md",
     "ScriptsByPods/README.md",
-    "ScriptsByPods/codegraph_export_md.command/README.md",
-    "ScriptsByPods/codegraph_init.command/README.md",
+    "ScriptsByPods/【MacOS@Xcode】🫘当前工程Pod Install.command/README.md",
+    "ScriptsByPods/【MacOS@Xcode】🫘当前工程Pod Update.command/README.md",
+    "ScriptsByPods/【MacOS】codegraph_export_md.command/README.md",
+    "ScriptsByPods/【MacOS】codegraph_init.command/README.md",
+    "ScriptsByPods/【MacOS】codegraph_init.command/Tests/init_workflow_test.rb/README.md",
+    "ScriptsByPods/【MacOS】codegraph_init.command/Tests/interaction_test.rb/README.md",
     "ScriptsByPods/【MacOS】🌐CocoaPods源自动选择.command/README.md",
+    "ScriptsByPods/【MacOS】🌐CocoaPods源自动选择.command/Tests/run_regression.rb/README.md",
+    "ScriptsByPods/【MacOS】🌐CocoaPods源自动选择.command/jobs_cocoapods_source.rb/README.md",
     "ScriptsByPods/【MacOS】🌐CocoaPods网络适配.command/README.md",
+    "ScriptsByPods/【MacOS】🌐CocoaPods网络适配.command/Tests/download_fallback_test.rb/README.md",
+    "ScriptsByPods/【MacOS】🌐CocoaPods网络适配.command/Tests/network_test.rb/README.md",
+    "ScriptsByPods/【MacOS】🌐CocoaPods网络适配.command/Tests/podfile_integration_test.rb/README.md",
+    "ScriptsByPods/【MacOS】🌐CocoaPods网络适配.command/Tests/podfile_parse_test.rb/README.md",
+    "ScriptsByPods/【MacOS】🌐CocoaPods网络适配.command/jobs_cocoapods_download_fallback.rb/README.md",
+    "ScriptsByPods/【MacOS】🌐CocoaPods网络适配.command/jobs_cocoapods_network.rb/README.md",
     "SwiftUIDoc.md/SwiftUI工程项目框架配置方案@Jobs.md/SwiftUI工程项目框架配置方案@Jobs.md",
-    "SwiftUI相关经验.md/SwiftUI相关经验.md"
+    "SwiftUI相关经验.md/SwiftUI相关经验.md",
+    "ScriptsByPods/【MacOS】codegraph_init.command/Tests/network_regression.rb/README.md",
+    "ScriptsByDevTools/【MacOS】🧪iOS自动巡检.command/Coverage/README.md",
+    "ScriptsByDevTools/【MacOS】🧪iOS自动巡检.command/Coverage/CoverageTool.swift/README.md"
   ]
 }

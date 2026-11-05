@@ -1,11 +1,14 @@
 #!/usr/bin/env ruby
-# 使用临时 App 与假签名器验证 IPA 留存；不构建工程、不调用真实签名身份、不安装 App。
 require 'digest'
 require 'fileutils'
 require 'json'
 require 'open3'
 require 'shellwords'
 require 'tmpdir'
+
+# 用途：验证 IPA 留存的签名分支、成功后输出替换、失败时旧产物保护，以及 Xcode 打包阶段的挂载位置。
+# 运行：在本文件目录执行 ruby ./run_regression.rb --run；需要完整工程目录及 macOS 打包工具。
+# 边界：临时 App 与假签名器只处理隔离夹具，不构建工程、不调用真实签名身份、不安装 App；仅供打包脚本回归。
 
 abort '用法：ruby run_regression.rb --run（仅临时夹具）' unless ARGV == ['--run']
 package_root = File.expand_path('..', __dir__)

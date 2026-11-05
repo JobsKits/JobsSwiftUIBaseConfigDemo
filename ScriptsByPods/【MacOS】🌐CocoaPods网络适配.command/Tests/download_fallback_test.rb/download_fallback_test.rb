@@ -1,13 +1,16 @@
 # frozen_string_literal: true
 
-# 真实 CocoaPods 请求与 Http 解包流程；只把网络传输替换为本地受控夹具。
 require 'cocoapods'
 require 'cocoapods/downloader'
 require 'fileutils'
 require 'open3'
 require 'stringio'
 require 'tmpdir'
-require_relative '../jobs_cocoapods_download_fallback'
+require_relative '../../jobs_cocoapods_download_fallback.rb/jobs_cocoapods_download_fallback'
+
+# 用途：通过真实 CocoaPods 请求和 Http 解包流程，验证 Git 下载失败后的官方归档回退及错误保留。
+# 运行：在本文件目录执行 ruby ./download_fallback_test.rb；需要 CocoaPods 和所属工具的相对依赖。
+# 边界：网络传输替换为本地受控夹具，不下载真实依赖、不构建 App；仅供脚本回归。
 
 module DownloadFallbackTest
   ADAPTER = JobsCocoaPodsDownloadFallback

@@ -22,6 +22,7 @@ struct NavigationDemoView: View {
                     } label: {
                         Label(sample.title, systemImage: sample.symbol)
                     }
+                    .accessibilityIdentifier("jobs.navigation.open.\(sample.rawValue)")
                 }
             }
             
@@ -54,6 +55,7 @@ private struct NavigationDetailView: View {
                 .foregroundStyle(.blue)
             Text(sample.title)
                 .font(.title.bold())
+                .accessibilityIdentifier("jobs.coverage.page.navigation.\(sample.rawValue)")
             Text(sample.message)
                 .font(.body)
                 .foregroundStyle(.secondary)

@@ -8,10 +8,13 @@ require 'json'
 require 'pty'
 require 'timeout'
 
-# 在临时工程和伪终端验证真实确认分支；所有 CLI 写入边界都使用假命令。
+# 用途：验证 CodeGraph 初始化与 Markdown 导出的确认交互、只读 / 跳过模式、重建门禁和父子进程确认传递。
+# 运行：在本文件目录执行 ruby ./interaction_test.rb；保留所属工具的完整目录和相对依赖。
+# 边界：使用临时工程、伪终端与假 CLI，不安装工具、不更新真实索引或导出真实工程；仅供脚本回归。
+
 class JobsCodeGraphInteractionTest < Minitest::Test
-  SCRIPT = File.expand_path('../codegraph_init.command', __dir__)
-  EXPORT_SCRIPT = File.expand_path('../../codegraph_export_md.command/codegraph_export_md.command', __dir__)
+  SCRIPT = File.expand_path('../../【MacOS】codegraph_init.command', __dir__)
+  EXPORT_SCRIPT = File.expand_path('../../../【MacOS】codegraph_export_md.command/【MacOS】codegraph_export_md.command', __dir__)
 
   def setup
     @temporary = Dir.mktmpdir('jobs-codegraph-interaction-')

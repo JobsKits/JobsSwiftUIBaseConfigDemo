@@ -3,7 +3,11 @@
 require 'minitest/autorun'
 require 'tmpdir'
 require 'rbconfig'
-require_relative '../jobs_cocoapods_network'
+require_relative '../../jobs_cocoapods_network.rb/jobs_cocoapods_network'
+
+# 用途：验证 CocoaPods 网络适配的命令识别、代理选路、进程超时、脱敏日志与环境恢复。
+# 运行：在本文件目录执行 ruby ./network_test.rb；保留所属工具的完整目录和相对依赖。
+# 边界：代理与探测使用替身或本机夹具，不修改系统代理、不执行真实 pod install；不是 App 源码。
 
 class JobsCocoaPodsNetworkTest < Minitest::Test
   Network = JobsCocoaPodsNetwork
@@ -242,7 +246,7 @@ class JobsCocoaPodsNetworkTest < Minitest::Test
   end
 
   def test_at_exit_restores_environment_before_earlier_exit_handlers_run
-    module_path = File.expand_path('../jobs_cocoapods_network.rb', __dir__)
+    module_path = File.expand_path('../../jobs_cocoapods_network.rb/jobs_cocoapods_network.rb', __dir__)
     code = <<~RUBY
       require ARGV[0]
       ENV['https_proxy'] = 'http://original.example:8080'

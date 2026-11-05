@@ -1,18 +1,21 @@
 # frozen_string_literal: true
 
-# 隔离验证网络判定、进程超时及 CocoaPods 锁定源适配；不安装依赖。
 require 'tmpdir'
 require 'fileutils'
 require 'open3'
 require 'timeout'
 require 'json'
 require 'cocoapods'
-require_relative '../jobs_cocoapods_source'
+require_relative '../../jobs_cocoapods_source.rb/jobs_cocoapods_source'
+
+# 用途：验证 CocoaPods CDN / Git 源的选择、响应有效性、进程超时及锁定源兼容。
+# 运行：在本文件目录执行 ruby ./run_regression.rb；需要 CocoaPods 和所属工具的相对依赖。
+# 边界：使用隔离网络与命令夹具，不安装真实依赖、不构建 App；不是 iOS 测试 Target 源码。
 
 module SpecsSourceRegression
   CDN = 'https://cdn.cocoapods.org/'
   GIT = 'https://github.com/CocoaPods/Specs.git'
-  PACKAGE = File.expand_path('..', __dir__)
+  PACKAGE = File.expand_path('../..', __dir__)
   SCRIPT = File.join(PACKAGE, File.basename(PACKAGE))
 
   FAKE_CURL = <<~'ZSH'
@@ -223,10 +226,10 @@ module SpecsSourceRegression
     def adapter_checks
       project = File.join(@root, '临时工程 with spaces')
       package = File.join(project, 'ScriptsByPods', File.basename(PACKAGE))
-      FileUtils.mkdir_p(package)
       script = File.join(package, File.basename(PACKAGE))
-      helper_path = File.join(package, 'jobs_cocoapods_source.rb')
-      FileUtils.cp(File.join(PACKAGE, 'jobs_cocoapods_source.rb'), helper_path)
+      helper_path = File.join(package, 'jobs_cocoapods_source.rb', 'jobs_cocoapods_source.rb')
+      FileUtils.mkdir_p(File.dirname(helper_path))
+      FileUtils.cp(File.join(PACKAGE, 'jobs_cocoapods_source.rb', 'jobs_cocoapods_source.rb'), helper_path)
       isolated = Module.new
       isolated.module_eval(File.read(helper_path), helper_path, 1)
       adapter = isolated.const_get(:JobsCocoaPodsSource)

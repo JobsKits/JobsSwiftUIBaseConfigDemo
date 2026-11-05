@@ -17,6 +17,23 @@ struct DemoListView: View {
     @State private var orderedFeatures = DemoFeature.allCases
     @State private var draggingFeature: DemoFeature?
     @State private var searchText = ""
+    #if DEBUG
+    @State private var coverageDragEvent = "idle"
+
+    private static let coverageStorageKey: String = {
+        let key = "JobsSwiftUIBaseConfigDemo.coverage.demoFeatureOrder"
+        UserDefaults.standard.removeObject(forKey: key)
+        return key
+    }()
+    #endif
+
+    init() {
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("--jobs-coverage-route") {
+            _storedFeatureOrder = AppStorage(wrappedValue: "", Self.coverageStorageKey)
+        }
+        #endif
+    }
 
     /// 计算属性不额外保存状态，而是每次从当前 searchText 推导结果。
     private var trimmedSearchText: String {
@@ -65,6 +82,14 @@ struct DemoListView: View {
         storedFeatureOrder = features.map(\.rawValue).joined(separator: ",")
     }
 
+    private func observeDragEvent(_ event: String) {
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("--jobs-coverage-route") {
+            coverageDragEvent = event
+        }
+        #endif
+    }
+
     var body: some View {
         NavigationStack {
             List {
@@ -88,13 +113,18 @@ struct DemoListView: View {
                                         features: $orderedFeatures,
                                         draggingFeature: $draggingFeature,
                                         isEnabled: !isSearching,
-                                        persist: persistFeatureOrder
+                                        persist: persistFeatureOrder,
+                                        observe: observeDragEvent
                                     )
                                 )
                         }
+                        .accessibilityIdentifier("jobs.demo.\(feature.id)")
                         .opacity(draggingFeature == feature ? 0.72 : 1)
                         .onDrag {
                             draggingFeature = feature
+                            #if DEBUG
+                            observeDragEvent("drag:\(feature.rawValue)")
+                            #endif
                             /// 拖拽系统通过 NSItemProvider 携带数据；真正的排序依据仍是本地 State。
                             return NSItemProvider(object: feature.rawValue as NSString)
                         }
@@ -111,18 +141,36 @@ struct DemoListView: View {
                                 features: $orderedFeatures,
                                 draggingFeature: $draggingFeature,
                                 isEnabled: !isSearching,
-                                persist: persistFeatureOrder
+                                persist: persistFeatureOrder,
+                                observe: observeDragEvent
                             )
                         )
                 }
             }
             .listStyle(.insetGrouped)
+            .accessibilityIdentifier("jobs.demo.list")
             .navigationTitle("SwiftUI 系统 UI")
             /// searchable 自动把系统搜索框接入 searchText Binding。
             .searchable(text: $searchText, prompt: "搜索功能名")
             /// body 可能多次计算，初始化副作用放在 onAppear，而不是直接写进 body。
             .onAppear(perform: loadFeatureOrder)
         }
+        #if DEBUG
+        .overlay(alignment: .topLeading) {
+            if ProcessInfo.processInfo.arguments.contains("--jobs-coverage-route") {
+                Text(orderedFeatures.map(\.rawValue).joined(separator: ","))
+                    .foregroundStyle(.clear)
+                    .frame(width: 1, height: 1)
+                    .accessibilityIdentifier("jobs.demo.order")
+                    .allowsHitTesting(false)
+                Text(coverageDragEvent)
+                    .foregroundStyle(.clear)
+                    .frame(width: 1, height: 1)
+                    .accessibilityIdentifier("jobs.demo.dragEvent")
+                    .allowsHitTesting(false)
+            }
+        }
+        #endif
     }
 }
 
@@ -136,6 +184,7 @@ private struct DemoFeatureDropDelegate: DropDelegate {
     @Binding var draggingFeature: DemoFeature?
     let isEnabled: Bool
     let persist: ([DemoFeature]) -> Void
+    let observe: (String) -> Void
     
     func validateDrop(info: DropInfo) -> Bool {
         isEnabled
@@ -146,6 +195,9 @@ private struct DemoFeatureDropDelegate: DropDelegate {
     }
     
     func dropEntered(info: DropInfo) {
+        #if DEBUG
+        observe("entered:\(feature?.rawValue ?? "header")")
+        #endif
         /// guard 把不可排序的条件提前退出，使后面的核心移动逻辑保持直线结构。
         guard isEnabled,
               let draggingFeature,
@@ -181,6 +233,9 @@ private struct DemoFeatureDropDelegate: DropDelegate {
         }
         
         persist(features)
+        #if DEBUG
+        observe("dropped")
+        #endif
         return true
     }
     

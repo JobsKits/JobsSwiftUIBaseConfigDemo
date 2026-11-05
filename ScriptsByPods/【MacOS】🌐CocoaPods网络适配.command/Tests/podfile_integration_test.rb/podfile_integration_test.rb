@@ -7,8 +7,12 @@ require 'open3'
 require 'json'
 require 'rbconfig'
 
+# 用途：隔离验证 Podfile 前置配置的模块加载顺序、命令分流，以及可选模块缺失或失败时的降级。
+# 运行：在本文件目录执行 ruby ./podfile_integration_test.rb；保留所属工具的完整目录。
+# 边界：网络、归档和选源模块使用替身，不安装 Pods、不构建 App；不替代完整工程验收。
+
 class JobsCocoaPodsPodfileIntegrationTest < Minitest::Test
-  PROJECT_ROOT = File.expand_path('../../..', __dir__)
+  PROJECT_ROOT = File.expand_path('../../../..', __dir__)
   NETWORK_PACKAGE = '【MacOS】🌐CocoaPods网络适配.command'
   SOURCE_PACKAGE = '【MacOS】🌐CocoaPods源自动选择.command'
   NETWORK_MODULE = <<~'RUBY'
@@ -225,7 +229,7 @@ class JobsCocoaPodsPodfileIntegrationTest < Minitest::Test
              else
                raise "不支持的模块夹具模式：#{mode}"
              end
-    path = File.join(project_root, 'ScriptsByPods', package, basename)
+    path = File.join(project_root, 'ScriptsByPods', package, basename, basename)
     FileUtils.mkdir_p(File.dirname(path))
     File.write(path, source)
   end

@@ -27,7 +27,7 @@ struct JobsSwiftUIBaseConfigDemoApp: App {
         /// `WindowGroup` 为每个窗口会话创建一棵视图树，闭包中的 View 就是该窗口的根视图。
         WindowGroup {
 #if DEBUG
-            MainTabView()
+            debugRootView
                 .jobsSwiftUIDebugPanel()
                 .preferredColorScheme((JobsSwiftUIDebugDemoAppearance(rawValue: debugDemoAppearance) ?? .system).colorScheme)
 #else
@@ -35,4 +35,71 @@ struct JobsSwiftUIBaseConfigDemoApp: App {
 #endif
         }
     }
+
+#if DEBUG
+    @ViewBuilder
+    private var debugRootView: some View {
+        let arguments = ProcessInfo.processInfo.arguments
+        if let optionIndex = arguments.firstIndex(of: "--jobs-coverage-route") {
+            if arguments.indices.contains(optionIndex + 1) {
+                debugCoverageDestination(arguments[optionIndex + 1])
+            } else {
+                Text("巡检入口缺少页面路由 ID")
+            }
+        } else {
+            MainTabView()
+        }
+    }
+
+    @ViewBuilder
+    private func debugCoverageDestination(_ routeID: String) -> some View {
+        if let feature = DemoFeature(rawValue: routeID) {
+            NavigationStack {
+                feature.destination
+                    .navigationTitle(feature.title)
+                    .navigationBarTitleDisplayMode(.inline)
+                    .modifier(JobsCoverageReadyModifier(routeID: routeID))
+            }
+        } else if routeID == "gallery" {
+            GalleryTabView()
+                .modifier(JobsCoverageReadyModifier(routeID: routeID))
+        } else if routeID == "about" {
+            AboutTabView()
+                .modifier(JobsCoverageReadyModifier(routeID: routeID))
+        } else if routeID == "home" {
+            MainTabView()
+                .modifier(JobsCoverageReadyModifier(routeID: routeID))
+        } else {
+            Text("当前构建不包含巡检页面：\(routeID)")
+        }
+    }
+#endif
 }
+
+#if DEBUG
+/// 标记由实际页面的 onAppear 发布，不把启动参数存在当作已经进入页面。
+private struct JobsCoverageReadyModifier: ViewModifier {
+
+    let routeID: String
+    @State private var appeared = false
+
+    func body(content: Content) -> some View {
+        content
+            .overlay(alignment: .topLeading) {
+                if appeared {
+                    Text("巡检页面已就绪")
+                        .foregroundStyle(.clear)
+                        .frame(width: 1, height: 1)
+                        .accessibilityIdentifier("jobs.coverage.ready.\(routeID)")
+                        .allowsHitTesting(false)
+                }
+            }
+            .onAppear {
+                appeared = true
+            }
+            .onDisappear {
+                appeared = false
+            }
+    }
+}
+#endif

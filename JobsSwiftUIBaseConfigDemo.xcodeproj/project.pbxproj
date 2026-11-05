@@ -40,11 +40,25 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0302B75C7668FA33BDD26885 /* 【MacOS@Xcode】🫘当前工程Pod Install.command */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "【MacOS@Xcode】🫘当前工程Pod Install.command"; sourceTree = "<group>"; };
+		103DC2224F0E9D7329961FB9 /* interaction_test.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = interaction_test.rb; sourceTree = "<group>"; };
+		141070F7733C5C069A857A7C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		1925762410BC9B6EC0220117 /* Pods-JobsSwiftUIBaseConfigDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JobsSwiftUIBaseConfigDemo.release.xcconfig"; path = "Target Support Files/Pods-JobsSwiftUIBaseConfigDemo/Pods-JobsSwiftUIBaseConfigDemo.release.xcconfig"; sourceTree = "<group>"; };
+		19287033395C046E7358F84D /* 【MacOS】🌐CocoaPods源自动选择.command */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "【MacOS】🌐CocoaPods源自动选择.command"; sourceTree = "<group>"; };
 		1A07463DE7B538984BF11F92 /* JobsSwiftUIDebugNetworkEnvironment.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = JobsSwiftUIDebugNetworkEnvironment.swift; sourceTree = "<group>"; };
+		2792316FE444B6EF13433C3D /* podfile_integration_test.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = podfile_integration_test.rb; sourceTree = "<group>"; };
+		2CB771E2783E9D97FAFBC821 /* init_workflow_test.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = init_workflow_test.rb; sourceTree = "<group>"; };
+		2E2ADCB9FBA64A95026199A6 /* run_regression.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = run_regression.rb; sourceTree = "<group>"; };
+		627FEE710CEB6190B0DD2FE2 /* network_test.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = network_test.rb; sourceTree = "<group>"; };
 		63AFEB86D97A6B53B47EE103 /* Pods_JobsSwiftUIBaseConfigDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JobsSwiftUIBaseConfigDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		649EC48011FA88407646C3A3 /* JobsSwiftUIDebugAppDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = JobsSwiftUIDebugAppDelegate.swift; sourceTree = "<group>"; };
+		65812355D695F5AA2D85E627 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7B2A75635CACF2FFC239629B /* Pods-JobsSwiftUIBaseConfigDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JobsSwiftUIBaseConfigDemo.debug.xcconfig"; path = "Target Support Files/Pods-JobsSwiftUIBaseConfigDemo/Pods-JobsSwiftUIBaseConfigDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		7CB48C3B3EE28AD1046330E8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		9076B537BA3C601947404A2F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		963EB9A8D34D05085862D984 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		A9ED60414BD7438266F99469 /* podfile_parse_test.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = podfile_parse_test.rb; sourceTree = "<group>"; };
+		AE69710FFCF7933C83D08EEF /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B00000000000000000000001 /* JobsSwiftUIBaseConfigDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobsSwiftUIBaseConfigDemoApp.swift; sourceTree = "<group>"; };
 		B00000000000000000000002 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		B00000000000000000000003 /* DemoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoListView.swift; sourceTree = "<group>"; };
@@ -72,7 +86,21 @@
 		B00000000000000000000025 /* JobsSwiftUIBaseConfigDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JobsSwiftUIBaseConfigDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B00000000000000000000026 /* CustomCircularGaugeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCircularGaugeView.swift; sourceTree = "<group>"; };
 		B00000000000000000000027 /* DirectionalPushDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionalPushDemoView.swift; sourceTree = "<group>"; };
+		B36CD8D36EB0845FFBD33406 /* 【MacOS@Xcode】🫘当前工程Pod Update.command */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "【MacOS@Xcode】🫘当前工程Pod Update.command"; sourceTree = "<group>"; };
+		CB4075A738159D70E78A5FC7 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		CBD387B708FE8B8B712005F4 /* 【MacOS】codegraph_init.command */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "【MacOS】codegraph_init.command"; sourceTree = "<group>"; };
+		D8662EE9F35B5335DA7800EC /* 【MacOS】🌐CocoaPods网络适配.command */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "【MacOS】🌐CocoaPods网络适配.command"; sourceTree = "<group>"; };
+		E42D9CE1CAAD19627378F7DB /* save_device_ipa_after_build.command */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = save_device_ipa_after_build.command; sourceTree = "<group>"; };
+		E44C1D284C1D7BF3F7D5D0F5 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		E5D0E7AA7AAA0D7F7B492688 /* run_regression.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = run_regression.rb; sourceTree = "<group>"; };
+		E94FA2714AAC32E84A07690B /* download_fallback_test.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = download_fallback_test.rb; sourceTree = "<group>"; };
+		EA6BC996659BE364F49DB290 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		ECB52F87B180704F0C0DB85A /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F3C9C0E8023691ECEE9D0C13 /* JobsSwiftUIDebugPanelDemoView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = JobsSwiftUIDebugPanelDemoView.swift; sourceTree = "<group>"; };
+		F77535E7BC16F886BE60A34E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		F89914CCE272FC64F561F640 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		FF8211C2EE56E724D8C3AC7D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		F90100042026110300000001 /* 【MacOS】🧪iOS自动巡检.command */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "【MacOS】🧪iOS自动巡检.command"; path = "ScriptsByDevTools/【MacOS】🧪iOS自动巡检.command"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,20 +115,112 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1609F8FC098BD40215CEE24C /* 【MacOS】🌐CocoaPods网络适配.command */ = {
+			isa = PBXGroup;
+			children = (
+				AC06E1CB2BCA3C15439884ED /* Tests */,
+				FF8211C2EE56E724D8C3AC7D /* README.md */,
+				D8662EE9F35B5335DA7800EC /* 【MacOS】🌐CocoaPods网络适配.command */,
+			);
+			path = "【MacOS】🌐CocoaPods网络适配.command";
+			sourceTree = "<group>";
+		};
+		300D99BC98CB3D95918C40F2 /* 【MacOS】codegraph_init.command */ = {
+			isa = PBXGroup;
+			children = (
+				DA7828555136A7E811354F03 /* Tests */,
+				EA6BC996659BE364F49DB290 /* README.md */,
+				CBD387B708FE8B8B712005F4 /* 【MacOS】codegraph_init.command */,
+			);
+			path = "【MacOS】codegraph_init.command";
+			sourceTree = "<group>";
+		};
 		36CB7FA05A2549F74521276E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
 				7B2A75635CACF2FFC239629B /* Pods-JobsSwiftUIBaseConfigDemo.debug.xcconfig */,
 				1925762410BC9B6EC0220117 /* Pods-JobsSwiftUIBaseConfigDemo.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		3719DAAC62F32E63125A6EF5 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				E5D0E7AA7AAA0D7F7B492688 /* run_regression.rb */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		4B9A7256818375B7999072E7 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				9CE9E9D2B2754A27ED1B7378 /* run_regression.rb */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		5CFC66CCE15D6A2176A8D8B1 /* 【MacOS】🌐CocoaPods源自动选择.command */ = {
+			isa = PBXGroup;
+			children = (
+				4B9A7256818375B7999072E7 /* Tests */,
+				F77535E7BC16F886BE60A34E /* README.md */,
+				19287033395C046E7358F84D /* 【MacOS】🌐CocoaPods源自动选择.command */,
+			);
+			path = "【MacOS】🌐CocoaPods源自动选择.command";
+			sourceTree = "<group>";
+		};
+		6ED215FEED909E750312AC04 /* podfile_parse_test.rb */ = {
+			isa = PBXGroup;
+			children = (
+				9076B537BA3C601947404A2F /* README.md */,
+				A9ED60414BD7438266F99469 /* podfile_parse_test.rb */,
+			);
+			path = podfile_parse_test.rb;
+			sourceTree = "<group>";
+		};
+		6F0CC0E0FF28487AC7848888 /* ScriptsByPods */ = {
+			isa = PBXGroup;
+			children = (
+				7BF4DFD855D8756788C11DB2 /* 【MacOS@Xcode】🫘当前工程Pod Install.command */,
+				DE406237A63901FEB607A161 /* 【MacOS@Xcode】🫘当前工程Pod Update.command */,
+			);
+			path = ScriptsByPods;
+			sourceTree = "<group>";
+		};
+		7636A26F3F41AFF8577DF6FB /* network_test.rb */ = {
+			isa = PBXGroup;
+			children = (
+				F89914CCE272FC64F561F640 /* README.md */,
+				627FEE710CEB6190B0DD2FE2 /* network_test.rb */,
+			);
+			path = network_test.rb;
+			sourceTree = "<group>";
+		};
+		7BF4DFD855D8756788C11DB2 /* 【MacOS@Xcode】🫘当前工程Pod Install.command */ = {
+			isa = PBXGroup;
+			children = (
+				0302B75C7668FA33BDD26885 /* 【MacOS@Xcode】🫘当前工程Pod Install.command */,
+				ECB52F87B180704F0C0DB85A /* README.md */,
+			);
+			path = "【MacOS@Xcode】🫘当前工程Pod Install.command";
+			sourceTree = "<group>";
+		};
+		9CE9E9D2B2754A27ED1B7378 /* run_regression.rb */ = {
+			isa = PBXGroup;
+			children = (
+				E44C1D284C1D7BF3F7D5D0F5 /* README.md */,
+				2E2ADCB9FBA64A95026199A6 /* run_regression.rb */,
+			);
+			path = run_regression.rb;
 			sourceTree = "<group>";
 		};
 		A00000000000000000000001 = {
 			isa = PBXGroup;
 			children = (
+				6F0CC0E0FF28487AC7848888 /* ScriptsByPods */,
 				A00000000000000000000004 /* JobsSwiftUIBaseConfigDemo */,
+				A39FBE0B2D561D2E5772D898 /* 自动化测试 */,
 				A00000000000000000000005 /* Products */,
 				36CB7FA05A2549F74521276E /* Pods */,
 				BC434D52E8A60503D7DC796E /* Frameworks */,
@@ -159,12 +279,123 @@
 			path = Demos;
 			sourceTree = "<group>";
 		};
+		A39FBE0B2D561D2E5772D898 /* 自动化测试 */ = {
+			isa = PBXGroup;
+			children = (
+				FF2FD31581BB50B4C676BEE2 /* 脚本回归 */,
+			);
+			name = "自动化测试";
+			sourceTree = "<group>";
+		};
+		A6CC34CC8DD522B8C98A84BA /* interaction_test.rb */ = {
+			isa = PBXGroup;
+			children = (
+				65812355D695F5AA2D85E627 /* README.md */,
+				103DC2224F0E9D7329961FB9 /* interaction_test.rb */,
+			);
+			path = interaction_test.rb;
+			sourceTree = "<group>";
+		};
+		AC06E1CB2BCA3C15439884ED /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				F67510918CD13F04A80C6847 /* download_fallback_test.rb */,
+				7636A26F3F41AFF8577DF6FB /* network_test.rb */,
+				E43398D04CD431C94C9E4E87 /* podfile_integration_test.rb */,
+				6ED215FEED909E750312AC04 /* podfile_parse_test.rb */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		B00B4092BF441127B151D751 /* ScriptsByPods */ = {
+			isa = PBXGroup;
+			children = (
+				300D99BC98CB3D95918C40F2 /* 【MacOS】codegraph_init.command */,
+				5CFC66CCE15D6A2176A8D8B1 /* 【MacOS】🌐CocoaPods源自动选择.command */,
+				1609F8FC098BD40215CEE24C /* 【MacOS】🌐CocoaPods网络适配.command */,
+			);
+			path = ScriptsByPods;
+			sourceTree = "<group>";
+		};
+		B26E838E0F4B90ADB706A41D /* save_device_ipa_after_build.command */ = {
+			isa = PBXGroup;
+			children = (
+				3719DAAC62F32E63125A6EF5 /* Tests */,
+				7CB48C3B3EE28AD1046330E8 /* README.md */,
+				E42D9CE1CAAD19627378F7DB /* save_device_ipa_after_build.command */,
+			);
+			path = save_device_ipa_after_build.command;
+			sourceTree = "<group>";
+		};
 		BC434D52E8A60503D7DC796E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				63AFEB86D97A6B53B47EE103 /* Pods_JobsSwiftUIBaseConfigDemo.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CC07CAD78BA9A89288E54130 /* init_workflow_test.rb */ = {
+			isa = PBXGroup;
+			children = (
+				CB4075A738159D70E78A5FC7 /* README.md */,
+				2CB771E2783E9D97FAFBC821 /* init_workflow_test.rb */,
+			);
+			path = init_workflow_test.rb;
+			sourceTree = "<group>";
+		};
+		DA7828555136A7E811354F03 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				CC07CAD78BA9A89288E54130 /* init_workflow_test.rb */,
+				A6CC34CC8DD522B8C98A84BA /* interaction_test.rb */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		DD70265F98D196AE5A4CCDB2 /* ScriptsByDevTools */ = {
+			isa = PBXGroup;
+			children = (
+				B26E838E0F4B90ADB706A41D /* save_device_ipa_after_build.command */,
+				F90100042026110300000001 /* 【MacOS】🧪iOS自动巡检.command */,
+			);
+			path = ScriptsByDevTools;
+			sourceTree = "<group>";
+		};
+		DE406237A63901FEB607A161 /* 【MacOS@Xcode】🫘当前工程Pod Update.command */ = {
+			isa = PBXGroup;
+			children = (
+				B36CD8D36EB0845FFBD33406 /* 【MacOS@Xcode】🫘当前工程Pod Update.command */,
+				AE69710FFCF7933C83D08EEF /* README.md */,
+			);
+			path = "【MacOS@Xcode】🫘当前工程Pod Update.command";
+			sourceTree = "<group>";
+		};
+		E43398D04CD431C94C9E4E87 /* podfile_integration_test.rb */ = {
+			isa = PBXGroup;
+			children = (
+				141070F7733C5C069A857A7C /* README.md */,
+				2792316FE444B6EF13433C3D /* podfile_integration_test.rb */,
+			);
+			path = podfile_integration_test.rb;
+			sourceTree = "<group>";
+		};
+		F67510918CD13F04A80C6847 /* download_fallback_test.rb */ = {
+			isa = PBXGroup;
+			children = (
+				963EB9A8D34D05085862D984 /* README.md */,
+				E94FA2714AAC32E84A07690B /* download_fallback_test.rb */,
+			);
+			path = download_fallback_test.rb;
+			sourceTree = "<group>";
+		};
+		FF2FD31581BB50B4C676BEE2 /* 脚本回归 */ = {
+			isa = PBXGroup;
+			children = (
+				DD70265F98D196AE5A4CCDB2 /* ScriptsByDevTools */,
+				B00B4092BF441127B151D751 /* ScriptsByPods */,
+			);
+			name = "脚本回归";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -265,8 +496,12 @@
 			);
 			inputFileListPaths = (
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -446,7 +681,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = K5692KLW75;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -481,7 +716,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = K5692KLW75;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
