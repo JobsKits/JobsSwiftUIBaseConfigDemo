@@ -20,12 +20,12 @@ struct JobsSwiftUIDebugEnvironmentsView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 64, height: 64)
-                    Text("尚未配置有效的网络环境")
+                    Text(JobsSwiftUIDebugPanel.shared.localized("尚未配置有效的网络环境"))
                         .font(.headline)
-                    Text("请在 AppDelegate 配置 HTTP / HTTPS URL 与备注")
+                    Text(JobsSwiftUIDebugPanel.shared.localized("请在 AppDelegate 配置 HTTP / HTTPS URL 与备注"))
                         .font(.caption)
                         .foregroundStyle(.secondary)
-                    Button("重新加载") {
+                    Button(JobsSwiftUIDebugPanel.shared.localized("重新加载")) {
                         reloadID = UUID()
                     }
                         .buttonStyle(.borderedProminent)
@@ -39,7 +39,7 @@ struct JobsSwiftUIDebugEnvironmentsView: View {
                     } label: {
                         HStack {
                             VStack(alignment: .leading, spacing: 6) {
-                                Text(environment.title)
+                                Text(panel.localized(environment.title))
                                     .foregroundStyle(.primary)
                                 Text(environment.baseURL)
                                     .font(.caption)
@@ -49,7 +49,7 @@ struct JobsSwiftUIDebugEnvironmentsView: View {
                             if panel.currentEnvironment?.id == environment.id {
                                 Text("✓")
                                     .foregroundStyle(.tint)
-                                    .accessibilityLabel("当前环境")
+                                    .accessibilityLabel(JobsSwiftUIDebugPanel.shared.localized("当前环境"))
                             }
                         }
                     }
@@ -59,7 +59,7 @@ struct JobsSwiftUIDebugEnvironmentsView: View {
         }
         .id(reloadID)
         .listStyle(.insetGrouped)
-        .navigationTitle("选择网络环境")
+        .navigationTitle(JobsSwiftUIDebugPanel.shared.localized("选择网络环境"))
         .navigationBarTitleDisplayMode(.inline)
         .accessibilityIdentifier("JobsSwiftUIDebugEnvironments")
     }

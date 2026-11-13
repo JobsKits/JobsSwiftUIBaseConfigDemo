@@ -44,6 +44,7 @@ Debug 的 App 用 `@UIApplicationDelegateAdaptor(JobsSwiftUIDebugAppDelegate.sel
 
 ```swift
 JobsSwiftUIDebugPanel.shared
+    .byTextProvider(AppText.text)
     .byEnvironments([
         JobsSwiftUIDebugEnvironment()
             .byIdentifier("local")
@@ -97,9 +98,11 @@ WindowGroup {
 
 根视图 Hook 找到自己的业务窗口，绑定到对应 `UIWindowScene`；管理器为已绑定的前台场景创建高层透明浮窗，不抢 key window。按钮支持单指拖动，保存当前场景的相对位置；整枚按钮钳制在安全区域，旋转后重新布局，拖动与点击／长按互斥。圆形以外的触摸穿透到原界面；点击推出后由独立浮层导航栈承载工具页。按钮始终在导航栈顶层，菜单、环境页和自定义页再次点击均关闭整棵调试导航栈并恢复穿透，返回打开前的业务页面；再次打开回到工具列表，所选环境保持。注入的 `jobsSwiftUIDebugOpenPanel` 仍只负责打开，重复调用不会关闭。场景失活隐藏、断开释放、业务窗口或绑定状态更换则重建。
 
-根视图 Hook 观察宿主 `@Environment(\.colorScheme)`，同步浮窗 trait 与 SwiftUI 环境，已打开的工具列表、环境列表和自定义目标页同步刷新。宿主可以通过 `preferredColorScheme` 强制外观，值为 `nil` 时跟随系统；框架无需新的公开主题配置。Demo 的三态 Picker 使用宿主 App 根视图消费的演示偏好，以真实验证传播链路。
+根视图 Hook 观察宿主 `@Environment(\.colorScheme)`，同步浮窗 trait 与 SwiftUI 环境，已打开的工具列表、环境列表和自定义目标页同步刷新。宿主可以通过 `preferredColorScheme` 强制外观，值为 `nil` 时跟随系统；框架无需新的公开主题配置。全局“设置”提供白天、黑夜、跟随系统三种选择；Demo 内不再维护独立外观开关。
 
 根导航容器同样透明：iOS 18 起使用 [containerBackground(_:for:)](https://developer.apple.com/documentation/swiftui/view/containerbackground(_:for:)) 的 `.navigation` 背景；iOS 17 的窗口适配探针只清理自有浮层祖先，保持业务页面原有背景。
+
+全局语言同样只在“设置”中管理，支持跟随系统及简体中文、繁体中文、藏文、英文、日文、法文、西班牙文、德文、俄罗斯文、韩文。宿主以 `AppPreferences` 保存选择，`AppText` 从打包词库读取文案；各页面观察同一状态，切换时保留导航与表单。Pod 用 `byTextProvider` 获取文案，宿主在语言改变时重新绑定以刷新已打开的浮层；Pod 不保存第二份语言偏好。
 
 业务 Tab 的导航栈保持自己的状态。子页面通过 `@Environment(\.jobsSwiftUIDebugOpenPanel)` 获取打开行为。自定义 `byDestination` 返回任意 SwiftUI View，并获得同一环境值；`byAction` 直接执行行为，两种配置互斥，以最后配置者为准。
 

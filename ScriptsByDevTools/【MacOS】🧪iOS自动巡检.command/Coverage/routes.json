@@ -334,6 +334,13 @@
           "target": "id:jobs.coverage.page.directionalPush.right"
         }
       ]
+    },
+    {
+      "id": "settings",
+      "title": "全局设置",
+      "source": "JobsSwiftUIBaseConfigDemo/AppSettingsView.swift",
+      "className": "AppSettingsView",
+      "kind": "page"
     }
   ],
   "catalogDigests": {

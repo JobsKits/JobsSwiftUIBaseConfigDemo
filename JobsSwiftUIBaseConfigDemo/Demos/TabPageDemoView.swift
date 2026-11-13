@@ -10,15 +10,19 @@ import SwiftUI
 /// 同一个 selectedPage Binding 同时连接分页 TabView 和分段 Picker。
 struct TabPageDemoView: View {
 
+    @ObservedObject private var appPreferences = AppPreferences.shared
+
     @State private var selectedPage = 0
 
     /// 页面模型使用 struct 表达不可变展示数据。
-    private let pages: [DemoPage] = [
-        DemoPage(title: "第一页", symbol: "1.circle.fill", color: .blue),
-        DemoPage(title: "第二页", symbol: "2.circle.fill", color: .green),
-        DemoPage(title: "第三页", symbol: "3.circle.fill", color: .purple),
-        DemoPage(title: "第四页", symbol: "4.circle.fill", color: .orange)
-    ]
+    private var pages: [DemoPage] {
+        return [
+            DemoPage(title: AppText.text("第一页"), symbol: "1.circle.fill", color: AppPalette.accent),
+            DemoPage(title: AppText.text("第二页"), symbol: "2.circle.fill", color: AppPalette.success),
+            DemoPage(title: AppText.text("第三页"), symbol: "3.circle.fill", color: AppPalette.violet),
+            DemoPage(title: AppText.text("第四页"), symbol: "4.circle.fill", color: AppPalette.warm)
+        ]
+    }
     
     var body: some View {
         ScrollView {
@@ -46,7 +50,7 @@ struct TabPageDemoView: View {
                 .tabViewStyle(.page(indexDisplayMode: .automatic))
                 .frame(height: 280)
             
-                Picker("分页", selection: $selectedPage) {
+                Picker(AppText.text("分页"), selection: $selectedPage) {
                     ForEach(pages.indices, id: \.self) { index in
                         Text("\(index + 1)").tag(index)
                     }

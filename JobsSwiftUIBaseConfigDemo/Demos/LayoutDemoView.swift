@@ -10,6 +10,8 @@ import SwiftUI
 /// 演示 SwiftUI 的提议尺寸布局、懒加载网格和二维 Grid。
 struct LayoutDemoView: View {
 
+    @ObservedObject private var appPreferences = AppPreferences.shared
+
     /// 自适应列会尽量放入更多单元格，同时保证每格至少 82 点宽。
     private let columns = [
         GridItem(.adaptive(minimum: 82), spacing: 12)
@@ -23,14 +25,14 @@ struct LayoutDemoView: View {
                 /// ViewThatFits 按声明顺序尝试子视图，选择第一个能放进当前水平空间的方案。
                 ViewThatFits(in: .horizontal) {
                     HStack {
-                        DemoLayoutBadge(title: "宽屏横排", color: .blue)
-                        DemoLayoutBadge(title: "自动适配", color: .green)
-                        DemoLayoutBadge(title: "优先尝试", color: .orange)
+                        DemoLayoutBadge(title: AppText.text("宽屏横排"), color: AppPalette.accent)
+                        DemoLayoutBadge(title: AppText.text("自动适配"), color: AppPalette.success)
+                        DemoLayoutBadge(title: AppText.text("优先尝试"), color: AppPalette.warm)
                     }
                     VStack(alignment: .leading) {
-                        DemoLayoutBadge(title: "窄屏竖排", color: .blue)
-                        DemoLayoutBadge(title: "自动适配", color: .green)
-                        DemoLayoutBadge(title: "优先尝试", color: .orange)
+                        DemoLayoutBadge(title: AppText.text("窄屏竖排"), color: AppPalette.accent)
+                        DemoLayoutBadge(title: AppText.text("自动适配"), color: AppPalette.success)
+                        DemoLayoutBadge(title: AppText.text("优先尝试"), color: AppPalette.warm)
                     }
                 }
                 
@@ -40,7 +42,7 @@ struct LayoutDemoView: View {
                 LazyVGrid(columns: columns, spacing: 12) {
                     ForEach(1...12, id: \.self) { index in
                         RoundedRectangle(cornerRadius: 8)
-                            .fill(index.isMultiple(of: 2) ? .blue : .green)
+                            .fill(index.isMultiple(of: 2) ? AppPalette.accent : AppPalette.success)
                             .frame(height: 72)
                             .overlay {
                                 Text("\(index)")
@@ -55,12 +57,12 @@ struct LayoutDemoView: View {
                 /// Grid 按 GridRow 对齐二维单元格，适合规模较小且需要行列对齐的内容。
                 Grid(horizontalSpacing: 12, verticalSpacing: 12) {
                     GridRow {
-                        DemoGridCell(title: "A1", color: .purple)
-                        DemoGridCell(title: "A2", color: .orange)
+                        DemoGridCell(title: "A1", color: AppPalette.violet)
+                        DemoGridCell(title: "A2", color: AppPalette.warm)
                     }
                     GridRow {
-                        DemoGridCell(title: "B1", color: .teal)
-                        DemoGridCell(title: "B2", color: .pink)
+                        DemoGridCell(title: "B1", color: AppPalette.accent)
+                        DemoGridCell(title: "B2", color: AppPalette.violet)
                     }
                 }
             }
@@ -72,12 +74,14 @@ struct LayoutDemoView: View {
 
 /// 拆分小 View 可以降低父 body 的阅读成本，也能独立复用和预览。
 private struct DemoLayoutBadge: View {
+
+    @ObservedObject private var appPreferences = AppPreferences.shared
     
     let title: String
     let color: Color
     
     var body: some View {
-        Text(title)
+        Text(AppText.text(title))
             .font(.headline)
             .foregroundStyle(.white)
             .padding(.horizontal, 14)
@@ -88,6 +92,8 @@ private struct DemoLayoutBadge: View {
 
 /// Grid 单元格只接收展示数据，本身不拥有业务状态。
 private struct DemoGridCell: View {
+
+    @ObservedObject private var appPreferences = AppPreferences.shared
     
     let title: String
     let color: Color
@@ -97,7 +103,7 @@ private struct DemoGridCell: View {
             .fill(color)
             .frame(height: 64)
             .overlay {
-                Text(title)
+                Text(AppText.text(title))
                     .font(.headline)
                     .foregroundStyle(.white)
             }

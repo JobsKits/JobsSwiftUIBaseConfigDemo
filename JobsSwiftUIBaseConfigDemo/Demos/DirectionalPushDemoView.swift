@@ -11,16 +11,27 @@ import UIKit
 /// SwiftUI 页面负责收集参数和展示预览，真正的自定义 Push 由下方 UIKit 导航代理完成。
 struct DirectionalPushDemoView: View {
 
+    @ObservedObject private var appPreferences = AppPreferences.shared
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     @State private var direction = PushDirection.right
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var pushProgress = 0.55
     /// `@StateObject` 让这个引用类型由当前 View 拥有，并在 body 多次重算时保持同一实例。
     @StateObject private var navigationTransitionController = DirectionalNavigationTransitionController()
 
+    private var adaptiveControlLayout: AnyLayout {
+        if dynamicTypeSize.isAccessibilitySize {
+            return AnyLayout(VStackLayout(spacing: 12))
+        }
+        return AnyLayout(HStackLayout(spacing: 12))
+    }
+
     var body: some View {
         Form {
-            Section("Push 方向") {
+            Section(AppText.text("Push 方向")) {
                 /// 使用自定义 Binding，可在 Picker 写入新值时统一追加动画逻辑。
-                Picker("方向", selection: animatedDirectionSelection) {
+                Picker(AppText.text("方向"), selection: animatedDirectionSelection) {
                     ForEach(PushDirection.allCases) { direction in
                         Label(direction.title, systemImage: direction.symbol)
                             .tag(direction)
@@ -29,29 +40,33 @@ struct DirectionalPushDemoView: View {
                 .pickerStyle(.segmented)
             }
             
-            Section("Push 百分比") {
+            Section(AppText.text("Push 百分比")) {
                 Slider(value: $pushProgress, in: 0...1, step: 0.01)
-                LabeledContent("当前百分比", value: "\(Int(pushProgress * 100))%")
+                LabeledContent(AppText.text("当前百分比"), value: "\(Int(pushProgress * 100))%")
                 
-                HStack {
+                adaptiveControlLayout {
                     Button("0%") {
-                        withAnimation(.snappy) {
+                        withAnimation(reduceMotion ? nil : .snappy) {
                             pushProgress = 0
                         }
                     }
                     
-                    Spacer()
+                    if !dynamicTypeSize.isAccessibilitySize {
+                        Spacer()
+                    }
                     
                     Button("50%") {
-                        withAnimation(.snappy) {
+                        withAnimation(reduceMotion ? nil : .snappy) {
                             pushProgress = 0.5
                         }
                     }
                     
-                    Spacer()
+                    if !dynamicTypeSize.isAccessibilitySize {
+                        Spacer()
+                    }
                     
                     Button("100%") {
-                        withAnimation(.snappy) {
+                        withAnimation(reduceMotion ? nil : .snappy) {
                             pushProgress = 1
                         }
                     }
@@ -59,16 +74,16 @@ struct DirectionalPushDemoView: View {
                 .buttonStyle(.bordered)
             }
             
-            Section("触发 Push") {
+            Section(AppText.text("触发 Push")) {
                 Button {
                     pushPage()
                 } label: {
-                    Label("Push \(direction.title)侧页面", systemImage: "play.circle.fill")
+                    Label(AppText.format("Push %@侧页面", direction.title), systemImage: "play.circle.fill")
                         .font(.headline)
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)
-                        .frame(height: 62)
-                        .background(.blue, in: RoundedRectangle(cornerRadius: 8))
+                        .frame(minHeight: 62)
+                        .background(AppPalette.accent, in: RoundedRectangle(cornerRadius: 12))
                 }
                 .buttonStyle(.plain)
                 .accessibilityIdentifier("jobs.directionalPush.open")
@@ -76,15 +91,15 @@ struct DirectionalPushDemoView: View {
                 .listRowBackground(Color.clear)
             }
             
-            Section("VC Push 预览") {
+            Section(AppText.text("VC Push 预览")) {
                 /// 预览只读取值，不会修改父状态，所以传普通参数而不是 Binding。
                 DirectionalPushPreview(direction: direction, progress: pushProgress)
                     .frame(height: 260)
-                    .animation(.easeInOut(duration: 0.35), value: direction)
+                    .animation(reduceMotion ? nil : .easeInOut(duration: 0.35), value: direction)
             }
         }
-        .animation(.snappy, value: direction)
-        .animation(.snappy, value: pushProgress)
+        .animation(reduceMotion ? nil : .snappy, value: direction)
+        .animation(reduceMotion ? nil : .snappy, value: pushProgress)
         .background {
             /// 放入一个 0 尺寸的 UIKit 桥，只为取得 SwiftUI 当前所在的 UINavigationController。
             NavigationTransitionConfigurator(controller: navigationTransitionController)
@@ -103,7 +118,7 @@ struct DirectionalPushDemoView: View {
                     return
                 }
                 
-                withAnimation(.easeInOut(duration: 0.35)) {
+                withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.35)) {
                     direction = newDirection
                 }
             }
@@ -129,13 +144,13 @@ private enum PushDirection: String, CaseIterable, Identifiable {
     var title: String {
         switch self {
         /// 从上方进入。
-        case .top: "上"
+        case .top: AppText.text("上")
         /// 从下方进入。
-        case .bottom: "下"
+        case .bottom: AppText.text("下")
         /// 从左侧进入。
-        case .left: "左"
+        case .left: AppText.text("左")
         /// 从右侧进入。
-        case .right: "右"
+        case .right: AppText.text("右")
         }
     }
     
@@ -225,7 +240,7 @@ private final class DirectionalNavigationTransitionController: NSObject, Observa
         let content = DirectionalPushDetailView(direction: direction)
         #endif
         let detailViewController = UIHostingController(rootView: content)
-        detailViewController.title = "次级页面"
+        detailViewController.title = AppText.text("次级页面")
         detailViewController.navigationItem.largeTitleDisplayMode = .never
         navigationController.pushViewController(detailViewController, animated: true)
     }
@@ -330,6 +345,12 @@ private final class DirectionalNavigationAnimator: NSObject, UIViewControllerAni
         
         let containerView = transitionContext.containerView
         let finalFrame = transitionContext.finalFrame(for: toViewController)
+        if UIAccessibility.isReduceMotionEnabled {
+            toView.frame = finalFrame
+            containerView.addSubview(toView)
+            transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+            return
+        }
         let offset = direction.transitionOffset(size: finalFrame.size)
         let duration = transitionDuration(using: transitionContext)
         let isPush = operation == .push
@@ -453,6 +474,8 @@ private extension UIViewController {
 
 /// 被 UIHostingController 包装并 Push 的 SwiftUI 详情页面。
 private struct DirectionalPushDetailView: View {
+
+    @ObservedObject private var appPreferences = AppPreferences.shared
     
     let direction: PushDirection
     #if DEBUG
@@ -474,9 +497,9 @@ private struct DirectionalPushDetailView: View {
                     .background(.blue, in: RoundedRectangle(cornerRadius: 8))
                 
                 VStack(spacing: 10) {
-                    Text("次级页面")
+                    Text(AppText.text("次级页面"))
                         .font(.largeTitle.bold())
-                    Text("从\(direction.title)侧 Push 进入")
+                    Text(AppText.format("从%@侧 Push 进入", direction.title))
                         .font(.title3)
                         .foregroundStyle(.secondary)
                         .accessibilityIdentifier("jobs.coverage.page.directionalPush.\(direction.rawValue)")
@@ -484,8 +507,9 @@ private struct DirectionalPushDetailView: View {
                 #if DEBUG
                 if ProcessInfo.processInfo.arguments.contains("--jobs-coverage-route"),
                    let coverageBack {
-                    Button("返回", action: coverageBack)
+                    Button(AppText.text("返回"), action: coverageBack)
                         .buttonStyle(.borderedProminent)
+                        .tint(AppPalette.accent)
                         .accessibilityIdentifier("jobs.directionalPush.back")
                 }
                 #endif
@@ -499,6 +523,8 @@ private struct DirectionalPushDetailView: View {
 
 /// 纯 SwiftUI 的转场进度预览，不会实际修改 UINavigationController。
 private struct DirectionalPushPreview: View {
+
+    @ObservedObject private var appPreferences = AppPreferences.shared
     
     let direction: PushDirection
     let progress: Double
@@ -513,7 +539,7 @@ private struct DirectionalPushPreview: View {
             ZStack {
                 VCPushCard(
                     title: "Root VC",
-                    subtitle: "当前页面",
+                    subtitle: AppText.text("当前页面"),
                     symbol: "iphone",
                     tint: .gray
                 )
@@ -523,7 +549,7 @@ private struct DirectionalPushPreview: View {
                 
                 VCPushCard(
                     title: "Target VC",
-                    subtitle: "\(direction.title)侧 Push 入场",
+                    subtitle: AppText.format("%@侧 Push 入场", direction.title),
                     symbol: direction.symbol,
                     tint: .blue
                 )
@@ -589,6 +615,8 @@ private struct DirectionalPushPreview: View {
 
 /// 预览中的通用页面卡片；四个 let 都是父视图传入的只读配置。
 private struct VCPushCard: View {
+
+    @ObservedObject private var appPreferences = AppPreferences.shared
     
     let title: String
     let subtitle: String
@@ -612,9 +640,9 @@ private struct VCPushCard: View {
                     .background(tint, in: RoundedRectangle(cornerRadius: 8))
                 
                 VStack(spacing: 5) {
-                    Text(title)
+                    Text(AppText.text(title))
                         .font(.title3.bold())
-                    Text(subtitle)
+                    Text(AppText.text(subtitle))
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                 }

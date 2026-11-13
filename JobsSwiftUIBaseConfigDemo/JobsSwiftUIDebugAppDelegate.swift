@@ -12,6 +12,7 @@ import JobsSwiftUIDebugPanel
 final class JobsSwiftUIDebugAppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         JobsSwiftUIDebugPanel.shared
+            .byTextProvider(AppText.text)
             .byEnvironments([
                 JobsSwiftUIDebugEnvironment()
                     .byIdentifier("local")
@@ -41,7 +42,7 @@ final class JobsSwiftUIDebugAppDelegate: NSObject, UIApplicationDelegate {
                     .byAction {
                         let environment = JobsSwiftUIDebugPanel.shared.currentEnvironment
                         JobsSwiftUIDebugPanel.shared.byFeedback(
-                            (environment?.title ?? "未配置") + "\n" + (environment?.baseURL ?? "")
+                            AppText.text(environment?.title ?? "未配置") + "\n" + (environment?.baseURL ?? "")
                         )
                     }
             ])

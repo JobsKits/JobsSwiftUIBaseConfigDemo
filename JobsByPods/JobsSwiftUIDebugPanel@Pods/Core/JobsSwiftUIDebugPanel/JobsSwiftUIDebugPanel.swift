@@ -27,11 +27,24 @@ public final class JobsSwiftUIDebugPanel: ObservableObject {
     private var observers: [NSObjectProtocol] = []
     private var bindings: [String: WeakSceneState] = [:]
     private var windows: [String: JobsSwiftUIDebugOverlayWindow] = [:]
+    private var textProvider: (String) -> String = { $0 }
 
     private init() {}
 
     public nonisolated static var buttonImage: Image {
         JobsSwiftUIDebugResource.buttonImage
+    }
+
+    @discardableResult
+    public func byTextProvider(_ provider: @escaping (String) -> String) -> Self {
+        textProvider = provider
+        objectWillChange.send()
+        refreshWindows()
+        return self
+    }
+
+    internal func localized(_ key: String) -> String {
+        textProvider(key)
     }
 
     @discardableResult

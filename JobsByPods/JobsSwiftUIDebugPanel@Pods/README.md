@@ -35,6 +35,7 @@
 | 前台圆形按钮 | 每个已接入的前台场景创建独立透明窗口，窗口层级为 `.alert + 100`，不抢业务 key window |
 | 拖动与安全区 | 单指拖动入口，SwiftUI 将按钮容器放入当前场景的逐边安全区；折叠、分屏、旋转及竖排系统栏变化后按相对位置重算，不从宿主窗口搬用 inset，也不会拖动后误触点击或长按 |
 | 主题跟随 | 根视图 Hook 观察宿主 `colorScheme`，同步浮窗、已打开工具页、环境列表和自定义页面；宿主强制白天／黑夜及跟随系统均即时生效 |
+| 全局语言 | `byTextProvider` 注入宿主全局本地化查询，覆盖菜单、环境、动作标题与无障碍文案；重新绑定会通知已打开页面刷新，Pod 不创建语言切换入口或私有语言偏好 |
 | 点击开关 | 浮层自己的 `NavigationStack` 推出工具列表、环境列表及 SwiftUI 自定义目标页；同一圆形按钮始终可见，再次点击关闭整棵调试导航栈，保留业务页面状态，重开回到工具列表 |
 | 长按关闭 | 长按 0.8 秒隐藏全部场景的按钮；状态只在本次进程中保留，重新启动 App 后恢复 |
 | 环境切换 | 环境保存标识、备注和 Base URL；选择后保存标识，触发回调及环境变化通知 |
@@ -110,6 +111,10 @@ JOBS_SKIP_CODEGRAPH=1 pod install --no-repo-update
 import JobsSwiftUIDebugPanel
 
 JobsSwiftUIDebugPanel.shared
+    .byTextProvider { key in
+        // 接入宿主 App 的全局本地化查询；不配置时默认保留原文。
+        AppText.text(key)
+    }
     .byEnvironments([
         JobsSwiftUIDebugEnvironment()
             .byIdentifier("local")

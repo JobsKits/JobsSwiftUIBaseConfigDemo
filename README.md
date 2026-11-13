@@ -27,21 +27,22 @@
   - [5.4、Timer 定时器](#jobs-toc-heading-10)
   - [5.5、四向 Push 预览](#jobs-toc-heading-11)
   - [5.6、Debug 环境与动作](#jobs-toc-heading-12)
-- [六、项目配置支持](#jobs-toc-heading-13)
-  - [6.1、当前定位](#jobs-toc-heading-14)
-  - [6.2、安装与构建自动挂载脚本](#jobs-toc-heading-15)
+  - [5.7、全局语言、外观与本地图片](#jobs-toc-heading-13)
+- [六、项目配置支持](#jobs-toc-heading-14)
+  - [6.1、当前定位](#jobs-toc-heading-15)
+  - [6.2、安装与构建自动挂载脚本](#jobs-toc-heading-16)
     - [6.2.1、真机 Run 构建后的 IPA 留存](#build-ipa-retention)
-    - [6.2.2、Xcode 手动运行 Pod Install](#jobs-toc-heading-17)
-  - [6.3、脚本日志](#jobs-toc-heading-18)
+    - [6.2.2、Xcode 手动运行 Pod Install](#jobs-toc-heading-18)
+  - [6.3、脚本日志](#jobs-toc-heading-19)
   - [6.4、文档目录的源仓维护与首次克隆验收](#markdown-toc-workflow)
-- [七、运行方式](#jobs-toc-heading-20)
-  - [7.1、使用 Xcode 运行](#jobs-toc-heading-21)
-  - [7.2、使用命令行编译](#jobs-toc-heading-22)
-  - [7.3、生成 CodeGraph](#jobs-toc-heading-23)
-  - [7.4、自动输出构建产物](#jobs-toc-heading-24)
-- [八、扩展 Demo](#jobs-toc-heading-25)
-- [九、注意事项](#jobs-toc-heading-26)
-- [十、排查方式](#jobs-toc-heading-27)
+- [七、运行方式](#jobs-toc-heading-21)
+  - [7.1、使用 Xcode 运行](#jobs-toc-heading-22)
+  - [7.2、使用命令行编译](#jobs-toc-heading-23)
+  - [7.3、生成 CodeGraph](#jobs-toc-heading-24)
+  - [7.4、自动输出构建产物](#jobs-toc-heading-25)
+- [八、扩展 Demo](#jobs-toc-heading-26)
+- [九、注意事项](#jobs-toc-heading-27)
+- [十、排查方式](#jobs-toc-heading-28)
 - [十一、项目统计与接手指南](#project-statistics)
   - [11.1、SDK、工具链与锁文件](#statistics-toolchain)
   - [11.2、Git 历史与统计边界](#statistics-history)
@@ -127,6 +128,11 @@
     ├── JobsSwiftUIBaseConfigDemoApp.swift
     ├── JobsSwiftUIDebugAppDelegate.swift
     ├── JobsSwiftUIDebugNetworkEnvironment.swift
+    ├── AppPreferences.swift       # 全局语言与主题状态
+    ├── AppText.swift              # 全局词库查询
+    ├── AppPalette.swift           # 语义强调色
+    ├── AppSettingsView.swift      # 唯一语言与外观设置入口
+    ├── Resources/AppText.json     # 十语言词库
     ├── MainTabView.swift
     ├── DemoListView.swift
     ├── DemoFeature.swift
@@ -163,6 +169,7 @@ flowchart TD
     B --> C["Demo Tab"]
     B --> D["速览 Tab"]
     B --> E["关于 Tab"]
+    B --> S["设置 Tab / 全局语言与外观"]
     C --> F["DemoListView"]
     D --> G["GalleryTabView"]
     E --> H["AboutTabView"]
@@ -174,7 +181,7 @@ flowchart TD
 主流程说明：
 
 - `JobsSwiftUIBaseConfigDemoApp` 使用 `WindowGroup` 加载 `MainTabView`。
-- `MainTabView` 使用 `TabView` 提供 `Demo`、`速览`、`关于` 三个 Tab。
+- `MainTabView` 使用 `TabView` 提供 `Demo`、`速览`、`关于`、`设置` 四个 Tab。
 - `DemoListView` 使用 `NavigationStack`、`List`、`NavigationLink` 组织功能列表。
 - `DemoFeature` 是 Demo 注册表，集中维护功能名、描述、图标和目标页面。
 - `Demos/` 目录下每个文件对应一个独立演示页面。
@@ -269,9 +276,17 @@ Demo 进入或重新请求时真实访问当前环境 `GET /get`，超时 3 秒�
 
 默认弱网项按能力边界省略。设备级弱网使用 Apple [**Network Link Conditioner**](https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/On_Demand_Resources_Guide/TestingPerformance.html) 的开发者设置。资源来源、许可、完整 DSL 与窗口穿透说明见 [调试 Pod README](./JobsByPods/JobsSwiftUIDebugPanel@Pods/README.md)。
 
-## <span id="jobs-toc-heading-13" data-jobs-toc="v2">六、项目配置支持 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### <span id="jobs-toc-heading-13" data-jobs-toc="v2">5.7、全局语言、外观与本地图片 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### <span id="jobs-toc-heading-14" data-jobs-toc="v2">6.1、当前定位 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+语言与主题只在主 Tab 的“设置”中切换。`AppPreferences` 持久化选择，根视图应用 locale 与 `preferredColorScheme`，页面观察同一状态后即时更新文案；切换不会重建整个导航树或清空已输入的表单。语言支持跟随系统及简体中文、繁体中文、藏文、英文、日文、法文、西班牙文、德文、俄罗斯文、韩文；主题支持白天、黑夜、跟随系统。
+
+`Resources/AppText.json` 包含 221 个键、十份相同键集的译文。`AppText.text` 查询全局语言，缺失时回退英文，再回退原键；`AppText.format` 保持参数占位。系统 API 名称保留原文。Debug Pod 通过 `.byTextProvider(AppText.text)` 共享宿主词库，语言改变后刷新已打开的工具页；Demo 页面不再提供独立外观或语言开关。
+
+`AsyncImage` 示例继续异步加载远程图片；加载中与失败时使用本地 `JobsLogo`，并提供重新加载按钮。素材直接复用本仓已有 `icon.png`，打包到 `Assets.xcassets/JobsLogo.imageset`，离线可正常展示。列表无搜索结果时提供完整空态与清除搜索入口。共用深蓝强调色保持按钮与白字对比，各系统控件仍保留原生行为。
+
+## <span id="jobs-toc-heading-14" data-jobs-toc="v2">六、项目配置支持 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+
+### <span id="jobs-toc-heading-15" data-jobs-toc="v2">6.1、当前定位 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 `Podfile` 存在是为了和兄弟工程保持一致的工程维护入口：
 
@@ -282,7 +297,7 @@ Demo 进入或重新请求时真实访问当前环境 `GET /get`，超时 3 秒�
 - `ScriptsByPods/【MacOS】codegraph_init.command` 在 `pod install` 完成后后台生成 `.codegraph/codegraph.db`。
 - `ScriptsByPods/【MacOS】codegraph_export_md.command` 从数据库导出 `.codegraph/codegraph.md/`。
 
-### <span id="jobs-toc-heading-15" data-jobs-toc="v2">6.2、安装与构建自动挂载脚本 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### <span id="jobs-toc-heading-16" data-jobs-toc="v2">6.2、安装与构建自动挂载脚本 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 | 入口 | 挂载与行为 | 产物、依赖与失败边界 |
 | --- | --- | --- |
@@ -344,7 +359,7 @@ Xcode 通过明确的 `XCODE_VERSION_ACTUAL` 和 `TARGET_BUILD_DIR` 识别构建
 
 已用临时 App、假签名器与系统压缩工具验证打包及失败保护分支，并核对唯一阶段的位置、输入与输出；未执行真实工程构建、开发者证书签名或真机安装。
 
-#### <span id="jobs-toc-heading-17" data-jobs-toc="v2">6.2.2、Xcode 手动运行 Pod Install <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+#### <span id="jobs-toc-heading-18" data-jobs-toc="v2">6.2.2、Xcode 手动运行 Pod Install <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 [当前工程通用入口](<./ScriptsByPods/【MacOS@Xcode】🫘当前工程Pod Install.command/README.md>)随本工程保存在 `ScriptsByPods/【MacOS@Xcode】🫘当前工程Pod Install.command/`，与其它安装辅助脚本一起复制即可。在 `Xcode → Behaviors → 🫘当前工程 · Pod Install` 手动调用；所有工程使用相同实现与同一菜单名称，不为工程增加专属菜单项。该入口只作手动动作和文件展示，不加入 App target、Podfile 钩子、Build Phase 或 Scheme 自动流程。
 
@@ -362,7 +377,7 @@ Behaviors 属于 Xcode 用户设置，本机安装行为的 `Run` 路径登记�
 
 本机已在 `Xcode → Behaviors → 🫘当前工程 · Pod Update` 接入更新入口，与现有 Pod Install 行为并列；`Run` 使用工程相对路径 `ScriptsByPods/【MacOS@Xcode】🫘当前工程Pod Update.command/【MacOS@Xcode】🫘当前工程Pod Update.command`。更新脚本与工程展示引用随工程提供，用户级 Behaviors 不会由工程自动部署，换电脑首次仍需登记；完整登记和终端用法见包内 README。
 
-### <span id="jobs-toc-heading-18" data-jobs-toc="v2">6.3、脚本日志 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### <span id="jobs-toc-heading-19" data-jobs-toc="v2">6.3、脚本日志 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 | 日志 | 说明 |
 | --- | --- |
@@ -387,9 +402,9 @@ Behaviors 属于 Xcode 用户设置，本机安装行为的 `Run` 路径登记�
 
 修改和修复落在本源仓；用户下载的实验副本作为首次检出验收样本，不对样本运行 `restore` 或直接改 README 后再宣称自动转换通过。源仓代码验证使用独立新目录，发布后的远端验收也使用新的普通克隆；未提交的源仓修改与远端已发布版本分别说明。
 
-## <span id="jobs-toc-heading-20" data-jobs-toc="v2">七、运行方式 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+## <span id="jobs-toc-heading-21" data-jobs-toc="v2">七、运行方式 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
-### <span id="jobs-toc-heading-21" data-jobs-toc="v2">7.1、使用 Xcode 运行 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### <span id="jobs-toc-heading-22" data-jobs-toc="v2">7.1、使用 Xcode 运行 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 1. 使用 [**Xcode**](https://developer.apple.com/xcode) 打开工作区：
 
@@ -403,7 +418,7 @@ Behaviors 属于 Xcode 用户设置，本机安装行为的 `Run` 路径登记�
 
 4. 点击 Run。
 
-### <span id="jobs-toc-heading-22" data-jobs-toc="v2">7.2、使用命令行编译 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### <span id="jobs-toc-heading-23" data-jobs-toc="v2">7.2、使用命令行编译 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 ```shell
 xcodebuild \
@@ -415,7 +430,7 @@ xcodebuild \
 build
 ```
 
-### <span id="jobs-toc-heading-23" data-jobs-toc="v2">7.3、生成 CodeGraph <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### <span id="jobs-toc-heading-24" data-jobs-toc="v2">7.3、生成 CodeGraph <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 首次需要 CocoaPods 工作区或需要刷新 `.codegraph` 时，在工程根目录执行：
 
@@ -432,7 +447,7 @@ pod install
 
 `Pods/` 是 CocoaPods 生成物，不修改其中源码；业务调试源码维护在 `./JobsByPods/JobsSwiftUIDebugPanel@Pods/`，脚本锚点维护在 `./ScriptsByPods/JobsSwiftUICodeGraphHook/`。仅安装和编译验证、不刷新索引时使用 `JOBS_SKIP_CODEGRAPH=1 pod install --no-repo-update`。
 
-### <span id="jobs-toc-heading-24" data-jobs-toc="v2">7.4、自动输出构建产物 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+### <span id="jobs-toc-heading-25" data-jobs-toc="v2">7.4、自动输出构建产物 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 主 App 最后一个 Build Phase `Save Build IPA` 调用 [save_device_ipa_after_build.sh](./ScriptsByDevTools/save_device_ipa_after_build.sh)，每次 iOS App 构建都会执行，Xcode 内无须手动确认。按设备平台保存以下产物：
 
@@ -457,7 +472,7 @@ pod install
 
 日志同步输出到 Xcode 构建日志与系统临时目录中的 `save_device_ipa_after_build.log`。终端手动运行会先展示内置自述并等待回车，仍需提供 Xcode 构建环境变量。
 
-## <span id="jobs-toc-heading-25" data-jobs-toc="v2">八、扩展 Demo <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+## <span id="jobs-toc-heading-26" data-jobs-toc="v2">八、扩展 Demo <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 新增一个 Demo 页面时，按下面顺序处理：
 
@@ -473,7 +488,7 @@ pod install
 
 6. 使用 `xcodebuild` 或 [**Xcode**](https://developer.apple.com/xcode) 编译验证。
 
-## <span id="jobs-toc-heading-26" data-jobs-toc="v2">九、注意事项 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+## <span id="jobs-toc-heading-27" data-jobs-toc="v2">九、注意事项 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 系统 UI Demo 保持原生 SwiftUI 写法；新增调试能力集中在独立本地 `JobsSwiftUIDebugPanel` Pod，不套用 UIKit 版面板或增加无关依赖。
 - `pod install` 维护 Debug 依赖及资源集成，并可生成 / 刷新 `.codegraph`，保持和兄弟工程一致的 CocoaPods 生命周期入口。
@@ -482,7 +497,7 @@ pod install
 - 当前工程面向 Demo 演示；Debug 环境 Demo 包含短超时网络请求及环境标识持久化，其它页面不扩展为完整业务网络层或登录系统。
 - 命令行编译示例使用 `CODE_SIGNING_ALLOWED=NO`，适合本地模拟器构建；真机运行需要按实际开发者账号配置签名。
 
-## <span id="jobs-toc-heading-27" data-jobs-toc="v2">十、排查方式 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
+## <span id="jobs-toc-heading-28" data-jobs-toc="v2">十、排查方式 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 | 现象 | 处理方式 |
 | --- | --- |

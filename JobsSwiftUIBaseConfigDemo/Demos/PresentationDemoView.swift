@@ -10,22 +10,29 @@ import SwiftUI
 /// 用三个独立状态演示半屏、浮层和全屏三种系统展示方式。
 struct PresentationDemoView: View {
 
+    @ObservedObject private var appPreferences = AppPreferences.shared
+
     @State private var showSheet = false
     @State private var showPopover = false
     @State private var showFullScreenCover = false
     
     var body: some View {
         List {
-            Section("模态展示") {
-                Button("显示 Sheet") {
+            Section(AppText.text("模态展示")) {
+                Button(AppText.text("显示 Sheet")) {
                     showSheet = true
                 }
                 .accessibilityIdentifier("jobs.presentation.open.sheet")
-                Button("显示 Popover") {
+                Button(AppText.text("显示 Popover")) {
                     showPopover = true
                 }
                 .accessibilityIdentifier("jobs.presentation.open.popover")
-                Button("显示 FullScreenCover") {
+                .popover(isPresented: $showPopover) {
+                    PresentationContentView(title: "Popover", symbol: "bubble.left.and.bubble.right")
+                        .frame(width: 320)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                Button(AppText.text("显示 FullScreenCover")) {
                     showFullScreenCover = true
                 }
                 .accessibilityIdentifier("jobs.presentation.open.fullScreenCover")
@@ -36,29 +43,17 @@ struct PresentationDemoView: View {
             PresentationContentView(title: "Sheet", symbol: "rectangle.bottomthird.inset.filled")
                 .presentationDetents([.medium, .large])
         }
-        /// iPad 通常显示为浮层；在紧凑尺寸设备上系统可能自适应为 Sheet。
-        .popover(isPresented: $showPopover) {
-            PresentationContentView(title: "Popover", symbol: "bubble.left.and.bubble.right")
-                .frame(idealWidth: 320, maxWidth: .infinity, minHeight: 240)
-        }
-        /// fullScreenCover 覆盖整个界面，因此内部自建 NavigationStack 来承载关闭按钮。
         .fullScreenCover(isPresented: $showFullScreenCover) {
-            NavigationStack {
-                PresentationContentView(title: "FullScreenCover", symbol: "rectangle.fill")
-                    .toolbar {
-                        ToolbarItem(placement: .topBarTrailing) {
-                            Button("关闭") {
-                                showFullScreenCover = false
-                            }
-                        }
-                    }
-            }
+            PresentationContentView(title: "FullScreenCover", symbol: "rectangle.fill")
         }
     }
 }
 
 /// 三种展示方式复用同一个内容 View，仅通过初始化参数改变文字和图标。
 private struct PresentationContentView: View {
+
+    @Environment(\.dismiss) private var dismiss
+    @ObservedObject private var appPreferences = AppPreferences.shared
     
     let title: String
     let symbol: String
@@ -68,11 +63,17 @@ private struct PresentationContentView: View {
             Image(systemName: symbol)
                 .font(.system(size: 56))
                 .foregroundStyle(.blue)
-            Text(title)
+            Text(AppText.text(title))
                 .font(.title.bold())
                 .accessibilityIdentifier("jobs.coverage.page.presentation.\(title)")
-            Text("这是 SwiftUI 原生的页面展示能力。")
-                .foregroundStyle(.secondary)
+            Text(AppText.text("这是 SwiftUI 原生的页面展示能力。"))
+                .foregroundStyle(.primary)
+                .multilineTextAlignment(.center)
+            Button(AppText.text("关闭")) {
+                dismiss()
+            }
+            .buttonStyle(.bordered)
+            .accessibilityIdentifier("jobs.presentation.close.\(title)")
         }
         .padding()
         .accessibilityElement(children: .contain)

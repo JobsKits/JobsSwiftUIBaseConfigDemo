@@ -66,7 +66,7 @@ enum DemoFeature: String, CaseIterable, Identifiable {
         /// 布局 Demo 的列表标题。
         case .layout: "ScrollView / LazyVGrid / Grid"
         /// 分页 Demo 的列表标题。
-        case .tabPage: "TabView 分页"
+        case .tabPage: AppText.text("TabView 分页")
         /// 折叠树 Demo 的列表标题。
         case .disclosureOutline: "DisclosureGroup / OutlineGroup"
         /// 异步图片、链接与分享 Demo 的列表标题。
@@ -74,10 +74,10 @@ enum DemoFeature: String, CaseIterable, Identifiable {
         /// 动画 Demo 的列表标题。
         case .animation: "Animation / Transition"
         /// 计时器 Demo 的列表标题。
-        case .timer: "Timer 定时器"
+        case .timer: AppText.text("Timer 定时器")
 #if DEBUG
         /// Debug 专属的独立 SwiftUI 调试框架。
-        case .debugPanel: "SwiftUI Debug 调试面板"
+        case .debugPanel: AppText.text("SwiftUI Debug 调试面板")
 #endif
         }
     }
@@ -85,42 +85,42 @@ enum DemoFeature: String, CaseIterable, Identifiable {
     var subtitle: String {
         switch self {
         /// 概括文本和图片页面的能力。
-        case .textImage: "文本、Label、SF Symbols 与基础图片展示"
+        case .textImage: AppText.text("文本、Label、SF Symbols 与基础图片展示")
         /// 概括按钮和菜单页面的能力。
-        case .buttonMenu: "按钮样式、菜单、按钮组和角色按钮"
+        case .buttonMenu: AppText.text("按钮样式、菜单、按钮组和角色按钮")
         /// 概括输入页面的能力。
-        case .inputFields: "单行输入、密码输入、多行文本和键盘焦点"
+        case .inputFields: AppText.text("单行输入、密码输入、多行文本和键盘焦点")
         /// 概括数值控件页面的能力。
-        case .controlValues: "开关、滑杆、步进器等数值交互"
+        case .controlValues: AppText.text("开关、滑杆、步进器等数值交互")
         /// 概括选择控件页面的能力。
-        case .pickers: "分段选择、滚轮选择、日期和颜色选择"
+        case .pickers: AppText.text("分段选择、滚轮选择、日期和颜色选择")
         /// 概括进度页面的能力。
-        case .progressGauge: "进度条、加载指示器和仪表盘"
+        case .progressGauge: AppText.text("进度条、加载指示器和仪表盘")
         /// 概括列表和表单页面的能力。
-        case .listForm: "列表、表单、分组和只读信息行"
+        case .listForm: AppText.text("列表、表单、分组和只读信息行")
         /// 概括导航页面的能力。
-        case .navigation: "导航推出、工具栏按钮和层级页面"
+        case .navigation: AppText.text("导航推出、工具栏按钮和层级页面")
         /// 概括方向 Push 页面及其 UIKit 互操作能力。
-        case .directionalPush: "从上、下、左、右四个方向按百分比 Push 页面"
+        case .directionalPush: AppText.text("从上、下、左、右四个方向按百分比 Push 页面")
         /// 概括系统弹窗页面的能力。
-        case .alertDialog: "系统弹窗、确认弹窗和破坏性操作"
+        case .alertDialog: AppText.text("系统弹窗、确认弹窗和破坏性操作")
         /// 概括模态展示页面的能力。
-        case .presentation: "模态页面、浮层和全屏展示"
+        case .presentation: AppText.text("模态页面、浮层和全屏展示")
         /// 概括布局页面的能力。
-        case .layout: "滚动容器、自适应网格和新式 Grid"
+        case .layout: AppText.text("滚动容器、自适应网格和新式 Grid")
         /// 概括分页页面的能力。
-        case .tabPage: "分页 TabView 和索引切换"
+        case .tabPage: AppText.text("分页 TabView 和索引切换")
         /// 概括折叠树页面的能力。
-        case .disclosureOutline: "折叠分组和树形结构"
+        case .disclosureOutline: AppText.text("折叠分组和树形结构")
         /// 概括异步与系统服务页面的能力。
-        case .asyncLinkShare: "远程图片、外链打开和系统分享"
+        case .asyncLinkShare: AppText.text("远程图片、外链打开和系统分享")
         /// 概括动画页面的能力。
-        case .animation: "状态驱动动画、转场和显隐"
+        case .animation: AppText.text("状态驱动动画、转场和显隐")
         /// 概括 Combine 计时器页面的能力。
-        case .timer: "非 UI 控件：Timer 发布器与计时器"
+        case .timer: AppText.text("非 UI 控件：Timer 发布器与计时器")
 #if DEBUG
         /// 环境配置、工具导航与真实网络回退示例。
-        case .debugPanel: "圆形悬浮入口、环境切换、顺序动作与真实 GET /get"
+        case .debugPanel: AppText.text("圆形悬浮入口、环境切换、顺序动作与真实 GET /get")
 #endif
         }
     }

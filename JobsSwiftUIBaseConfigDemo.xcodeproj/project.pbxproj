@@ -7,9 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2439CFA8E992AD1B9A38D8BA /* AppText.json in Resources */ = {isa = PBXBuildFile; fileRef = 39E2E996E1AEAE76AD669E3C /* AppText.json */; };
 		26DE4E7A650C914D3534F986 /* JobsSwiftUIDebugAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 649EC48011FA88407646C3A3 /* JobsSwiftUIDebugAppDelegate.swift */; };
+		60AE6972D56E1EA3CA90D85F /* AppPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 735BE25C82E77F54E7250848 /* AppPalette.swift */; };
 		8CAE8845FC95BBBD8F008FF8 /* JobsSwiftUIDebugNetworkEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A07463DE7B538984BF11F92 /* JobsSwiftUIDebugNetworkEnvironment.swift */; };
 		9086FB511ECD94508C7BF9A7 /* JobsSwiftUIDebugPanelDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C9C0E8023691ECEE9D0C13 /* JobsSwiftUIDebugPanelDemoView.swift */; };
+		99AA242C6E51C6E3C3203ED9 /* AppText.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA86C0D7EF3936417DFC90C /* AppText.swift */; };
+		A62B0FEED983ACCEC0A002DE /* AppPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02799631F3F6750838F7AB43 /* AppPreferences.swift */; };
 		C00000000000000000000001 /* JobsSwiftUIBaseConfigDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000001 /* JobsSwiftUIBaseConfigDemoApp.swift */; };
 		C00000000000000000000002 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000002 /* MainTabView.swift */; };
 		C00000000000000000000003 /* DemoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000003 /* DemoListView.swift */; };
@@ -36,11 +40,14 @@
 		C00000000000000000000024 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000024 /* Assets.xcassets */; };
 		C00000000000000000000025 /* CustomCircularGaugeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000026 /* CustomCircularGaugeView.swift */; };
 		C00000000000000000000026 /* DirectionalPushDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000027 /* DirectionalPushDemoView.swift */; };
+		C0EE6C372550A8AD70AF3012 /* AppSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF24189BFBCEE88E203B540 /* AppSettingsView.swift */; };
 		EC2010A7192E239DB4F6754A /* Pods_JobsSwiftUIBaseConfigDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63AFEB86D97A6B53B47EE103 /* Pods_JobsSwiftUIBaseConfigDemo.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		02799631F3F6750838F7AB43 /* AppPreferences.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppPreferences.swift; sourceTree = "<group>"; };
 		0302B75C7668FA33BDD26885 /* 【MacOS@Xcode】🫘当前工程Pod Install.command */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "【MacOS@Xcode】🫘当前工程Pod Install.command"; sourceTree = "<group>"; };
+		0FF24189BFBCEE88E203B540 /* AppSettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppSettingsView.swift; sourceTree = "<group>"; };
 		103DC2224F0E9D7329961FB9 /* interaction_test.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = interaction_test.rb; sourceTree = "<group>"; };
 		141070F7733C5C069A857A7C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		1925762410BC9B6EC0220117 /* Pods-JobsSwiftUIBaseConfigDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JobsSwiftUIBaseConfigDemo.release.xcconfig"; path = "Target Support Files/Pods-JobsSwiftUIBaseConfigDemo/Pods-JobsSwiftUIBaseConfigDemo.release.xcconfig"; sourceTree = "<group>"; };
@@ -49,10 +56,12 @@
 		2792316FE444B6EF13433C3D /* podfile_integration_test.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = podfile_integration_test.rb; sourceTree = "<group>"; };
 		2CB771E2783E9D97FAFBC821 /* init_workflow_test.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = init_workflow_test.rb; sourceTree = "<group>"; };
 		2E2ADCB9FBA64A95026199A6 /* run_regression.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = run_regression.rb; sourceTree = "<group>"; };
+		39E2E996E1AEAE76AD669E3C /* AppText.json */ = {isa = PBXFileReference; includeInIndex = 1; path = AppText.json; sourceTree = "<group>"; };
 		627FEE710CEB6190B0DD2FE2 /* network_test.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = network_test.rb; sourceTree = "<group>"; };
 		63AFEB86D97A6B53B47EE103 /* Pods_JobsSwiftUIBaseConfigDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JobsSwiftUIBaseConfigDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		649EC48011FA88407646C3A3 /* JobsSwiftUIDebugAppDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = JobsSwiftUIDebugAppDelegate.swift; sourceTree = "<group>"; };
 		65812355D695F5AA2D85E627 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		735BE25C82E77F54E7250848 /* AppPalette.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppPalette.swift; sourceTree = "<group>"; };
 		7B2A75635CACF2FFC239629B /* Pods-JobsSwiftUIBaseConfigDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JobsSwiftUIBaseConfigDemo.debug.xcconfig"; path = "Target Support Files/Pods-JobsSwiftUIBaseConfigDemo/Pods-JobsSwiftUIBaseConfigDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		7CB48C3B3EE28AD1046330E8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		9076B537BA3C601947404A2F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -96,11 +105,12 @@
 		E94FA2714AAC32E84A07690B /* download_fallback_test.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = download_fallback_test.rb; sourceTree = "<group>"; };
 		EA6BC996659BE364F49DB290 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		ECB52F87B180704F0C0DB85A /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		EDA86C0D7EF3936417DFC90C /* AppText.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppText.swift; sourceTree = "<group>"; };
 		F3C9C0E8023691ECEE9D0C13 /* JobsSwiftUIDebugPanelDemoView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = JobsSwiftUIDebugPanelDemoView.swift; sourceTree = "<group>"; };
 		F77535E7BC16F886BE60A34E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F89914CCE272FC64F561F640 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		FF8211C2EE56E724D8C3AC7D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F90100042026110300000001 /* 【MacOS】🧪iOS自动巡检.command */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "【MacOS】🧪iOS自动巡检.command"; path = "ScriptsByDevTools/【MacOS】🧪iOS自动巡检.command"; sourceTree = SOURCE_ROOT; };
+		FF8211C2EE56E724D8C3AC7D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -241,6 +251,11 @@
 				B00000000000000000000024 /* Assets.xcassets */,
 				649EC48011FA88407646C3A3 /* JobsSwiftUIDebugAppDelegate.swift */,
 				1A07463DE7B538984BF11F92 /* JobsSwiftUIDebugNetworkEnvironment.swift */,
+				02799631F3F6750838F7AB43 /* AppPreferences.swift */,
+				EDA86C0D7EF3936417DFC90C /* AppText.swift */,
+				735BE25C82E77F54E7250848 /* AppPalette.swift */,
+				0FF24189BFBCEE88E203B540 /* AppSettingsView.swift */,
+				AC17ED3BB4FB22C248956D7C /* Resources */,
 			);
 			path = JobsSwiftUIBaseConfigDemo;
 			sourceTree = "<group>";
@@ -305,6 +320,15 @@
 				6ED215FEED909E750312AC04 /* podfile_parse_test.rb */,
 			);
 			path = Tests;
+			sourceTree = "<group>";
+		};
+		AC17ED3BB4FB22C248956D7C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				39E2E996E1AEAE76AD669E3C /* AppText.json */,
+			);
+			name = Resources;
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		B00B4092BF441127B151D751 /* ScriptsByPods */ = {
@@ -461,6 +485,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C00000000000000000000024 /* Assets.xcassets in Resources */,
+				2439CFA8E992AD1B9A38D8BA /* AppText.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -565,6 +590,10 @@
 				26DE4E7A650C914D3534F986 /* JobsSwiftUIDebugAppDelegate.swift in Sources */,
 				8CAE8845FC95BBBD8F008FF8 /* JobsSwiftUIDebugNetworkEnvironment.swift in Sources */,
 				9086FB511ECD94508C7BF9A7 /* JobsSwiftUIDebugPanelDemoView.swift in Sources */,
+				A62B0FEED983ACCEC0A002DE /* AppPreferences.swift in Sources */,
+				99AA242C6E51C6E3C3203ED9 /* AppText.swift in Sources */,
+				60AE6972D56E1EA3CA90D85F /* AppPalette.swift in Sources */,
+				C0EE6C372550A8AD70AF3012 /* AppSettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

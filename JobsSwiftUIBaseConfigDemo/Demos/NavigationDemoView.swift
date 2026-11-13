@@ -10,6 +10,8 @@ import SwiftUI
 /// 当前页面复用上层的 NavigationStack，只声明链接和工具栏，不重复创建导航容器。
 struct NavigationDemoView: View {
 
+    @ObservedObject private var appPreferences = AppPreferences.shared
+
     @State private var showToolbarState = false
 
     var body: some View {
@@ -26,8 +28,8 @@ struct NavigationDemoView: View {
                 }
             }
             
-            Section("Toolbar 状态") {
-                LabeledContent("右侧按钮", value: showToolbarState ? "已点亮" : "未点亮")
+            Section(AppText.text("Toolbar 状态")) {
+                LabeledContent(AppText.text("右侧按钮"), value: showToolbarState ? AppText.text("已点亮") : AppText.text("未点亮"))
             }
         }
         .toolbar {
@@ -38,6 +40,8 @@ struct NavigationDemoView: View {
                 } label: {
                     Image(systemName: showToolbarState ? "star.fill" : "star")
                 }
+                .accessibilityLabel(AppText.text("右侧按钮"))
+                .accessibilityValue(AppText.text(showToolbarState ? "已点亮" : "未点亮"))
             }
         }
     }
@@ -45,6 +49,8 @@ struct NavigationDemoView: View {
 
 /// 导航目标通过不可变参数接收选中的样例，不需要再保存一份 State。
 private struct NavigationDetailView: View {
+
+    @ObservedObject private var appPreferences = AppPreferences.shared
     
     let sample: NavigationSample
     
@@ -79,11 +85,11 @@ private enum NavigationSample: String, CaseIterable, Identifiable {
     var title: String {
         switch self {
         /// 普通 Push 样例的标题。
-        case .push: "普通 Push"
+        case .push: AppText.text("普通 Push")
         /// 工具栏样例的标题。
-        case .toolbar: "工具栏"
+        case .toolbar: AppText.text("工具栏")
         /// 内联标题样例的标题。
-        case .inlineTitle: "内联标题"
+        case .inlineTitle: AppText.text("内联标题")
         }
     }
     
@@ -101,11 +107,11 @@ private enum NavigationSample: String, CaseIterable, Identifiable {
     var message: String {
         switch self {
         /// 说明 NavigationLink 的入栈语义。
-        case .push: "NavigationLink 会在当前 NavigationStack 内推出新页面。"
+        case .push: AppText.text("NavigationLink 会在当前 NavigationStack 内推出新页面。")
         /// 说明 toolbar 的挂载能力。
-        case .toolbar: "toolbar 可以挂载导航栏按钮、底部按钮和键盘按钮。"
+        case .toolbar: AppText.text("toolbar 可以挂载导航栏按钮、底部按钮和键盘按钮。")
         /// 说明导航标题的展示模式。
-        case .inlineTitle: "navigationBarTitleDisplayMode 可以控制标题展示样式。"
+        case .inlineTitle: AppText.text("navigationBarTitleDisplayMode 可以控制标题展示样式。")
         }
     }
 }

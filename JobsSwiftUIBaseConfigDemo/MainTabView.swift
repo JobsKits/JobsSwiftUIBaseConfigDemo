@@ -10,6 +10,8 @@ import SwiftUI
 /// App 的根视图：用一个状态值统一控制当前选中的 Tab。
 struct MainTabView: View {
 
+    @ObservedObject private var appPreferences = AppPreferences.shared
+
     /// `@State` 由 SwiftUI 持有，值改变后会让依赖它的 `body` 重新计算。
     @State private var selectedTab: AppTab = .demos
 
@@ -25,15 +27,20 @@ struct MainTabView: View {
             
             GalleryTabView()
                 .tabItem {
-                    Label("速览", systemImage: "square.grid.2x2")
+                    Label(AppText.text("速览"), systemImage: "square.grid.2x2")
                 }
                 .tag(AppTab.gallery)
             
             AboutTabView()
                 .tabItem {
-                    Label("关于", systemImage: "info.circle")
+                    Label(AppText.text("关于"), systemImage: "info.circle")
                 }
                 .tag(AppTab.about)
+            AppSettingsView()
+                .tabItem {
+                    Label(AppText.text("设置"), systemImage: "gearshape")
+                }
+                .tag(AppTab.settings)
         }
     }
 }
@@ -44,4 +51,5 @@ private enum AppTab: Hashable {
     case demos
     case gallery
     case about
+    case settings
 }

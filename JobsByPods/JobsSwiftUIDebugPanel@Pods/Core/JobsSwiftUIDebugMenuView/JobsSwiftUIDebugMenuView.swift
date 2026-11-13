@@ -19,8 +19,8 @@ public struct JobsSwiftUIDebugMenuView: View {
                 JobsSwiftUIDebugEnvironmentsView()
             } label: {
                 VStack(alignment: .leading, spacing: 5) {
-                    Text("App 环境切换")
-                    Text(panel.currentEnvironment?.title ?? "尚未配置环境")
+                    Text(JobsSwiftUIDebugPanel.shared.localized("App 环境切换"))
+                    Text(panel.localized(panel.currentEnvironment?.title ?? "尚未配置环境"))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -43,10 +43,10 @@ public struct JobsSwiftUIDebugMenuView: View {
             }
         }
         .listStyle(.insetGrouped)
-        .navigationTitle("SwiftUI 调试工具")
+        .navigationTitle(JobsSwiftUIDebugPanel.shared.localized("SwiftUI 调试工具"))
         .navigationBarTitleDisplayMode(.inline)
         .accessibilityIdentifier("JobsSwiftUIDebugMenu")
-        .alert("当前网络环境", isPresented: Binding(
+        .alert(JobsSwiftUIDebugPanel.shared.localized("当前网络环境"), isPresented: Binding(
             get: {
                 panel.feedback != nil
             },
@@ -56,7 +56,7 @@ public struct JobsSwiftUIDebugMenuView: View {
                 }
             }
         )) {
-            Button("知道了", role: .cancel) {
+            Button(JobsSwiftUIDebugPanel.shared.localized("知道了"), role: .cancel) {
                 panel.feedback = nil
             }
         } message: {
@@ -72,7 +72,7 @@ public struct JobsSwiftUIDebugMenuView: View {
                     .scaledToFit()
                     .frame(width: 24, height: 24)
             }
-            Text(action.title)
+            Text(panel.localized(action.title))
                 .foregroundStyle(.primary)
         }
     }

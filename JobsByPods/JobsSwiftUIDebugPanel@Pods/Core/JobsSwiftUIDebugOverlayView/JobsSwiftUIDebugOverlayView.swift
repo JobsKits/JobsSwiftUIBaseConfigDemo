@@ -174,9 +174,9 @@ struct JobsSwiftUIDebugOverlayView: View {
         }
 
         func updateAppearance(isPresented: Bool) {
-            accessibilityLabel = isPresented ? "关闭 SwiftUI 调试面板，返回原页面" : "打开 SwiftUI 调试面板"
-            accessibilityHint = "可拖动，长按隐藏至下次启动"
-            accessibilityValue = isPresented ? "已打开" : "已关闭"
+            accessibilityLabel = isPresented ? JobsSwiftUIDebugPanel.shared.localized("关闭 SwiftUI 调试面板，返回原页面") : JobsSwiftUIDebugPanel.shared.localized("打开 SwiftUI 调试面板")
+            accessibilityHint = JobsSwiftUIDebugPanel.shared.localized("可拖动，长按隐藏至下次启动")
+            accessibilityValue = isPresented ? JobsSwiftUIDebugPanel.shared.localized("已打开") : JobsSwiftUIDebugPanel.shared.localized("已关闭")
         }
 
         override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {

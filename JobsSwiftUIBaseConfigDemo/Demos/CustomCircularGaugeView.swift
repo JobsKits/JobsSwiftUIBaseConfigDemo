@@ -10,6 +10,8 @@ import SwiftUI
 /// 可交互的自定义环形仪表盘，展示 Binding、几何计算、Shape 绘制、手势和无障碍支持。
 struct CustomCircularGaugeView: View {
 
+    @ObservedObject private var appPreferences = AppPreferences.shared
+
     /// `@Binding` 不拥有数据；真实 progress 存在父视图中，这里只获得读写通道。
     @Binding var progress: Double
     /// 普通存储属性是初始化参数，适合由父视图传入不需要反向修改的配置。
@@ -98,7 +100,7 @@ struct CustomCircularGaugeView: View {
                     Text(progressText)
                         .font(.system(size: side * 0.22, weight: .bold, design: .rounded))
                         .monospacedDigit()
-                    Text(title)
+                    Text(AppText.text(title))
                         .font(.system(size: side * 0.12, weight: .semibold))
                         .lineLimit(1)
                         .minimumScaleFactor(0.7)

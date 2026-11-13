@@ -11,6 +11,8 @@ import UniformTypeIdentifiers
 /// Demo 主列表：集中演示持久化状态、搜索、导航，以及拖拽排序的数据流。
 struct DemoListView: View {
 
+    @ObservedObject private var appPreferences = AppPreferences.shared
+
     /// `@AppStorage` 把值同步到 UserDefaults；重新启动 App 后仍能读到上次排序。
     @AppStorage("JobsSwiftUIBaseConfigDemo.demoFeatureOrder") private var storedFeatureOrder = ""
     /// 下面三个 `@State` 只属于当前视图生命周期，不应由父视图传入。
@@ -90,6 +92,8 @@ struct DemoListView: View {
         #endif
     }
 
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
     var body: some View {
         NavigationStack {
             List {
@@ -130,7 +134,7 @@ struct DemoListView: View {
                         }
                     }
                 } header: {
-                    Text("系统 UI Demo")
+                    Text(AppText.text("系统 UI Demo"))
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .contentShape(Rectangle())
                         .onDrop(
@@ -148,10 +152,24 @@ struct DemoListView: View {
                 }
             }
             .listStyle(.insetGrouped)
+            .overlay {
+                if filteredFeatures.isEmpty {
+                    ContentUnavailableView {
+                        Label(AppText.text("没有匹配的 Demo"), systemImage: "magnifyingglass")
+                    } description: {
+                        Text(AppText.text("请尝试其他关键词。"))
+                    } actions: {
+                        Button(AppText.text("清除搜索")) {
+                            searchText = ""
+                        }
+                    }
+                }
+            }
             .accessibilityIdentifier("jobs.demo.list")
-            .navigationTitle("SwiftUI 系统 UI")
+            .navigationTitle(AppText.text("SwiftUI 系统 UI"))
+            .navigationBarTitleDisplayMode(dynamicTypeSize.isAccessibilitySize ? .inline : .large)
             /// searchable 自动把系统搜索框接入 searchText Binding。
-            .searchable(text: $searchText, prompt: "搜索功能名")
+            .searchable(text: $searchText, prompt: AppText.text("搜索功能名"))
             /// body 可能多次计算，初始化副作用放在 onAppear，而不是直接写进 body。
             .onAppear(perform: loadFeatureOrder)
         }

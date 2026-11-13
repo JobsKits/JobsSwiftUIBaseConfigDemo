@@ -14,9 +14,10 @@ import JobsSwiftUIDebugPanel
 @main
 struct JobsSwiftUIBaseConfigDemoApp: App {
 
+    @StateObject private var preferences = AppPreferences.shared
+
 #if DEBUG
     @UIApplicationDelegateAdaptor(JobsSwiftUIDebugAppDelegate.self) private var debugDelegate
-    @AppStorage("com.jobs.swiftui.debugPanel.demoAppearance") private var debugDemoAppearance = "system"
 #endif
 
     /// `Scene` 描述 App 可以展示的场景。
@@ -26,12 +27,22 @@ struct JobsSwiftUIBaseConfigDemoApp: App {
     var body: some Scene {
         /// `WindowGroup` 为每个窗口会话创建一棵视图树，闭包中的 View 就是该窗口的根视图。
         WindowGroup {
+            Group {
 #if DEBUG
             debugRootView
                 .jobsSwiftUIDebugPanel()
-                .preferredColorScheme((JobsSwiftUIDebugDemoAppearance(rawValue: debugDemoAppearance) ?? .system).colorScheme)
 #else
             MainTabView()
+#endif
+            }
+                .environmentObject(preferences)
+                .environment(\.locale, Locale(identifier: preferences.languageCode))
+                .preferredColorScheme(preferences.colorScheme)
+                .tint(AppPalette.interactive)
+#if DEBUG
+                .onChange(of: preferences.language) { _, _ in
+                    JobsSwiftUIDebugPanel.shared.byTextProvider(AppText.text)
+                }
 #endif
         }
     }
@@ -44,7 +55,7 @@ struct JobsSwiftUIBaseConfigDemoApp: App {
             if arguments.indices.contains(optionIndex + 1) {
                 debugCoverageDestination(arguments[optionIndex + 1])
             } else {
-                Text("巡检入口缺少页面路由 ID")
+                Text(AppText.text("巡检入口缺少页面路由 ID"))
             }
         } else {
             MainTabView()
@@ -69,8 +80,11 @@ struct JobsSwiftUIBaseConfigDemoApp: App {
         } else if routeID == "home" {
             MainTabView()
                 .modifier(JobsCoverageReadyModifier(routeID: routeID))
+        } else if routeID == "settings" {
+            AppSettingsView()
+                .modifier(JobsCoverageReadyModifier(routeID: routeID))
         } else {
-            Text("当前构建不包含巡检页面：\(routeID)")
+            Text(AppText.format("当前构建不包含巡检页面：%@", routeID))
         }
     }
 #endif
@@ -87,7 +101,7 @@ private struct JobsCoverageReadyModifier: ViewModifier {
         content
             .overlay(alignment: .topLeading) {
                 if appeared {
-                    Text("巡检页面已就绪")
+                    Text(AppText.text("巡检页面已就绪"))
                         .foregroundStyle(.clear)
                         .frame(width: 1, height: 1)
                         .accessibilityIdentifier("jobs.coverage.ready.\(routeID)")

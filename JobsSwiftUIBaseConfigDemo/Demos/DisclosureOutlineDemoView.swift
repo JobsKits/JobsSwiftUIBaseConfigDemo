@@ -10,6 +10,8 @@ import SwiftUI
 /// 对比手工折叠的一层内容和由递归数据自动生成的树形内容。
 struct DisclosureOutlineDemoView: View {
 
+    @ObservedObject private var appPreferences = AppPreferences.shared
+
     /// children 仍是同类型数组，这种“递归模型”可以表达任意层级的树。
     private let nodes = [
         DemoTreeNode(
@@ -35,7 +37,7 @@ struct DisclosureOutlineDemoView: View {
         List {
             Section("DisclosureGroup") {
                 /// 未提供 isExpanded Binding 时，DisclosureGroup 在内部管理展开状态。
-                DisclosureGroup("展开系统控件") {
+                DisclosureGroup(AppText.text("展开系统控件")) {
                     Label("TextField", systemImage: "keyboard")
                     Label("Toggle", systemImage: "switch.2")
                     Label("Picker", systemImage: "list.bullet")
