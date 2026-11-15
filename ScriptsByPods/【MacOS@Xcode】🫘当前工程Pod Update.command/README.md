@@ -77,6 +77,7 @@ ScriptsByPods/【MacOS@Xcode】🫘当前工程Pod Update.command/【MacOS@Xcode
 ## <span id="jobs-toc-heading-5" data-jobs-toc="v2">四、日志与失败处理 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 每次确认后在系统临时目录建立权限受限的独立 `jobs-xcode-pod-update.log.*`，实际位置随终端输出显示。未确认或只读检查时不创建日志；不同工程和重复运行不互相覆盖。
+- 脚本自身提示由内置日志函数同步显示，并以纯文本写入本次日志，无需额外日志程序。
 - CocoaPods 缺失、完整模式健康检查失败、更新失败或日志不可写时停止并保留真实退出码；不为更新入口自动安装或升级工具链，不自动删除 Pods、锁文件或工作空间。
 - 打开 Terminal 成功只表示已转交入口，最终结果以终端和本次日志为准。更新中取消会中止当前流程，已经发生的依赖或 Podfile 修改不会自动回滚。
 

@@ -375,6 +375,8 @@ Behaviors 属于 Xcode 用户设置，本机安装行为的 `Run` 路径登记�
 
 基础更新复用上述四个进程级跳过开关，保留必要依赖声明与工程配置；完整更新保留已有环境开关、实际 update 钩子及子脚本确认，不强制触发仅限 install 的前置任务。入口不加入 App target、Podfile 钩子或构建动作；独立日志为系统临时目录的 `jobs-xcode-pod-update.log.*`，保留真实退出码。可用 `--check --xcode-path` 只读定位。
 
+手动安装和更新的提示日志均由各自脚本内置函数同步显示并以纯文本落盘，无需额外日志程序。
+
 本机已在 `Xcode → Behaviors → 🫘当前工程 · Pod Update` 接入更新入口，与现有 Pod Install 行为并列；`Run` 使用工程相对路径 `ScriptsByPods/【MacOS@Xcode】🫘当前工程Pod Update.command/【MacOS@Xcode】🫘当前工程Pod Update.command`。更新脚本与工程展示引用随工程提供，用户级 Behaviors 不会由工程自动部署，换电脑首次仍需登记；完整登记和终端用法见包内 README。
 
 ### <span id="jobs-toc-heading-19" data-jobs-toc="v2">6.3、脚本日志 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->

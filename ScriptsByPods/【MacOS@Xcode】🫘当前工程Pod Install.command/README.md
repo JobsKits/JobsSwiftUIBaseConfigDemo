@@ -72,6 +72,7 @@ Behaviors 属于 Xcode 用户设置，设置不会随工程自动携带。Xcode 
 ## <span id="jobs-toc-heading-5" data-jobs-toc="v2">四、日志与失败处理 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->
 
 - 每次确认后在系统临时目录创建权限受限的独立 `jobs-xcode-pod-install.log.*`，实际文件名在终端显示。不同窗口和工程的日志不互相覆盖；未确认或 `--check` 不创建安装日志。
+- 脚本自身提示由内置日志函数同步显示，并以纯文本写入本次日志，无需额外日志程序。
 - 工程上下文缺失、路径不合法、没有邻近 Podfile、明确非 iOS 或 CocoaPods 不可用时报告原因并停止。没有 Podfile 时不会自动初始化、创建 Podfile 或搜索其它工程。
 - 打开 Terminal 成功仅表示入口转交成功；安装最终结果以终端和本次日志为准。完整模式的健康检查、安装或日志写入失败不会报告成功，安装命令的非零退出码向调用方保留。
 - 取消不会开始安装；安装中取消会中止本次流程，已经发生的 CocoaPods 或 Podfile 钩子修改不自动回滚。

@@ -683,7 +683,7 @@ initialize_script_runtime() {
 }
 # 同步终端与日志输出，日志不可写时停止。
 log() {
-  printf '%s\n' "$1" | /usr/bin/jobs_prompt_tee "$LOG_FILE"
+  printf '%s\n' "$1" | jobs_prompt_tee "$LOG_FILE"
   (( $? == 0 )) || fail "写入日志失败：$LOG_FILE"
 }
 # 复用现有 CocoaPods，缺失或损坏时停止而不自动安装工具链。
