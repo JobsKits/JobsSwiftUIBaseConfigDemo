@@ -31,6 +31,8 @@ enum DemoFeature: String, CaseIterable, Identifiable {
     case asyncLinkShare
     case animation
     case timer
+    case coreData
+    case rustOCR
 #if DEBUG
     case debugPanel
 #endif
@@ -75,6 +77,9 @@ enum DemoFeature: String, CaseIterable, Identifiable {
         case .animation: "Animation / Transition"
         /// 计时器 Demo 的列表标题。
         case .timer: AppText.text("Timer 定时器")
+        /// 使用实际 SQLite 存储的 Core Data 教学入口。
+        case .coreData: AppText.text("Core Data 本地数据库")
+        case .rustOCR: AppText.text("Rust OCR 离线识别")
 #if DEBUG
         /// Debug 专属的独立 SwiftUI 调试框架。
         case .debugPanel: AppText.text("SwiftUI Debug 调试面板")
@@ -118,6 +123,9 @@ enum DemoFeature: String, CaseIterable, Identifiable {
         case .animation: AppText.text("状态驱动动画、转场和显隐")
         /// 概括 Combine 计时器页面的能力。
         case .timer: AppText.text("非 UI 控件：Timer 发布器与计时器")
+        /// 概括持久化的完整增删改查。
+        case .coreData: AppText.text("新增、查询、修改和删除，重启后保留数据")
+        case .rustOCR: AppText.text("同一 Rust 核心，图片识别完全离线")
 #if DEBUG
         /// 环境配置、工具导航与真实网络回退示例。
         case .debugPanel: AppText.text("圆形悬浮入口、环境切换、顺序动作与真实 GET /get")
@@ -161,6 +169,9 @@ enum DemoFeature: String, CaseIterable, Identifiable {
         case .animation: "sparkles"
         /// 计时器页面使用计时器图标。
         case .timer: "timer"
+        /// 数据库使用独立打包的 iconfont 矢量资源。
+        case .coreData: ""
+        case .rustOCR: "doc.text.viewfinder"
 #if DEBUG
         /// 此入口实际图标通过 icon 使用已打包圆形背景图。
         case .debugPanel: ""
@@ -170,18 +181,25 @@ enum DemoFeature: String, CaseIterable, Identifiable {
 
     @ViewBuilder
     var icon: some View {
-#if DEBUG
-        if self == .debugPanel {
-            JobsSwiftUIDebugPanel.buttonImage
+        if self == .coreData {
+            Image("JobsCoreDataDatabase")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 28, height: 28)
+                .frame(width: 24, height: 24)
         } else {
-            Image(systemName: symbol)
-        }
+#if DEBUG
+            if self == .debugPanel {
+                JobsSwiftUIDebugPanel.buttonImage
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 28, height: 28)
+            } else {
+                Image(systemName: symbol)
+            }
 #else
-        Image(systemName: symbol)
+            Image(systemName: symbol)
 #endif
+        }
     }
 
     /// `@ViewBuilder` 允许不同 case 返回不同的具体 View，而对外仍统一表现为 `some View`。
@@ -222,6 +240,9 @@ enum DemoFeature: String, CaseIterable, Identifiable {
         case .animation: AnimationDemoView()
         /// 构建计时器 Demo。
         case .timer: TimerDemoView()
+        /// 构建真实模型与本地存储的演示页。
+        case .coreData: CoreDataDemoView()
+        case .rustOCR: RustOCRDemoView()
 #if DEBUG
         /// 构建 SwiftUI Pod 配套网络与交互示例。
         case .debugPanel: JobsSwiftUIDebugPanelDemoView()

@@ -12,6 +12,27 @@ final class AppPreferences: ObservableObject {
     static let shared = AppPreferences()
     static let languageKey = "com.jobs.swiftui.language"
     static let appearanceKey = "com.jobs.swiftui.debugPanel.demoAppearance"
+    static let floatingClockKey = "JobsSwiftUIBaseConfigDemo.showFloatingClock"
+    static let collapseOnDemoReturnKey = "JobsSwiftUIBaseConfigDemo.collapseOnDemoReturn"
+    static let worldClock12HourKey = "com.jobs.worldClock.uses12HourFormat"
+
+    @Published var worldClock12Hour: Bool {
+        didSet {
+            UserDefaults.standard.set(worldClock12Hour, forKey: Self.worldClock12HourKey)
+        }
+    }
+
+    @Published var showFloatingClock: Bool {
+        didSet {
+            UserDefaults.standard.set(showFloatingClock, forKey: Self.floatingClockKey)
+        }
+    }
+
+    @Published var collapseOnDemoReturn: Bool {
+        didSet {
+            UserDefaults.standard.set(collapseOnDemoReturn, forKey: Self.collapseOnDemoReturnKey)
+        }
+    }
 
     @Published var language: String {
         didSet {
@@ -27,6 +48,9 @@ final class AppPreferences: ObservableObject {
     private init() {
         language = UserDefaults.standard.string(forKey: Self.languageKey) ?? "system"
         appearance = UserDefaults.standard.string(forKey: Self.appearanceKey) ?? "system"
+        showFloatingClock = UserDefaults.standard.object(forKey: Self.floatingClockKey) as? Bool ?? true
+        collapseOnDemoReturn = UserDefaults.standard.object(forKey: Self.collapseOnDemoReturnKey) as? Bool ?? true
+        worldClock12Hour = UserDefaults.standard.bool(forKey: Self.worldClock12HourKey)
     }
 
     var languageCode: String {

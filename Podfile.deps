@@ -3,6 +3,11 @@
 
 # SwiftUI 系统 UI 演示保留脚本锚点，并仅在 Debug 加载调试工具。
 def jobsSwiftUIBaseConfigDemoPods
+  jobs_rust_ocr_dir = File.join(__dir__, 'JobsByPods', 'JobsRustOCR@Pods')
+  if File.file?(File.join(jobs_rust_ocr_dir, 'JobsRustOCR.podspec')) &&
+     !Dir.glob(File.join(jobs_rust_ocr_dir, '**', '*.xcframework', 'Info.plist')).empty?
+    pod 'JobsRustOCR', :path => 'JobsByPods/JobsRustOCR@Pods'
+  end
   # CocoaPods 需要至少一个依赖才能完整走 install 生命周期；该本地 Pod 只作为脚本锚点，不在 App 业务代码中 import。
   pod 'JobsSwiftUICodeGraphHook', :path => 'ScriptsByPods/JobsSwiftUICodeGraphHook'
   pod 'JobsSwiftUIDebugPanel', :path => 'JobsByPods/JobsSwiftUIDebugPanel@Pods', :configurations => ['Debug']

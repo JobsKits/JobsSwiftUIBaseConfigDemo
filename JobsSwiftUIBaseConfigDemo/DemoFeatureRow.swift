@@ -17,24 +17,25 @@ struct DemoFeatureRow: View {
 
     var body: some View {
         /// HStack 横向排列图标和文字区域，VStack 再把标题与副标题纵向组合。
-        HStack(spacing: 14) {
+        HStack(spacing: 12) {
             feature.icon
-                .font(.title3)
-                .foregroundStyle(.white)
-                .frame(width: 44, height: 44)
-                .background(AppPalette.accent, in: RoundedRectangle(cornerRadius: 12))
+                .font(.system(size: 22))
+                .foregroundStyle(Color.primary.opacity(0.72))
+                .frame(width: 34, height: 34)
                 .accessibilityHidden(true)
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(feature.title)
-                    .font(.headline)
+                    .font(.body)
+                    .foregroundStyle(Color.primary)
                 Text(feature.subtitle)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .font(.caption)
+                    .foregroundStyle(Color.primary.opacity(0.72))
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
         /// 修饰符按顺序包装前一个 View；这里给整行增加垂直内边距。
+        .frame(minHeight: 56)
         .padding(.vertical, 8)
     }
 }

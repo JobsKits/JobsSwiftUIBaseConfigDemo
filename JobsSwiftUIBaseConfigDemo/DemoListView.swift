@@ -11,7 +11,13 @@ import UniformTypeIdentifiers
 /// Demo 主列表：集中演示持久化状态、搜索、导航，以及拖拽排序的数据流。
 struct DemoListView: View {
 
+    var active = true
     @ObservedObject private var appPreferences = AppPreferences.shared
+    @EnvironmentObject private var recentHistory: DemoRecentHistory
+    @State private var homeVisible = false
+    @State private var showingWorldClock = false
+    @State private var groupExpanded = true
+    @State private var pendingDemoReturn = false
 
     /// `@AppStorage` 把值同步到 UserDefaults；重新启动 App 后仍能读到上次排序。
     @AppStorage("JobsSwiftUIBaseConfigDemo.demoFeatureOrder") private var storedFeatureOrder = ""
@@ -29,7 +35,8 @@ struct DemoListView: View {
     }()
     #endif
 
-    init() {
+    init(active: Bool = true) {
+        self.active = active
         #if DEBUG
         if ProcessInfo.processInfo.arguments.contains("--jobs-coverage-route") {
             _storedFeatureOrder = AppStorage(wrappedValue: "", Self.coverageStorageKey)
@@ -98,11 +105,16 @@ struct DemoListView: View {
         NavigationStack {
             List {
                 Section {
+                    if groupExpanded || isSearching {
                     ForEach(filteredFeatures) { feature in
                         NavigationLink {
                             feature.destination
                                 .navigationTitle(feature.title)
                                 .navigationBarTitleDisplayMode(.inline)
+                                .onAppear {
+                                    recentHistory.record(feature.rawValue)
+                                    pendingDemoReturn = true
+                                }
                         } label: {
                             DemoFeatureRow(feature: feature)
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -123,6 +135,7 @@ struct DemoListView: View {
                                 )
                         }
                         .accessibilityIdentifier("jobs.demo.\(feature.id)")
+                        .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
                         .opacity(draggingFeature == feature ? 0.72 : 1)
                         .onDrag {
                             draggingFeature = feature
@@ -133,8 +146,35 @@ struct DemoListView: View {
                             return NSItemProvider(object: feature.rawValue as NSString)
                         }
                     }
+                    }
                 } header: {
-                    Text(AppText.text("系统 UI Demo"))
+                    Button {
+                        withAnimation(.snappy) {
+                            groupExpanded.toggle()
+                        }
+                    } label: {
+                        HStack(spacing: 12) {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(AppText.text("系统 UI Demo"))
+                                    .font(.headline)
+                                    .foregroundStyle(Color.primary)
+                                Text("\(filteredFeatures.count) Demo")
+                                    .font(.footnote)
+                                    .foregroundStyle(Color.primary.opacity(0.72))
+                            }
+                            Spacer(minLength: 8)
+                            Image(systemName: groupExpanded ? "chevron.down" : "chevron.right")
+                                .font(.system(size: 14, weight: .semibold))
+                                .foregroundStyle(Color.primary.opacity(0.72))
+                        }
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 14)
+                        .background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 14))
+                    }
+                    .buttonStyle(.plain)
+                    .textCase(nil)
+                    .accessibilityIdentifier("jobs.demo.group.toggle")
+                    .accessibilityValue(groupExpanded ? AppText.text("全部收缩") : AppText.text("全部展开"))
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .contentShape(Rectangle())
                         .onDrop(
@@ -166,12 +206,54 @@ struct DemoListView: View {
                 }
             }
             .accessibilityIdentifier("jobs.demo.list")
-            .navigationTitle(AppText.text("SwiftUI 系统 UI"))
-            .navigationBarTitleDisplayMode(dynamicTypeSize.isAccessibilitySize ? .inline : .large)
+            .navigationTitle(AppText.text("功能实验室"))
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationDestination(isPresented: $showingWorldClock) {
+                WorldClockView()
+            }
             /// searchable 自动把系统搜索框接入 searchText Binding。
             .searchable(text: $searchText, prompt: AppText.text("搜索功能名"))
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    VStack(spacing: 2) {
+                        Text(AppText.text("功能实验室"))
+                            .font(.headline)
+                            .foregroundStyle(Color.primary)
+                        Text("JobsSwiftUIBaseConfigDemo")
+                            .font(.caption2)
+                            .foregroundStyle(Color.primary.opacity(0.72))
+                    }
+                    .accessibilityElement(children: .combine)
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    NavigationLink {
+                        DemoRecentListView(history: recentHistory)
+                    } label: {
+                        Label(AppText.text("最近使用"), systemImage: "clock.arrow.circlepath")
+                    }
+                    .accessibilityIdentifier("jobs.demo.recent.open")
+                }
+            }
             /// body 可能多次计算，初始化副作用放在 onAppear，而不是直接写进 body。
-            .onAppear(perform: loadFeatureOrder)
+            .onAppear {
+                loadFeatureOrder()
+                if pendingDemoReturn && appPreferences.collapseOnDemoReturn && !isSearching {
+                    groupExpanded = false
+                }
+                pendingDemoReturn = false
+                homeVisible = true
+            }
+            .onDisappear {
+                homeVisible = false
+            }
+        }
+        .overlay {
+            HomeFloatingClock(active: appPreferences.showFloatingClock && homeVisible && active) {
+                showingWorldClock = true
+            }
+            .opacity(appPreferences.showFloatingClock && homeVisible && active ? 1 : 0)
+            .allowsHitTesting(appPreferences.showFloatingClock && homeVisible && active)
+            .accessibilityHidden(!appPreferences.showFloatingClock || !homeVisible || !active)
         }
         #if DEBUG
         .overlay(alignment: .topLeading) {

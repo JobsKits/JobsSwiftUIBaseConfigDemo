@@ -15,6 +15,7 @@ import JobsSwiftUIDebugPanel
 struct JobsSwiftUIBaseConfigDemoApp: App {
 
     @StateObject private var preferences = AppPreferences.shared
+    @StateObject private var recentHistory = DemoRecentHistory(availableIDs: DemoFeature.allCases.map(\.rawValue))
 
 #if DEBUG
     @UIApplicationDelegateAdaptor(JobsSwiftUIDebugAppDelegate.self) private var debugDelegate
@@ -36,6 +37,7 @@ struct JobsSwiftUIBaseConfigDemoApp: App {
 #endif
             }
                 .environmentObject(preferences)
+                .environmentObject(recentHistory)
                 .environment(\.locale, Locale(identifier: preferences.languageCode))
                 .preferredColorScheme(preferences.colorScheme)
                 .tint(AppPalette.interactive)

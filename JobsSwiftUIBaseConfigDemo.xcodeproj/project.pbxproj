@@ -3,17 +3,24 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		17AC6599285081F9E6A05B7A /* RustOCRDemoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D794CCB97BE74156CF211E /* RustOCRDemoModel.swift */; };
 		2439CFA8E992AD1B9A38D8BA /* AppText.json in Resources */ = {isa = PBXBuildFile; fileRef = 39E2E996E1AEAE76AD669E3C /* AppText.json */; };
 		26DE4E7A650C914D3534F986 /* JobsSwiftUIDebugAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 649EC48011FA88407646C3A3 /* JobsSwiftUIDebugAppDelegate.swift */; };
+		2F2BA5A63D36B9FAED5FD32B /* WorldClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F99FF46CC9A6FB083A41E7D /* WorldClockView.swift */; };
 		60AE6972D56E1EA3CA90D85F /* AppPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 735BE25C82E77F54E7250848 /* AppPalette.swift */; };
+		631471DB88F222BF760F576A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CD6A21E57AB708D1C364528E /* InfoPlist.strings */; };
+		6DAC6A05B511539E2BC89B05 /* RustOCRDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDD1231A2C5D362F88F20AE /* RustOCRDemoView.swift */; };
 		8CAE8845FC95BBBD8F008FF8 /* JobsSwiftUIDebugNetworkEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A07463DE7B538984BF11F92 /* JobsSwiftUIDebugNetworkEnvironment.swift */; };
 		9086FB511ECD94508C7BF9A7 /* JobsSwiftUIDebugPanelDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C9C0E8023691ECEE9D0C13 /* JobsSwiftUIDebugPanelDemoView.swift */; };
+		95B2C1112F200248771AD24C /* HomeFloatingClock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9C0551DB0575345C30BCF8 /* HomeFloatingClock.swift */; };
+		967707CC60F2300B5B0B91B3 /* FloatingClockGeometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2780E4CCED616CDEE5DCFDAA /* FloatingClockGeometry.swift */; };
 		99AA242C6E51C6E3C3203ED9 /* AppText.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA86C0D7EF3936417DFC90C /* AppText.swift */; };
 		A62B0FEED983ACCEC0A002DE /* AppPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02799631F3F6750838F7AB43 /* AppPreferences.swift */; };
+		B53BF3C96AD7BA04DE262138 /* WorldClockCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F494550DCE15CCE128A473A /* WorldClockCatalog.swift */; };
 		C00000000000000000000001 /* JobsSwiftUIBaseConfigDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000001 /* JobsSwiftUIBaseConfigDemoApp.swift */; };
 		C00000000000000000000002 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000002 /* MainTabView.swift */; };
 		C00000000000000000000003 /* DemoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000003 /* DemoListView.swift */; };
@@ -40,28 +47,47 @@
 		C00000000000000000000024 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000024 /* Assets.xcassets */; };
 		C00000000000000000000025 /* CustomCircularGaugeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000026 /* CustomCircularGaugeView.swift */; };
 		C00000000000000000000026 /* DirectionalPushDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000027 /* DirectionalPushDemoView.swift */; };
+		C00000000000000000000028 /* DemoRecentHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000028 /* DemoRecentHistory.swift */; };
+		C00000000000000000000029 /* DemoRecentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000029 /* DemoRecentListView.swift */; };
+		C00000000000000000000030 /* CoreDataDemoStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000030 /* CoreDataDemoStore.swift */; };
+		C00000000000000000000031 /* CoreDataDemoRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000031 /* CoreDataDemoRecord.swift */; };
+		C00000000000000000000032 /* CoreDataDemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00000000000000000000032 /* CoreDataDemoView.swift */; };
+		C00000000000000000000033 /* JobsSwiftUIBaseConfigDemo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A00000000000000000000030 /* JobsSwiftUIBaseConfigDemo.xcdatamodeld */; };
 		C0EE6C372550A8AD70AF3012 /* AppSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FF24189BFBCEE88E203B540 /* AppSettingsView.swift */; };
+		CB2AC413384DA80C0C9D6213 /* JobsOCRSDKAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70AD5B4AE13516818DCEB20 /* JobsOCRSDKAdapter.swift */; };
+		D769A036DBCB88102C41FAD8 /* JobsSwiftUIClock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E726F4C7A1D237EF8E0FDB /* JobsSwiftUIClock.swift */; };
 		EC2010A7192E239DB4F6754A /* Pods_JobsSwiftUIBaseConfigDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63AFEB86D97A6B53B47EE103 /* Pods_JobsSwiftUIBaseConfigDemo.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		02799631F3F6750838F7AB43 /* AppPreferences.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppPreferences.swift; sourceTree = "<group>"; };
+		02D794CCB97BE74156CF211E /* RustOCRDemoModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RustOCRDemoModel.swift; sourceTree = "<group>"; };
 		0302B75C7668FA33BDD26885 /* 【MacOS@Xcode】🫘当前工程Pod Install.command */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "【MacOS@Xcode】🫘当前工程Pod Install.command"; sourceTree = "<group>"; };
 		0FF24189BFBCEE88E203B540 /* AppSettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppSettingsView.swift; sourceTree = "<group>"; };
 		103DC2224F0E9D7329961FB9 /* interaction_test.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = interaction_test.rb; sourceTree = "<group>"; };
+		11B6B9A94DAD80C334D0009B /* ru */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		141070F7733C5C069A857A7C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		16E726F4C7A1D237EF8E0FDB /* JobsSwiftUIClock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = JobsSwiftUIClock.swift; sourceTree = "<group>"; };
 		1925762410BC9B6EC0220117 /* Pods-JobsSwiftUIBaseConfigDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JobsSwiftUIBaseConfigDemo.release.xcconfig"; path = "Target Support Files/Pods-JobsSwiftUIBaseConfigDemo/Pods-JobsSwiftUIBaseConfigDemo.release.xcconfig"; sourceTree = "<group>"; };
 		19287033395C046E7358F84D /* 【MacOS】🌐CocoaPods源自动选择.command */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "【MacOS】🌐CocoaPods源自动选择.command"; sourceTree = "<group>"; };
 		1A07463DE7B538984BF11F92 /* JobsSwiftUIDebugNetworkEnvironment.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = JobsSwiftUIDebugNetworkEnvironment.swift; sourceTree = "<group>"; };
+		1C1B392F451A8B13D227638E /* fr */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1F494550DCE15CCE128A473A /* WorldClockCatalog.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WorldClockCatalog.swift; sourceTree = "<group>"; };
+		2780E4CCED616CDEE5DCFDAA /* FloatingClockGeometry.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FloatingClockGeometry.swift; sourceTree = "<group>"; };
 		2792316FE444B6EF13433C3D /* podfile_integration_test.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = podfile_integration_test.rb; sourceTree = "<group>"; };
 		2CB771E2783E9D97FAFBC821 /* init_workflow_test.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = init_workflow_test.rb; sourceTree = "<group>"; };
 		2E2ADCB9FBA64A95026199A6 /* run_regression.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = run_regression.rb; sourceTree = "<group>"; };
 		39E2E996E1AEAE76AD669E3C /* AppText.json */ = {isa = PBXFileReference; includeInIndex = 1; path = AppText.json; sourceTree = "<group>"; };
+		3F99FF46CC9A6FB083A41E7D /* WorldClockView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WorldClockView.swift; sourceTree = "<group>"; };
+		48066FA4E69B43D388BAB439 /* bo */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = bo; path = bo.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		627FEE710CEB6190B0DD2FE2 /* network_test.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = network_test.rb; sourceTree = "<group>"; };
 		63AFEB86D97A6B53B47EE103 /* Pods_JobsSwiftUIBaseConfigDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JobsSwiftUIBaseConfigDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		649EC48011FA88407646C3A3 /* JobsSwiftUIDebugAppDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = JobsSwiftUIDebugAppDelegate.swift; sourceTree = "<group>"; };
 		65812355D695F5AA2D85E627 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		690090265153AC7E6227509F /* ja */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6D9C0551DB0575345C30BCF8 /* HomeFloatingClock.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = HomeFloatingClock.swift; sourceTree = "<group>"; };
 		735BE25C82E77F54E7250848 /* AppPalette.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppPalette.swift; sourceTree = "<group>"; };
+		763D68A2D272FC75132A583D /* de */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7B2A75635CACF2FFC239629B /* Pods-JobsSwiftUIBaseConfigDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JobsSwiftUIBaseConfigDemo.debug.xcconfig"; path = "Target Support Files/Pods-JobsSwiftUIBaseConfigDemo/Pods-JobsSwiftUIBaseConfigDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		7CB48C3B3EE28AD1046330E8 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		9076B537BA3C601947404A2F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -95,15 +121,28 @@
 		B00000000000000000000025 /* JobsSwiftUIBaseConfigDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JobsSwiftUIBaseConfigDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B00000000000000000000026 /* CustomCircularGaugeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCircularGaugeView.swift; sourceTree = "<group>"; };
 		B00000000000000000000027 /* DirectionalPushDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionalPushDemoView.swift; sourceTree = "<group>"; };
+		B00000000000000000000028 /* DemoRecentHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoRecentHistory.swift; sourceTree = "<group>"; };
+		B00000000000000000000029 /* DemoRecentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoRecentListView.swift; sourceTree = "<group>"; };
+		B00000000000000000000030 /* CoreDataDemoStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataDemoStore.swift; sourceTree = "<group>"; };
+		B00000000000000000000031 /* CoreDataDemoRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataDemoRecord.swift; sourceTree = "<group>"; };
+		B00000000000000000000032 /* CoreDataDemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataDemoView.swift; sourceTree = "<group>"; };
+		B00000000000000000000033 /* JobsSwiftUIBaseConfigDemo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = JobsSwiftUIBaseConfigDemo.xcdatamodel; sourceTree = "<group>"; };
 		B36CD8D36EB0845FFBD33406 /* 【MacOS@Xcode】🫘当前工程Pod Update.command */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "【MacOS@Xcode】🫘当前工程Pod Update.command"; sourceTree = "<group>"; };
+		B672851A65A050C90674E1C9 /* zh-Hans */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		CB4075A738159D70E78A5FC7 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		CBD387B708FE8B8B712005F4 /* 【MacOS】codegraph_init.command */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "【MacOS】codegraph_init.command"; sourceTree = "<group>"; };
+		CDDD1231A2C5D362F88F20AE /* RustOCRDemoView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RustOCRDemoView.swift; sourceTree = "<group>"; };
+		CF50A51E3089BA0EE170A32A /* ko */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D70AD5B4AE13516818DCEB20 /* JobsOCRSDKAdapter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = JobsOCRSDKAdapter.swift; sourceTree = "<group>"; };
 		D8662EE9F35B5335DA7800EC /* 【MacOS】🌐CocoaPods网络适配.command */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = "【MacOS】🌐CocoaPods网络适配.command"; sourceTree = "<group>"; };
+		D9B08DA80B6BDBA0AE774019 /* en */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D9FF865D2AADDBE7D64A337D /* zh-Hant */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		E42D9CE1CAAD19627378F7DB /* save_device_ipa_after_build.command */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = save_device_ipa_after_build.command; sourceTree = "<group>"; };
 		E44C1D284C1D7BF3F7D5D0F5 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E5D0E7AA7AAA0D7F7B492688 /* run_regression.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = run_regression.rb; sourceTree = "<group>"; };
 		E94FA2714AAC32E84A07690B /* download_fallback_test.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = download_fallback_test.rb; sourceTree = "<group>"; };
 		EA6BC996659BE364F49DB290 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		EAD536C2DB3C1DDE419737D4 /* es */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		ECB52F87B180704F0C0DB85A /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		EDA86C0D7EF3936417DFC90C /* AppText.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppText.swift; sourceTree = "<group>"; };
 		F3C9C0E8023691ECEE9D0C13 /* JobsSwiftUIDebugPanelDemoView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = JobsSwiftUIDebugPanelDemoView.swift; sourceTree = "<group>"; };
@@ -112,6 +151,16 @@
 		F90100042026110300000001 /* 【MacOS】🧪iOS自动巡检.command */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "【MacOS】🧪iOS自动巡检.command"; path = "ScriptsByDevTools/【MacOS】🧪iOS自动巡检.command"; sourceTree = SOURCE_ROOT; };
 		FF8211C2EE56E724D8C3AC7D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		F71515152026111500000001 /* 项目相关报告 */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			path = "项目相关报告";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		A00000000000000000000008 /* Frameworks */ = {
@@ -228,6 +277,7 @@
 		A00000000000000000000001 = {
 			isa = PBXGroup;
 			children = (
+				F71515152026111500000001 /* 项目相关报告 */,
 				6F0CC0E0FF28487AC7848888 /* ScriptsByPods */,
 				A00000000000000000000004 /* JobsSwiftUIBaseConfigDemo */,
 				A39FBE0B2D561D2E5772D898 /* 自动化测试 */,
@@ -243,11 +293,14 @@
 				B00000000000000000000001 /* JobsSwiftUIBaseConfigDemoApp.swift */,
 				B00000000000000000000002 /* MainTabView.swift */,
 				B00000000000000000000003 /* DemoListView.swift */,
+				B00000000000000000000028 /* DemoRecentHistory.swift */,
+				B00000000000000000000029 /* DemoRecentListView.swift */,
 				B00000000000000000000004 /* DemoFeature.swift */,
 				B00000000000000000000005 /* DemoFeatureRow.swift */,
 				B00000000000000000000006 /* GalleryTabView.swift */,
 				B00000000000000000000007 /* AboutTabView.swift */,
 				A00000000000000000000006 /* Demos */,
+				A00000000000000000000031 /* Persistence */,
 				B00000000000000000000024 /* Assets.xcassets */,
 				649EC48011FA88407646C3A3 /* JobsSwiftUIDebugAppDelegate.swift */,
 				1A07463DE7B538984BF11F92 /* JobsSwiftUIDebugNetworkEnvironment.swift */,
@@ -256,6 +309,11 @@
 				735BE25C82E77F54E7250848 /* AppPalette.swift */,
 				0FF24189BFBCEE88E203B540 /* AppSettingsView.swift */,
 				AC17ED3BB4FB22C248956D7C /* Resources */,
+				1F494550DCE15CCE128A473A /* WorldClockCatalog.swift */,
+				16E726F4C7A1D237EF8E0FDB /* JobsSwiftUIClock.swift */,
+				3F99FF46CC9A6FB083A41E7D /* WorldClockView.swift */,
+				2780E4CCED616CDEE5DCFDAA /* FloatingClockGeometry.swift */,
+				6D9C0551DB0575345C30BCF8 /* HomeFloatingClock.swift */,
 			);
 			path = JobsSwiftUIBaseConfigDemo;
 			sourceTree = "<group>";
@@ -271,6 +329,7 @@
 		A00000000000000000000006 /* Demos */ = {
 			isa = PBXGroup;
 			children = (
+				B00000000000000000000032 /* CoreDataDemoView.swift */,
 				B00000000000000000000008 /* TextImageDemoView.swift */,
 				B00000000000000000000009 /* ButtonMenuDemoView.swift */,
 				B00000000000000000000010 /* InputFieldsDemoView.swift */,
@@ -290,8 +349,20 @@
 				B00000000000000000000022 /* AnimationDemoView.swift */,
 				B00000000000000000000023 /* TimerDemoView.swift */,
 				F3C9C0E8023691ECEE9D0C13 /* JobsSwiftUIDebugPanelDemoView.swift */,
+				CDDD1231A2C5D362F88F20AE /* RustOCRDemoView.swift */,
+				02D794CCB97BE74156CF211E /* RustOCRDemoModel.swift */,
+				D70AD5B4AE13516818DCEB20 /* JobsOCRSDKAdapter.swift */,
 			);
 			path = Demos;
+			sourceTree = "<group>";
+		};
+		A00000000000000000000031 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				B00000000000000000000030 /* CoreDataDemoStore.swift */,
+				B00000000000000000000031 /* CoreDataDemoRecord.swift */,
+			);
+			path = Persistence;
 			sourceTree = "<group>";
 		};
 		A39FBE0B2D561D2E5772D898 /* 自动化测试 */ = {
@@ -325,7 +396,9 @@
 		AC17ED3BB4FB22C248956D7C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A00000000000000000000030 /* JobsSwiftUIBaseConfigDemo.xcdatamodeld */,
 				39E2E996E1AEAE76AD669E3C /* AppText.json */,
+				CD6A21E57AB708D1C364528E /* InfoPlist.strings */,
 			);
 			name = Resources;
 			path = Resources;
@@ -461,15 +534,23 @@
 				};
 			};
 			buildConfigurationList = D00000000000000000000002 /* Build configuration list for PBXProject "JobsSwiftUIBaseConfigDemo" */;
-			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 				"zh-Hans",
+				"zh-Hant",
+				bo,
+				ja,
+				fr,
+				es,
+				de,
+				ru,
+				ko,
 			);
 			mainGroup = A00000000000000000000001;
+			preferredProjectObjectVersion = 77;
 			productRefGroup = A00000000000000000000005 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -486,6 +567,7 @@
 			files = (
 				C00000000000000000000024 /* Assets.xcassets in Resources */,
 				2439CFA8E992AD1B9A38D8BA /* AppText.json in Resources */,
+				631471DB88F222BF760F576A /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -521,12 +603,8 @@
 			);
 			inputFileListPaths = (
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -562,9 +640,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C00000000000000000000030 /* CoreDataDemoStore.swift in Sources */,
+				C00000000000000000000031 /* CoreDataDemoRecord.swift in Sources */,
+				C00000000000000000000032 /* CoreDataDemoView.swift in Sources */,
+				C00000000000000000000033 /* JobsSwiftUIBaseConfigDemo.xcdatamodeld in Sources */,
 				C00000000000000000000001 /* JobsSwiftUIBaseConfigDemoApp.swift in Sources */,
 				C00000000000000000000002 /* MainTabView.swift in Sources */,
 				C00000000000000000000003 /* DemoListView.swift in Sources */,
+				C00000000000000000000028 /* DemoRecentHistory.swift in Sources */,
+				C00000000000000000000029 /* DemoRecentListView.swift in Sources */,
 				C00000000000000000000004 /* DemoFeature.swift in Sources */,
 				C00000000000000000000005 /* DemoFeatureRow.swift in Sources */,
 				C00000000000000000000006 /* GalleryTabView.swift in Sources */,
@@ -594,10 +678,38 @@
 				99AA242C6E51C6E3C3203ED9 /* AppText.swift in Sources */,
 				60AE6972D56E1EA3CA90D85F /* AppPalette.swift in Sources */,
 				C0EE6C372550A8AD70AF3012 /* AppSettingsView.swift in Sources */,
+				B53BF3C96AD7BA04DE262138 /* WorldClockCatalog.swift in Sources */,
+				D769A036DBCB88102C41FAD8 /* JobsSwiftUIClock.swift in Sources */,
+				2F2BA5A63D36B9FAED5FD32B /* WorldClockView.swift in Sources */,
+				967707CC60F2300B5B0B91B3 /* FloatingClockGeometry.swift in Sources */,
+				95B2C1112F200248771AD24C /* HomeFloatingClock.swift in Sources */,
+				6DAC6A05B511539E2BC89B05 /* RustOCRDemoView.swift in Sources */,
+				17AC6599285081F9E6A05B7A /* RustOCRDemoModel.swift in Sources */,
+				CB2AC413384DA80C0C9D6213 /* JobsOCRSDKAdapter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		CD6A21E57AB708D1C364528E /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B672851A65A050C90674E1C9 /* zh-Hans */,
+				D9FF865D2AADDBE7D64A337D /* zh-Hant */,
+				D9B08DA80B6BDBA0AE774019 /* en */,
+				48066FA4E69B43D388BAB439 /* bo */,
+				690090265153AC7E6227509F /* ja */,
+				1C1B392F451A8B13D227638E /* fr */,
+				EAD536C2DB3C1DDE419737D4 /* es */,
+				763D68A2D272FC75132A583D /* de */,
+				11B6B9A94DAD80C334D0009B /* ru */,
+				CF50A51E3089BA0EE170A32A /* ko */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		D00000000000000000000004 /* Debug */ = {
@@ -716,6 +828,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = JobsSwiftUIBaseConfigDemo;
 				INFOPLIST_KEY_LSRequiresIPhoneOS = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera access is used to photograph text for on-device recognition.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -751,6 +864,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = JobsSwiftUIBaseConfigDemo;
 				INFOPLIST_KEY_LSRequiresIPhoneOS = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera access is used to photograph text for on-device recognition.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -794,6 +908,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		A00000000000000000000030 /* JobsSwiftUIBaseConfigDemo.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				B00000000000000000000033 /* JobsSwiftUIBaseConfigDemo.xcdatamodel */,
+			);
+			currentVersion = B00000000000000000000033 /* JobsSwiftUIBaseConfigDemo.xcdatamodel */;
+			path = JobsSwiftUIBaseConfigDemo.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = A00000000000000000000002 /* Project object */;
 }

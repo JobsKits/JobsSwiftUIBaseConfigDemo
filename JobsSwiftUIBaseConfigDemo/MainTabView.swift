@@ -19,7 +19,7 @@ struct MainTabView: View {
     var body: some View {
         /// `$selectedTab` 是 `Binding<AppTab>`，允许 TabView 读取并反向写回选中状态。
         TabView(selection: $selectedTab) {
-            DemoListView()
+            DemoListView(active: selectedTab == .demos)
                 .tabItem {
                     Label("Demo", systemImage: "list.bullet.rectangle")
                 }

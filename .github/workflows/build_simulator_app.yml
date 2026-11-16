@@ -60,6 +60,15 @@ jobs:
           set -euo pipefail
           gem install cocoapods --version 1.17.0 --no-document 2>&1 | tee "$RUNNER_TEMP/swiftui-evidence/cocoapods-install.log"
 
+      - name: Prepare the validated Rust toolchain
+        run: rustup toolchain install 1.95.0 --profile minimal
+
+      - name: Build the owned OCR core from repository sources
+        timeout-minutes: 20
+        env:
+          RUSTUP_TOOLCHAIN: '1.95.0'
+        run: /bin/zsh 'JobsByPods/JobsRustOCR@Pods/Scripts/BuildRustOCR.command' --non-interactive
+
       - name: Install local Pods
         timeout-minutes: 5
         run: |

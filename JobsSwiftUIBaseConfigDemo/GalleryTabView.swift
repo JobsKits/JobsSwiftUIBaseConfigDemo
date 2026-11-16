@@ -11,6 +11,7 @@ import SwiftUI
 struct GalleryTabView: View {
 
     @ObservedObject private var appPreferences = AppPreferences.shared
+    @EnvironmentObject private var recentHistory: DemoRecentHistory
 
     /// `.adaptive` 会按可用宽度自动计算列数，每列至少 150 点。
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -31,6 +32,9 @@ struct GalleryTabView: View {
                             feature.destination
                                 .navigationTitle(feature.title)
                                 .navigationBarTitleDisplayMode(.inline)
+                                .onAppear {
+                                    recentHistory.record(feature.rawValue)
+                                }
                         } label: {
                             VStack(alignment: .leading, spacing: 12) {
                                 feature.icon

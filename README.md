@@ -1,5 +1,7 @@
 # `JobsSwiftUIBaseConfigDemo`
 
+OCR 自建核心按源码交付，入口为 [Source/JobsOCR](<./JobsByPods/JobsRustOCR@Pods/Source/JobsOCR/README.md>)；首次使用及修改源码后运行 [本地构建器](<./JobsByPods/JobsRustOCR@Pods/Scripts/README.md>)，再执行原有依赖安装和 App 构建。自建 `libJobsOCRCore.a` 只在本机生成，不提交到仓库；第三方运行时及模型来源、参数和验证见[源码交付盘点](<./项目相关报告/RustOCR接入盘点.md#source-delivery>)。
+
 本工程的[iPhone 真机与 iOS 模拟器自动巡检教程](./ScriptsByDevTools/【MacOS】🧪iOS自动巡检.command/README.md)位于自己的 `ScriptsByDevTools`；只操作本工程已安装的 App，报告保存在该脚本包内。开发辅助入口见[ScriptsByDevTools 说明](./ScriptsByDevTools/README.md)。
 
 > **项目定位：** `JobsSwiftUIBaseConfigDemo`，面向 iOS 开发者的原生 SwiftUI 系统控件、导航与状态交互演示工程，用于学习与验证纯 SwiftUI 页面组织。
@@ -66,6 +68,20 @@
 
 工程入口模拟 iOS 新工程的基础结构：启动后先进入主 `TabView`，其中 `Demo` Tab 是功能列表，点击列表功能名后通过 `NavigationStack` 推出对应 Demo 页面。
 
+Demo 首页右上时钟入口提供最近使用：真实打开功能后按稳定ID前插去重、最多保留30项并跨启动恢复，普通列表／搜索结果／最近列表／速览共用同一份历史。最近页保留原导航来源，空列表提供完整占位和重新加载；全局十语与三主题继续生效。资产及验证范围见[App骨架增量盘点](./项目相关报告/App骨架功能盘点.md)。
+
+Demo 首页统一为“功能实验室”，副标题标明 `JobsSwiftUIBaseConfigDemo`。蓝色悬浮时间按文字／动态字号与当前安全区域自适应，短按推入世界时钟，长按后可拖动并四边吸附；设置可以关闭或恢复，位置不跨启动保存。世界页显示当前时区及各有效UTC偏移的代表城市、当地日期／星期／时分秒和IANA标识，含半小时、四十五分钟及系统夏令时；“12小时制”开关默认关、选择持久化，开启明确显示AM／PM，首页浮钟仍为24小时。仅前台可见时计时，世界页不新增Demo条目或最近记录；实现与验收口径见[骨架世界时钟](./项目相关报告/App骨架功能盘点.md#world-clock-requirement)。当前时区使用顶部独立圆角强调卡片，大号时间随系统字号，城市／IANA／UTC偏移与日期星期完整保留；制式开关左标题随当前值显示“24小时制”或“12小时制”，默认24小时，开启明确AM／PM。
+
+设置中的“返回首页时收缩分组”默认开启并保存在UserDefaults；具体Demo返回后收缩“系统 UI Demo”组，关闭后保留展开与滚动位置，手动组开关仍可使用。该工程沿用四Tab，没有新增侧栏或开屏。首页分组卡片与行文字层级沿用Swift UIKit的圆角／留白／17与13pt组标题及17与12pt行文字，并响应动态字号。
+
+本批90项生产模型／计时／纯几何断言通过，实际UI测量接线另验。共享iPhone18Pro／iOS27.2的最终真实用例26.814秒、0失败：物理中心短按导航、12／24小时轨道切换及返回保留、静止长按不push、左右／底／导航顶部四向拖动与安全吸边、导航区域中心再次可点及返回保位均已验，结束恢复24h。冷启动格式、十语三主题完整画面与其它设备／极端字号仍待验，详见上述资产表。
+
+浮钟承载已从列表overlay提升到整个NavigationStack上方，保留Tab底栏安全边界；标准Button与simultaneous长按序列协调，first阶段只重置会话、second完成才锁长按，从Button本体读取真实尺寸参与边界计算。最初环境阻塞及其后真实短按／右越界缺陷均保留在报告，不将纯模型通过代替UI绑定已验。最新世界页四处次文字显式Color.primary.opacity(0.7)的视觉小增量已构建成功，随后在统一重建的Final2执行颜色／格式短链1项、12.803秒、0失败，12／24h两图已实际查看；结束恢复24h。完整十语三主题／其它设备大字及SwiftUI冷启动格式恢复仍待验，不能由浅色截图外推。
+
+Demo 列表的“Core Data 本地数据库”使用 `JobsSwiftUIBaseConfigDemo.xcdatamodeld` 和真实 SQLite，支持新增、重命名、完成切换、删除、清空确认及重载，操作立即保存并跨启动恢复。默认空库，空态含操作说明和重新加载；沿用全局十语与三主题。此页专门演示本地数据库，无服务器也能完整操作，不请求业务 API、不使用假数据或网络图片；数据库图标随 App 打包。四工程模型的实际使用结论、图标来源及验证见[Core Data 使用核查](./项目相关报告/CoreData使用核查.md)。
+
+项目根的 `项目相关报告/` 在 Xcode 中使用蓝色文件系统同步目录，完整显示实际文件和子目录；新增报告自动出现，该目录不属于 App target，也不复制进 App。
+
 本工程使用原生 SwiftUI 演示系统组件；Debug 额外接入独立的本地 `JobsSwiftUIDebugPanel` Pod，演示圆形浮层、环境切换和自定义动作。Release 不链接调试 Pod，也不显示调试 Demo。
 
 工程使用 [**CocoaPods**](https://cocoapods.org/) 入口：`Podfile` 加载解耦后的 `Podfile.deps`，在 `pod install` 收尾阶段挂载 [**CodeGraph**](https://github.com/colbymchenry/codegraph) 脚本生成 `.codegraph`。依赖清单包含本地脚本锚点和仅 Debug 生效的 SwiftUI 调试 Pod；调试 Pod 无其它业务 Pod 依赖。
@@ -87,6 +103,7 @@
 | 主 Tab 容器 | `./JobsSwiftUIBaseConfigDemo/MainTabView.swift` |
 | Demo 列表 | `./JobsSwiftUIBaseConfigDemo/DemoListView.swift` |
 | Demo 注册表 | `./JobsSwiftUIBaseConfigDemo/DemoFeature.swift` |
+| 最近使用状态与页面 | `./JobsSwiftUIBaseConfigDemo/DemoRecentHistory.swift`、`./JobsSwiftUIBaseConfigDemo/DemoRecentListView.swift` |
 | Demo 页面目录 | `./JobsSwiftUIBaseConfigDemo/Demos/` |
 | Podfile 入口 | `./Podfile` |
 | Pod 依赖清单 | `./Podfile.deps` |
@@ -208,6 +225,7 @@ flowchart TD
 | `AsyncImage / Link / ShareLink` | 远程图片、外链打开和系统分享 | `./JobsSwiftUIBaseConfigDemo/Demos/AsyncLinkShareDemoView.swift` |
 | `Animation / Transition` | 状态驱动动画、转场和显隐 | `./JobsSwiftUIBaseConfigDemo/Demos/AnimationDemoView.swift` |
 | `Timer 定时器` | 非 UI 控件：`Timer.publish`、`autoconnect` 和 `onReceive` | `./JobsSwiftUIBaseConfigDemo/Demos/TimerDemoView.swift` |
+| `Core Data 本地数据库` | 真实模型、SQLite 增删改查、错误重试与持久恢复 | [CoreDataDemoView.swift](./JobsSwiftUIBaseConfigDemo/Demos/CoreDataDemoView.swift) |
 | `SwiftUI Debug 调试面板` | Debug 圆形悬浮按钮、环境选择、顺序动作、真实 `GET /get` 与失败回退 | `./JobsSwiftUIBaseConfigDemo/Demos/JobsSwiftUIDebugPanelDemoView.swift` |
 
 ## <span id="jobs-toc-heading-6" data-jobs-toc="v2">五、重点实现 <a href="#前言" style="font-size:17px; color:green;"><b>🔼</b></a> <a href="#🔚" style="font-size:17px; color:green;"><b>🔽</b></a></span><!-- jobs-toc:heading-end -->

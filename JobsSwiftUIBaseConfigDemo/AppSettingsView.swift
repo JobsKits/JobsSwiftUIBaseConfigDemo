@@ -37,6 +37,15 @@ struct AppSettingsView: View {
                     }
                     .accessibilityIdentifier("jobs.settings.appearance")
                 }
+                Section(AppText.text("首页工具")) {
+                    Toggle(AppText.text("返回首页时收缩分组"), isOn: $preferences.collapseOnDemoReturn)
+                        .accessibilityIdentifier("jobs.settings.collapseOnDemoReturn")
+                    Toggle(AppText.text("悬浮时间"), isOn: $preferences.showFloatingClock)
+                        .accessibilityIdentifier("jobs.settings.floatingClock")
+                    Text(AppText.text("短按查看世界时钟，长按拖动"))
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
             }
             .navigationTitle(AppText.text("设置"))
             .navigationBarTitleDisplayMode(dynamicTypeSize.isAccessibilitySize ? .inline : .large)
