@@ -18,6 +18,7 @@
 - [当前时区卡片与制式标题合同（2026-11-16）](#jobs-toc-heading-9)
 - [首页返回、侧栏与开屏浮控增量](#home-return-sidebar-20261116)
 - [Rust OCR 独立 Demo 接线（2026-11-16）](#jobs-toc-heading-11)
+- [六、中英混排核心与源码状态](#mixed-script-source-20261117)
 
 </details>
 <!-- jobs-toc:end -->
@@ -147,5 +148,11 @@ Root限定实际界面补验（2026-11-16，iPhone18Pro／iOS27.2）：逻辑最
 ## <span id="jobs-toc-heading-11" data-jobs-toc="v2">Rust OCR 独立 Demo 接线（2026-11-16）</span><!-- jobs-toc:heading-end -->
 
 入口为“系统 UI Demo → Rust OCR 离线识别”，页面位于 `JobsSwiftUIBaseConfigDemo/Demos/RustOCRDemoView.swift`，核心本地 Pod 归 `JobsByPods/JobsRustOCR@Pods`。内置真实样例／选照片、识别／取消、结果与空态重试均已接线；图片和结果仅页面内存，离开取消并忽略过期回调，十语与宿主三主题同步。缺模块明确错误，不冒充识别成功。完整规范 SDK 已装配，原 workspace arm64 模拟器构建成功；专用 iPhone 17 Pro／iOS 27.2 真实样例已识别 35 行、1326 字符，约 603 ms，原图／入口／完成状态截图与 JSON 已保存。另已通过 iPhoneOS ARM64 真机目标编译／链接；无签名导出被既有 Save Build IPA 保护拒绝，总退出码 65，未签名 App 不能直接安装、未在真机运行。完整十语三主题交互及极端字号仍待验。详细入口、行为、默认、生命周期和证据位置见[OCR 接入盘点](./RustOCR接入盘点.md)。
+
+## 六、<span id="mixed-script-source-20261117">中英混排核心与源码状态</span> <a href="#前言">🔼</a> <a href="#🔚">🔽</a>
+
+当前[随仓源码](<../JobsByPods/JobsRustOCR@Pods/Source/JobsOCR>)已同步本机验收通过的中英混排路由，包含 `pipeline.rs`、`runtime.rs`、`lib.rs`、`routing.rs`、独立 E2E 测试和 `MixedScript` 夹具。核心常规测试 30 项、显式 E2E 1 项覆盖 8 张真实夹具（其中 4 张精确逐行控制）通过；范围与证据见[共享核心回归记录](<../../../OCR/项目相关报告/混排回归/README.md>)。
+
+本状态确认核心本机回归及随仓源码一致；本宿主尚未使用此次新核心重编、运行，原有 35 行样本／界面／Workflow 记录仍限原批次。使用新核心前先运行[SDK 本地构建入口](<../JobsByPods/JobsRustOCR@Pods/Scripts/BuildRustOCR.command>)，源码输入哈希变化会使旧库缓存失效；保留本地构建方式，不分发自建 `.a`。显式 E2E 需指定本机 ORT 与随 SDK 的模型目录。
 
 <a id="🔚" href="#前言">返回首页</a>

@@ -13,6 +13,7 @@
 - [三、验证状态](#verification)
 - [四、源码交付与本地编译](#source-delivery)
 - [五、拍照输入与整页操作](#capture-page-20261116)
+- [六、中英混排核心与源码状态](#mixed-script-source-20261117)
 
 </details>
 <!-- jobs-toc:end -->
@@ -108,5 +109,11 @@ SwiftUI：真实 iOS 27.2 Simulator SDK 独立 view＋model 类型检查通过�
 
 仍待：其它九语／窄屏／大字完整实屏矩阵、相册选择、拒绝或受限权限分支、运行中取消竞争与实体设备拍照；不会以系统相机界面打开或模拟器结果冒充实体拍摄成功。
 
+
+## 六、<span id="mixed-script-source-20261117">中英混排核心与源码状态</span> <a href="#前言">🔼</a> <a href="#🔚">🔽</a>
+
+当前[随仓源码](<../JobsByPods/JobsRustOCR@Pods/Source/JobsOCR>)已同步本机验收通过的中英混排路由，包含 `pipeline.rs`、`runtime.rs`、`lib.rs`、`routing.rs`、独立 E2E 测试和 `MixedScript` 夹具。核心常规测试 30 项、显式 E2E 1 项覆盖 8 张真实夹具（其中 4 张精确逐行控制）通过；范围与证据见[共享核心回归记录](<../../../OCR/项目相关报告/混排回归/README.md>)。
+
+本状态确认核心本机回归及随仓源码一致；本宿主尚未使用此次新核心重编、运行，原有 35 行样本／界面／Workflow 记录仍限原批次。使用新核心前先运行[SDK 本地构建入口](<../JobsByPods/JobsRustOCR@Pods/Scripts/BuildRustOCR.command>)，源码输入哈希变化会使旧库缓存失效；保留本地构建方式，不分发自建 `.a`。显式 E2E 需指定本机 ORT 与随 SDK 的模型目录。
 
 <a id="🔚" href="#前言">返回前言</a>
